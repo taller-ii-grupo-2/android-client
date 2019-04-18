@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.Button
 import android.widget.TextView
+import com.google.firebase.FirebaseApp
 import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.*
 import java.io.IOException
@@ -16,7 +17,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         val btnDatabase = findViewById(R.id.btnDatabase) as Button
         btnDatabase.setOnClickListener{
             fetchJSON()
@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun changeViewToLogin() {
-        startActivity(Intent(this,LoginActivity::class.java))
+        startActivity(Intent(this,SignInActivity::class.java))
     }
 
     fun fetchJSON() {
