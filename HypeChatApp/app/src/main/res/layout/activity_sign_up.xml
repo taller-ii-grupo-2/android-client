@@ -27,7 +27,7 @@
                 android:hint="Username"
                 android:drawablePadding="10dp"
                 android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:padding="10dp" android:id="@+id/etUsername"/>
+                android:padding="10dp" android:id="@+id/usernamebox"/>
 
 
         <EditText
@@ -37,7 +37,7 @@
                 android:hint="Email"
                 android:drawablePadding="10dp"
                 android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:padding="10dp" android:id="@+id/etEmail"/>
+                android:padding="10dp" android:id="@+id/emailbox"/>
         <EditText
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
@@ -45,7 +45,7 @@
                 android:hint="Password"
                 android:drawablePadding="10dp"
                 android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:padding="10dp" android:id="@+id/etPassword"/>
+                android:padding="10dp" android:id="@+id/passwordbox"/>
 
 
         <Button
@@ -56,7 +56,7 @@
                 android:textAllCaps="false"
                 android:textSize="21sp"
                 android:layout_marginTop="30dp"
-                android:layout_marginBottom="30dp" android:id="@+id/btnSignUp"/>
+                android:layout_marginBottom="30dp" android:id="@+id/signupbtn"/>
 
 
 
