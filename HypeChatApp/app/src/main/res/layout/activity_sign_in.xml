@@ -55,10 +55,20 @@
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="30dp" android:id="@+id/btnSignIn"/>
 
+
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                   android:text="Sign Up"
                   android:textSize="21sp"
                   android:layout_gravity="center_horizontal" android:id="@+id/btnSignUp"/>
-            
+
+        <com.facebook.login.widget.LoginButton
+                android:id="@+id/btnfb"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="10dp" android:textColor="@color/colorPrimary"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+
     </LinearLayout>
 </RelativeLayout>

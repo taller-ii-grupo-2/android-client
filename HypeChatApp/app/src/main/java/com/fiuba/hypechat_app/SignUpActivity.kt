@@ -54,10 +54,8 @@ class SignUpActivity : AppCompatActivity() {
             .addOnCompleteListener(this) { task->
                 if (task.isSuccessful) {
                     //saveUserToFirebaseDB()
-                   startActivity(Intent(this,SignInActivity::class.java))
+                    startActivity(Intent(this,SignInActivity::class.java))
                     saveUserToFirebaseDB()
-
-
                 } else {
                     Toast.makeText(baseContext, "Sign up failed", Toast.LENGTH_SHORT).show()
                 }
