@@ -1,6 +1,7 @@
 package com.fiuba.hypechat_app
 
 import android.content.Intent
+import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -18,7 +19,12 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_sign_in.*
-
+import org.json.JSONObject
+import java.io.BufferedInputStream
+import java.io.BufferedWriter
+import java.io.OutputStreamWriter
+import java.net.HttpURLConnection
+import java.net.URL
 
 
 class SignInActivity : AppCompatActivity() {
@@ -31,6 +37,8 @@ class SignInActivity : AppCompatActivity() {
         setContentView(R.layout.activity_sign_in)
 
         mAuth = FirebaseAuth.getInstance()
+
+        verifyUserSignIn()
 
         btnSignIn.setOnClickListener{
             confirmSignIn()
@@ -65,6 +73,16 @@ class SignInActivity : AppCompatActivity() {
 
     }
 
+    private fun verifyUserSignIn() {
+        val id = FirebaseAuth.getInstance().uid
+        if (id == null){
+            val intent = Intent(this, MainActivity::class.java)
+            // Dont allow go back
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+        }
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -94,8 +112,10 @@ class SignInActivity : AppCompatActivity() {
         mAuth.signInWithEmailAndPassword(etEmail.text.toString(), etPassword.text.toString() )
             .addOnCompleteListener(this) { task->
                 if (task.isSuccessful) {
-                    val user = mAuth.currentUser
-                    updateUI(user)
+                    val intent = Intent(this, MainActivity::class.java)
+                    // Dont allow go back
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    startActivity(intent)
 
                 } else {
                     updateUI(null)                }
@@ -124,8 +144,11 @@ class SignInActivity : AppCompatActivity() {
 
     private fun updateUI(user: FirebaseUser?) {
         if (user != null){
-            startActivity(Intent(this, MainActivity::class.java))
             saveUserToFirebaseDB()
+            val intent = Intent(this, MainActivity::class.java)
+            // Dont allow go back
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
         } else{
             Toast.makeText(baseContext, "Sign in failed, wrong credentials", Toast.LENGTH_SHORT).show()
         }
@@ -143,5 +166,14 @@ class SignInActivity : AppCompatActivity() {
             .addOnSuccessListener {
                 Log.d("SignInActivity", "User added to database")
             }
+
+
+
     }
+
+
+
+
+
 }
+
