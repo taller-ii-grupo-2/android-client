@@ -40,5 +40,5 @@ dependencies {
 
     // external libraries
     implementation 'com.squareup.okhttp3:okhttp:3.14.0'
-
+    implementation 'com.github.nkzawa:socket.io-client:0.5.0'
 }
