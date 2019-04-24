@@ -34,7 +34,6 @@ class SignUpActivity : AppCompatActivity() {
 
         signupbtn.setOnClickListener {
             signUpValidation()
-            //sendDataToSv2()
 
         }
     }
@@ -80,7 +79,7 @@ class SignUpActivity : AppCompatActivity() {
     private fun saveUserToFirebaseDB (){
         val uid = FirebaseAuth.getInstance().uid ?:""
         val ref = FirebaseDatabase.getInstance().getReference("/users/$uid")
-        val user = User(usernamebox.text.toString(), emailbox.text.toString(), uid)
+        val user = User( emailbox.text.toString(),usernamebox.text.toString())
         ref.setValue(user)
             .addOnSuccessListener {
                 Log.d("SignUpActivity", "User added to database")
@@ -93,37 +92,22 @@ class SignUpActivity : AppCompatActivity() {
 
     private fun sendDataToSv(user:User) {
 
-        RetrofitClient.instance.createUser( user.username, user.email, user.uid)
+        RetrofitClient.instance.createUser(user)
             .enqueue(object: Callback<DefaultResponse>{
                 override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                     Toast.makeText(baseContext, t.message, Toast.LENGTH_LONG).show()
                 }
 
                 override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
-                    Toast.makeText(baseContext, "Se agrego a la base de datos externa", Toast.LENGTH_LONG).show()
+                    if (response.isSuccessful) {
+                        Toast.makeText(baseContext, "Successfully Added", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(baseContext, "Failed to add item", Toast.LENGTH_SHORT).show()
+                    }
                 }
-
             })
-
-
     }
 
-    private fun sendDataToSv2() {
-
-        RetrofitClient.instance.createUser("gabrielpiñeiro", "gabipiñeiro@gmail.com","218fhf317f7h31f3h7")
-            .enqueue(object: Callback<DefaultResponse>{
-                override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
-                    Toast.makeText(baseContext, t.message, Toast.LENGTH_LONG).show()
-                }
-
-                override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
-                    Toast.makeText(baseContext, "Se agrego a la base de datos externa", Toast.LENGTH_LONG).show()
-                }
-
-            })
-
-
-    }
 
 
 }

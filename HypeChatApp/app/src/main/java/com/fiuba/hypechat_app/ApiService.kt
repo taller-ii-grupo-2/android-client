@@ -5,15 +5,19 @@ import retrofit2.http.*
 
 interface ApiService {
 
-    @FormUrlEncoded
-    @POST("users")
-    fun createUser(
-        @Field("username") username:String,
-        @Field("email") email:String,
-        @Field("uid") uid:String
-        ): Call<DefaultResponse>
+
+    @POST("register")
+    fun createUser(@Body user:User): Call<DefaultResponse>
+
+    @POST("login")
+    fun signInUser(@Body token:Token): Call<DefaultResponse>
+
+    @GET ("users/all")
+    fun getListUsers(): Call<List<User>>
 }
 
-class DefaultResponse {
+class DefaultResponse(val message:String)
 
-}
+class Token (val token:String)
+
+class User (val mail:String, val name: String)
