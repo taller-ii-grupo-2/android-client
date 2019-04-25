@@ -14,10 +14,22 @@
             android:orientation="vertical"
             android:layout_centerVertical="true">
 
+
         <Button android:layout_width="150dp" android:layout_height="150dp"
                 android:layout_gravity="center_horizontal"
                 android:text="Select photo"
                 android:background="@drawable/btn_selectphoto" android:id="@+id/btnSelectphoto"/>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center_horizontal"
+                android:foregroundGravity="center"
+                android:id="@+id/CircleImageView"
+                android:layout_marginTop="-150dp"
+                app:civ_border_width="3dp"
+               />
+
 
         <EditText
                 android:layout_marginStart="20dp"
@@ -71,6 +83,12 @@
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="30dp" android:id="@+id/btnCreateWorkgroup"/>
 
+
     </LinearLayout>
+
+
+
+
 </RelativeLayout>
+
 
