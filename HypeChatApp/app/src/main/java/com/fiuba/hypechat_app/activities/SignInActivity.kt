@@ -14,6 +14,7 @@ import com.facebook.FacebookCallback
 import com.facebook.FacebookException
 
 import com.facebook.login.LoginResult
+import com.fiuba.hypechat_app.activities.WorkspaceActivity
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -40,8 +41,6 @@ class SignInActivity : AppCompatActivity() {
         setContentView(R.layout.activity_sign_in)
 
         mAuth = FirebaseAuth.getInstance()
-
-        verifyUserSignIn()
 
         btnSignIn.setOnClickListener{
             confirmSignIn()
@@ -76,15 +75,7 @@ class SignInActivity : AppCompatActivity() {
 
     }
 
-    private fun verifyUserSignIn() {
-        val id = FirebaseAuth.getInstance().uid
-        if (id == null){
-            val intent = Intent(this, MainActivity::class.java)
-            // Dont allow go back
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(intent)
-        }
-    }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -115,12 +106,11 @@ class SignInActivity : AppCompatActivity() {
         mAuth.signInWithEmailAndPassword(etEmail.text.toString(), etPassword.text.toString() )
             .addOnCompleteListener(this) { task->
                 if (task.isSuccessful) {
-                    val intent = Intent(this, MainActivity::class.java)
+                    signUserToSV(mAuth.uid!!)
+                    val intent = Intent(this, WorkspaceActivity::class.java)
                     // Dont allow go back
                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
                     startActivity(intent)
-                    signUserToSV(mAuth.uid!!)
-
                 } else {
                     updateUI(null)                }
             }
@@ -149,7 +139,7 @@ class SignInActivity : AppCompatActivity() {
     private fun updateUI(user: FirebaseUser?) {
         if (user != null){
             saveUserToFirebaseDB()
-            val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, WorkspaceActivity::class.java)
             // Dont allow go back
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
