@@ -1,5 +1,6 @@
 package com.fiuba.hypechat_app
 
+import com.fiuba.hypechat_app.models.Workgroup
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -11,6 +12,9 @@ interface ApiService {
 
     @POST("login")
     fun signInUser(@Body token:Token): Call<DefaultResponse>
+
+    @POST("workgroup")
+    fun createWorkgroup(@Body workgroup: Workgroup):Call<DefaultResponse>
 
     @GET ("users/all")
     fun getListUsers(): Call<List<User>>

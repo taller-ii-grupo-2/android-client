@@ -4,27 +4,24 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Intent
-import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import androidx.annotation.RequiresApi
-import androidx.appcompat.view.menu.ActionMenuItemView
 import android.util.Log
 import android.widget.Toast
-import androidx.annotation.NonNull
+import com.fiuba.hypechat_app.DefaultResponse
 import com.fiuba.hypechat_app.R
+import com.fiuba.hypechat_app.RetrofitClient
 import com.fiuba.hypechat_app.models.Workgroup
-import com.google.android.gms.tasks.Continuation
-import com.google.android.gms.tasks.Task
-import com.google.android.gms.tasks.Tasks
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.storage.FileDownloadTask
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.UploadTask
 import kotlinx.android.synthetic.main.activity_workspace_creation.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.*
 
 class WorkspaceCreationActivity : AppCompatActivity() {
@@ -43,6 +40,7 @@ class WorkspaceCreationActivity : AppCompatActivity() {
 
         btnCreateWorkgroup.setOnClickListener {
             verifyTextGaps()
+            uploadImageWorkgroupToFirebase()
 
         }
     }
@@ -50,7 +48,7 @@ class WorkspaceCreationActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     private fun verifyTextGaps() {
 
-      /*  if (etName.text.toString().isEmpty()){
+        if (etName.text.toString().isEmpty()){
             etName.error = "Plase enter your workspace name"
             etName.requestFocus()
             return
@@ -74,16 +72,14 @@ class WorkspaceCreationActivity : AppCompatActivity() {
         if (etWelcome.text.toString().isEmpty()){
             etWelcome.setText("Hello ! Wellcome to Hypechat")
             return
-        }*/
-
-        uploadImageWorkgroupToFirebase()
-
+        }
 
     }
 
     private fun createNewWorkgroup(urlImage:String) {
         val workgroup = Workgroup (etName.text.toString(),etUbication.text.toString(),etUserCreator.text.toString(),etDescription.text.toString(),etWelcome.text.toString(), urlImage)
         val ref = FirebaseDatabase.getInstance().getReference("/workgroup/${etName.text}")
+        sendDataToSv(workgroup)
         ref.setValue(workgroup)
             .addOnSuccessListener {
                 Log.d("WorkgroupCreationAct", "Workgroup added to database")
@@ -91,13 +87,34 @@ class WorkspaceCreationActivity : AppCompatActivity() {
 
        val intent = Intent(this, WorkspaceActivity::class.java)
         startActivity(intent)
-        //sendDataToSv(workgroup)
+
+    }
+
+    private fun sendDataToSv(workgroup: Workgroup) {
+
+
+        RetrofitClient.instance.createWorkgroup(workgroup)
+            .enqueue(object: Callback<DefaultResponse> {
+            override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
+                Toast.makeText(baseContext, t.message, Toast.LENGTH_LONG).show()
+            }
+
+            override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
+                if (response.isSuccessful) {
+                    Toast.makeText(baseContext, "Successfully workgroup added", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(baseContext, "Failed to add work", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            })
     }
 
     private fun uploadImageWorkgroupToFirebase(){
-        var urlString:String? = null
-        if (photoUri== null)
+        if (photoUri== null) {
             loadDefaultImage()
+            return
+        }
         val filename = etName.text.toString() + UUID.randomUUID().toString()
         val ref = FirebaseStorage.getInstance().getReference("/images/$filename")
         val progressDialog = ProgressDialog(this)
@@ -117,11 +134,6 @@ class WorkspaceCreationActivity : AppCompatActivity() {
             }
 
     }
-
-
-
-
-        // en it se guarda la url para despues descargar la imagen
 
 
 

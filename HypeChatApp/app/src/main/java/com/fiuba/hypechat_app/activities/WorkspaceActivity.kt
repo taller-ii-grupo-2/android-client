@@ -29,13 +29,13 @@ class WorkspaceActivity : AppCompatActivity() {
 
         verifyUserIsSignIn()
 
-       /*val adapter = GroupAdapter<ViewHolder>()
-       rvWorkspace*/
+        
+
         //fetchWorkgroups()
 
 
         }
-  /*  private fun fetchWorkgroups() {
+ /*   private fun fetchWorkgroups() {
         val ref = FirebaseDatabase.getInstance().getReference("/workgroups")
         ref.addListenerForSingleValueEvent(object: ValueEventListener {
 
