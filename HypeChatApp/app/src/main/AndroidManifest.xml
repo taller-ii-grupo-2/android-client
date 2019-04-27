@@ -15,6 +15,8 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity android:name=".activities.WorkspaceCreationActivity">
+          <!--  <meta-data android:name="android.support.PARENT_ACTIVITY"
+                       android:value=".activities.WorkspaceActivity"/>-->
         </activity>
         <activity
                 android:name=".activities.WorkspaceActivity"
