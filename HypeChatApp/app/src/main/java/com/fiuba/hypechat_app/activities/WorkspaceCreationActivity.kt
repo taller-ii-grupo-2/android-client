@@ -77,8 +77,9 @@ class WorkspaceCreationActivity : AppCompatActivity() {
     }
 
     private fun createNewWorkgroup(urlImage:String) {
-        val workgroup = Workgroup (etName.text.toString(),etUbication.text.toString(),etUserCreator.text.toString(),etDescription.text.toString(),etWelcome.text.toString(), urlImage)
-        val ref = FirebaseDatabase.getInstance().getReference("/workgroup/${etName.text}")
+        val name = etName.text.toString()
+        val workgroup = Workgroup (name,etUbication.text.toString(),etUserCreator.text.toString(),etDescription.text.toString(),etWelcome.text.toString(), urlImage)
+        val ref = FirebaseDatabase.getInstance().getReference("/workgroup/${name}")
         sendDataToSv(workgroup)
         ref.setValue(workgroup)
             .addOnSuccessListener {
@@ -120,11 +121,15 @@ class WorkspaceCreationActivity : AppCompatActivity() {
         val progressDialog = ProgressDialog(this)
         progressDialog.setTitle("Creating workgroup, just wait")
         progressDialog.show()
-        var uploadTask = ref.putFile(photoUri!!)
-            .addOnSuccessListener {
+        ref.putFile(photoUri!!)
+            .addOnSuccessListener {taskSnapshot ->
 
-                Log.d("WorkspaceCreationAct", "Image added to firebase: ${it.metadata?.path}")
-                createNewWorkgroup(it.uploadSessionUri.toString())
+                ref.downloadUrl.addOnCompleteListener {taskSnapshot->
+                    var url = taskSnapshot.result
+                    createNewWorkgroup(url.toString())
+                    Log.d("WorkspaceCreationAct", "Image added to firebase: ${url.toString()}")
+                }
+
                 Toast.makeText(applicationContext,"Workgroup created", Toast.LENGTH_SHORT).show()
                 }
             .addOnProgressListener {taskSnapShot->
@@ -132,6 +137,8 @@ class WorkspaceCreationActivity : AppCompatActivity() {
                 val progress = 100 * taskSnapShot.bytesTransferred/taskSnapShot.totalByteCount
                 progressDialog.setMessage("% ${progress}")
             }
+
+
 
     }
 
