@@ -83,7 +83,9 @@ class SignUpActivity : AppCompatActivity() {
         ref.setValue(user)
             .addOnSuccessListener {
                 Log.d("SignUpActivity", "User added to database")
+
             }
+
 
         sendDataToSv(user)
 

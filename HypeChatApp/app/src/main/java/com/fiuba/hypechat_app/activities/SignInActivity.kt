@@ -106,7 +106,12 @@ class SignInActivity : AppCompatActivity() {
         mAuth.signInWithEmailAndPassword(etEmail.text.toString(), etPassword.text.toString() )
             .addOnCompleteListener(this) { task->
                 if (task.isSuccessful) {
-                    signUserToSV(mAuth.uid!!)
+                    val tokenUser = FirebaseAuth.getInstance().currentUser!!.getIdToken(true)
+                        .addOnCompleteListener {
+                            val idToken = it.result?.token
+                            Log.d("TokenActivity", "Token:${idToken}")
+                            signUserToSV(idToken!!)
+                        }
                     val intent = Intent(this, WorkspaceActivity::class.java)
                     // Dont allow go back
                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -163,7 +168,14 @@ class SignInActivity : AppCompatActivity() {
 
         sendDataToSv(userFb)
 
-        signUserToSV(user.uid)
+
+        val tokenUser = FirebaseAuth.getInstance().currentUser!!.getIdToken(true)
+            .addOnCompleteListener {
+                val idToken = it.result?.token
+                Log.d("TokenActivity", "Token:${idToken}")
+                signUserToSV(idToken!!)
+            }
+
 
 
     }
