@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import com.fiuba.hypechat_app.R
+import com.fiuba.hypechat_app.models.Workgroup
 
 class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -22,11 +23,9 @@ class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        val fab: FloatingActionButton = findViewById(R.id.fab)
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
+        val workGroup =         intent.getParcelableExtra<Workgroup>(WorkspaceActivity.GROUP_KEY)
+        toolbar.title = workGroup.name
+
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val toggle = ActionBarDrawerToggle(

@@ -44,6 +44,10 @@ class WorkspaceActivity : AppCompatActivity() {
 
 
         }
+
+    companion object {
+        val GROUP_KEY = "GROUP_KEY"
+    }
     private fun fetchWorkgroups() {
         val ref = FirebaseDatabase.getInstance().getReference("/workgroup")
         ref.addListenerForSingleValueEvent(object: ValueEventListener {
@@ -59,8 +63,20 @@ class WorkspaceActivity : AppCompatActivity() {
                     }
                 }
 
+                //rvWorkgroup.adapter = adapter
+
+                adapter.setOnItemClickListener { item, view ->
+
+                    val workgroupItem = item as WorkgroupItem
+                    val intent = Intent(view.context, NavDrawerActivity::class.java)
+                    intent.putExtra(GROUP_KEY, workgroupItem.currentWorkgroup)
+                    startActivity(intent)
+
+                }
                 rvWorkgroup.adapter = adapter
             }
+
+
 
             override fun onCancelled(p0: DatabaseError) {
 

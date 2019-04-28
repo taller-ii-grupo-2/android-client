@@ -7,6 +7,51 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:showIn="@layout/app_bar_nav_drawer"
-        tools:context=".activities.NavDrawerActivity">
+        tools:context=".activities.NavDrawerActivity"
+        android:background="@color/colorPrimaryDark">
 
+    <EditText
+            android:id="@+id/txtChat"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:ems="10"
+            android:hint="Enter Message"
+            android:background="@color/colorPrimaryDark"
+            android:textColor="@color/colorPrimary"
+            android:inputType="textPersonName"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/send_button_chat_log"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+    <Button
+            android:id="@+id/send_button_chat_log"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:text="Send"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:background="@drawable/btn_signin"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvChat"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/colorPrimaryDark"
+            app:layout_constraintBottom_toTopOf="@+id/txtChat"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
