@@ -11,7 +11,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 
 object RetrofitClient {
 
-    private var cookies: HashSet<String> = HashSet()
 
 
 
@@ -21,12 +20,10 @@ object RetrofitClient {
     private val logger = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
 
-    val headerInterceptor = object: Interceptor {
+    class CookiesInterceptor: Interceptor  {
 
 
-        fun clearCookie() {
-            cookie = null
-        }
+
 
         private var cookie: String? = null
 
@@ -38,7 +35,7 @@ object RetrofitClient {
             val response = chain.proceed(requestBuilder.build())
             response.headers()
                 .toMultimap()["Set-Cookie"]
-                ?.filter { !it.contains("HttpOnly") }
+                //?.filter { !it.contains("HttpOnly") }
                 ?.getOrNull(0)
                 ?.also {
                     cookie = it
@@ -46,13 +43,19 @@ object RetrofitClient {
 
             return response
         }
+
+        fun clearCookie(){
+            cookie = null
+        }
     }
 
 
 
+    private val cookiesInterceptor: CookiesInterceptor by lazy {
+        CookiesInterceptor()
+    }
 
-
-    private val okHttpClient = OkHttpClient.Builder().addInterceptor(headerInterceptor)
+    private val okHttpClient = OkHttpClient.Builder().addInterceptor(cookiesInterceptor)
                                                       .addInterceptor(logger)
 
 

@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.fiuba.hypechat_app.R
+import com.fiuba.hypechat_app.RetrofitClient
 import com.fiuba.hypechat_app.SignInActivity
 import com.fiuba.hypechat_app.models.Workgroup
 
@@ -23,6 +24,8 @@ import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.activity_workspace.*
 import kotlinx.android.synthetic.main.workgroup_row.view.*
+import okhttp3.Interceptor
+import retrofit2.Retrofit
 
 class WorkspaceActivity : AppCompatActivity() {
 
@@ -102,6 +105,8 @@ class WorkspaceActivity : AppCompatActivity() {
         when(item?.itemId){
             R.id.workspace_signout -> {
                 FirebaseAuth.getInstance().signOut()
+                val galletita = RetrofitClient.CookiesInterceptor()
+                galletita.clearCookie()
                 val intent = Intent(this, SignInActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
@@ -115,6 +120,8 @@ class WorkspaceActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 }
+
+
 
 
 class WorkgroupItem( val currentWorkgroup: Workgroup): Item<ViewHolder>() {
