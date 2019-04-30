@@ -1,11 +1,18 @@
 package com.fiuba.hypechat_app
 
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import okhttp3.logging.HttpLoggingInterceptor
 
+
+
 object RetrofitClient {
+
+    private var cookies: HashSet<String> = HashSet()
+
 
 
     private const val BASE_URL = "https://hypechatgrupo2-app-server-stag.herokuapp.com/"
@@ -13,7 +20,40 @@ object RetrofitClient {
     //Logger
     private val logger = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
-    private val okHttpClient = OkHttpClient.Builder().addInterceptor(logger)
+
+    val headerInterceptor = object: Interceptor {
+
+
+        fun clearCookie() {
+            cookie = null
+        }
+
+        private var cookie: String? = null
+
+        override fun intercept(chain: Interceptor.Chain): Response {
+            val request = chain.request()
+            val requestBuilder = request.newBuilder()
+            cookie?.let { requestBuilder.addHeader("Cookie", it) }
+
+            val response = chain.proceed(requestBuilder.build())
+            response.headers()
+                .toMultimap()["Set-Cookie"]
+                ?.filter { !it.contains("HttpOnly") }
+                ?.getOrNull(0)
+                ?.also {
+                    cookie = it
+                }
+
+            return response
+        }
+    }
+
+
+
+
+
+    private val okHttpClient = OkHttpClient.Builder().addInterceptor(headerInterceptor)
+                                                      .addInterceptor(logger)
 
 
 

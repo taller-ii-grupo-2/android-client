@@ -11,8 +11,15 @@ import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
+import android.widget.Toast
+import com.fiuba.hypechat_app.DefaultResponse
 import com.fiuba.hypechat_app.R
+import com.fiuba.hypechat_app.RetrofitClient
+import com.fiuba.hypechat_app.User
 import com.fiuba.hypechat_app.models.Workgroup
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -35,6 +42,26 @@ class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         toggle.syncState()
 
         navView.setNavigationItemSelectedListener(this)
+
+        fetchUsers()
+    }
+
+    private fun fetchUsers() {
+        RetrofitClient.instance.getListUsers()
+            .enqueue(object: Callback<List<User>> {
+                override fun onFailure(call: Call<List<User>>, t: Throwable) {
+                    Toast.makeText(baseContext, t.message, Toast.LENGTH_LONG).show()
+                }
+
+                override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
+                    if (response.isSuccessful) {
+                        Toast.makeText(baseContext, response.message(), Toast.LENGTH_SHORT).show()
+
+                    } else {
+                        Toast.makeText(baseContext, "Failed to add item", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            })
     }
 
     override fun onBackPressed() {

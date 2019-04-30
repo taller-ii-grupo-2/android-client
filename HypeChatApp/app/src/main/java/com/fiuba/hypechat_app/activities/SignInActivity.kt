@@ -190,9 +190,10 @@ class SignInActivity : AppCompatActivity() {
 
                 override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                     if (response.isSuccessful) {
-                        Toast.makeText(baseContext, "Successfully Added", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(baseContext, "Successfully Logged", Toast.LENGTH_SHORT).show()
+
                     } else {
-                        Toast.makeText(baseContext, "Failed to add item", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(baseContext, "Failed to logged", Toast.LENGTH_SHORT).show()
                     }
                 }
             })

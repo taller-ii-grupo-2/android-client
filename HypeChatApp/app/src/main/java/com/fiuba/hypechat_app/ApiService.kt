@@ -13,7 +13,7 @@ interface ApiService {
     @POST("login")
     fun signInUser(@Body token:Token): Call<DefaultResponse>
 
-    @POST("workgroup")
+    @POST("organizations/creation")
     fun createWorkgroup(@Body workgroup: Workgroup):Call<DefaultResponse>
 
     @GET ("users/all")
