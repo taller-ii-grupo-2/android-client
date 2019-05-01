@@ -1,8 +1,8 @@
 package com.fiuba.hypechat_app.activities
 
 import android.os.Bundle
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
+import android.util.Log
+
 import androidx.core.view.GravityCompat
 import androidx.appcompat.app.ActionBarDrawerToggle
 import android.view.MenuItem
@@ -12,14 +12,21 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import android.widget.Toast
-import com.fiuba.hypechat_app.DefaultResponse
+
 import com.fiuba.hypechat_app.R
 import com.fiuba.hypechat_app.RetrofitClient
 import com.fiuba.hypechat_app.User
+import com.fiuba.hypechat_app.models.SocketHandler
 import com.fiuba.hypechat_app.models.Workgroup
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.ViewHolder
+import kotlinx.android.synthetic.main.content_nav_drawer.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import com.xwray.groupie.Item
+import kotlinx.android.synthetic.main.chat_row.view.*
+
 
 class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -43,8 +50,33 @@ class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
         navView.setNavigationItemSelectedListener(this)
 
-        fetchUsers()
+        //fetchUsers()
+        val adapter = GroupAdapter<ViewHolder>()
+        rvChat.adapter = adapter
+        receiveMessages(adapter)
+        send_button_chat_log.setOnClickListener {
+            val textToSend = txtChat.text.toString()
+            adapter.add(ChatItem(textToSend))
+            SocketHandler.send(textToSend)
+
+        }
     }
+
+    @Synchronized
+    private fun receiveMessages(adapter :GroupAdapter<ViewHolder>) {
+        var socket = SocketHandler.getSocket()
+        socket.on("message"){
+                args ->
+            val getData = args.joinToString()
+            Log.d("SocketHandler", getData)
+            runOnUiThread {
+                adapter.add(ChatItem(getData))
+            }
+
+
+        }
+    }
+
 
     private fun fetchUsers() {
         RetrofitClient.instance.getListUsers()
@@ -115,4 +147,18 @@ class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
+
+
 }
+
+
+class ChatItem(val text: String): Item<ViewHolder>(){
+    override fun bind(viewHolder: ViewHolder, position: Int) {
+        viewHolder.itemView.txtChatRow.text = text
+    }
+
+    override fun getLayout(): Int {
+        return R.layout.chat_row
+    }
+}
+

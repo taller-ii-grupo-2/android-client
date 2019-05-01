@@ -10,6 +10,7 @@ import android.view.MenuItem
 import com.fiuba.hypechat_app.R
 import com.fiuba.hypechat_app.RetrofitClient
 import com.fiuba.hypechat_app.SignInActivity
+import com.fiuba.hypechat_app.models.SocketHandler
 import com.fiuba.hypechat_app.models.Workgroup
 
 import com.google.firebase.auth.FirebaseAuth
@@ -24,8 +25,7 @@ import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.activity_workspace.*
 import kotlinx.android.synthetic.main.workgroup_row.view.*
-import okhttp3.Interceptor
-import retrofit2.Retrofit
+
 
 class WorkspaceActivity : AppCompatActivity() {
 
@@ -33,6 +33,8 @@ class WorkspaceActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_workspace)
 
+        val SERVER_URL = "https://hypechatgrupo2-app-server-stag.herokuapp.com/"
+        SocketHandler.setSocket(SERVER_URL)
         verifyUserIsSignIn()
 
       /*  val adapter = GroupAdapter<ViewHolder>()
@@ -51,6 +53,7 @@ class WorkspaceActivity : AppCompatActivity() {
     companion object {
         val GROUP_KEY = "GROUP_KEY"
     }
+
     private fun fetchWorkgroups() {
         val ref = FirebaseDatabase.getInstance().getReference("/workgroup")
         ref.addListenerForSingleValueEvent(object: ValueEventListener {
