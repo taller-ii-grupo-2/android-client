@@ -14,9 +14,32 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".ChatActivity">
+        <activity android:name=".activities.WorkspaceCreationActivity">
+          <!--  <meta-data android:name="android.support.PARENT_ACTIVITY"
+                       android:value=".activities.WorkspaceActivity"/>-->
         </activity>
-        <activity android:name=".OrganizationSelectionActivity">
+        <activity
+                android:name=".activities.WorkspaceActivity"
+                android:theme="@style/Worskpace">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+                android:name=".activities.NavDrawerActivity"
+                android:label="@string/title_activity_nav_drawer"
+                android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name=".ForgotActivity">
+        </activity>
+        <activity android:name=".SignUpActivity">
+        </activity>
+        <activity
+                android:name=".SignInActivity"
+                android:theme="@style/SignInPage"
+                android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -26,8 +49,6 @@
         <activity
                 android:name=".MainActivity"
                 android:label="@string/title_activity_login">
-        </activity>
-        <activity android:name=".LoginActivity">
         </activity>
 
         <meta-data
