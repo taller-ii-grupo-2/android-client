@@ -11,6 +11,7 @@ import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
+import android.widget.ImageView
 import android.widget.Toast
 
 import com.fiuba.hypechat_app.R
@@ -18,6 +19,7 @@ import com.fiuba.hypechat_app.RetrofitClient
 import com.fiuba.hypechat_app.User
 import com.fiuba.hypechat_app.models.SocketHandler
 import com.fiuba.hypechat_app.models.Workgroup
+import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.content_nav_drawer.*
@@ -26,6 +28,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import com.xwray.groupie.Item
 import kotlinx.android.synthetic.main.chat_row.view.*
+import kotlinx.android.synthetic.main.nav_header_nav_drawer.*
+import kotlinx.android.synthetic.main.nav_header_nav_drawer.view.*
 
 
 class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -45,10 +49,14 @@ class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         val toggle = ActionBarDrawerToggle(
             this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
         )
+
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
-
         navView.setNavigationItemSelectedListener(this)
+
+
+        setDataIntoNavBar(navView, workGroup)
+
 
         //fetchUsers()
         val adapter = GroupAdapter<ViewHolder>()
@@ -62,10 +70,18 @@ class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         }
     }
 
+    private fun setDataIntoNavBar(navView: NavigationView, workGroup:Workgroup) {
+        val headerView = navView.getHeaderView(0)
+        Picasso.get().load(workGroup.urlImage).into(headerView.imgNavLogo)
+        headerView.txtNameOrg.text =  workGroup.name
+        headerView.txtDescOrg.text = workGroup.description
+    }
+
+
     @Synchronized
     private fun receiveMessages(adapter :GroupAdapter<ViewHolder>) {
-        var socket = SocketHandler.getSocket()
-        socket.on("message"){
+        //var socket = SocketHandler.getSocket()
+        SocketHandler.getSocket().on("message"){
                 args ->
             val getData = args.joinToString()
             Log.d("SocketHandler", getData)
@@ -116,7 +132,7 @@ class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.action_profile -> true
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -155,6 +171,7 @@ class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 class ChatItem(val text: String): Item<ViewHolder>(){
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.itemView.txtChatRow.text = text
+
     }
 
     override fun getLayout(): Int {
