@@ -16,6 +16,7 @@ import com.fiuba.hypechat_app.DefaultResponse
 import com.fiuba.hypechat_app.R
 import com.fiuba.hypechat_app.RetrofitClient
 import com.fiuba.hypechat_app.models.Workgroup
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_workspace_creation.*
@@ -31,6 +32,8 @@ class WorkspaceCreationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_workspace_creation)
+        setSupportActionBar(findViewById(R.id.toolbarProfile))
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         btnSelectphoto.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)
@@ -58,11 +61,7 @@ class WorkspaceCreationActivity : AppCompatActivity() {
             etUbication.requestFocus()
             return
         }
-        if (etUserCreator.text.toString().isEmpty()){
-            etUserCreator.error = "Plase enter your mail"
-            etUserCreator.requestFocus()
-            return
-        }
+
         if (etDescription.text.toString().isEmpty()){
             etDescription.error = "Plase enter your description"
             etDescription.requestFocus()
@@ -78,7 +77,8 @@ class WorkspaceCreationActivity : AppCompatActivity() {
 
     private fun createNewWorkgroup(urlImage:String) {
         val name = etName.text.toString()
-        val workgroup = Workgroup (name,etUbication.text.toString(),etUserCreator.text.toString(),etDescription.text.toString(),etWelcome.text.toString(), urlImage)
+        val workgroup = Workgroup (name,etUbication.text.toString(),
+            FirebaseAuth.getInstance().currentUser!!.email!!,etDescription.text.toString(),etWelcome.text.toString(), urlImage)
         val ref = FirebaseDatabase.getInstance().getReference("/workgroup/${name}")
         sendDataToSv(workgroup)
         ref.setValue(workgroup)

@@ -1,5 +1,6 @@
 package com.fiuba.hypechat_app.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 
@@ -11,7 +12,6 @@ import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
-import android.widget.ImageView
 import android.widget.Toast
 
 import com.fiuba.hypechat_app.R
@@ -28,7 +28,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import com.xwray.groupie.Item
 import kotlinx.android.synthetic.main.chat_row.view.*
-import kotlinx.android.synthetic.main.nav_header_nav_drawer.*
 import kotlinx.android.synthetic.main.nav_header_nav_drawer.view.*
 
 
@@ -41,7 +40,8 @@ class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        val workGroup =         intent.getParcelableExtra<Workgroup>(WorkspaceActivity.GROUP_KEY)
+
+        val workGroup =  intent.getParcelableExtra<Workgroup>(WorkspaceActivity.GROUP_KEY)
         toolbar.title = workGroup.name
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
@@ -66,8 +66,14 @@ class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             val textToSend = txtChat.text.toString()
             adapter.add(ChatItem(textToSend))
             SocketHandler.send(textToSend)
+            txtChat.text = null
 
         }
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        val workGroup =  data!!.getParcelableExtra<Workgroup>(WorkspaceActivity.GROUP_KEY)
     }
 
     private fun setDataIntoNavBar(navView: NavigationView, workGroup:Workgroup) {
@@ -132,9 +138,16 @@ class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_profile -> true
+            R.id.action_profile -> setProfileActivity()
+
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun setProfileActivity(): Boolean {
+        val intent = Intent(this, ProfileActivity::class.java)
+        startActivityForResult(intent,20)
+        return true
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

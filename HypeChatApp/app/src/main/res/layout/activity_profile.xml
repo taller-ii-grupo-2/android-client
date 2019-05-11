@@ -5,7 +5,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".activities.WorkspaceCreationActivity"
+        tools:context=".activities.ProfileActivity"
         android:background="@drawable/general_background">
 
     <androidx.appcompat.widget.Toolbar
@@ -16,14 +16,13 @@
             app:popupTheme="@style/AppTheme.PopupOverlay"
 
             app:titleTextColor="@color/colorPrimary"
-            app:title="Workgroup Creation"/>
+            app:title="We"/>
 
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_centerVertical="true">
-
 
 
         <Button android:layout_width="150dp" android:layout_height="150dp"
@@ -49,48 +48,40 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginTop="20dp"
-                android:hint="Workspace name"
+                android:hint="Name"
                 android:drawablePadding="10dp"
                 android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:padding="10dp" android:id="@+id/etName"/>
+                android:padding="10dp" android:id="@+id/etNameProfile"/>
         <EditText
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginTop="20dp"
-                android:hint="Ubication"
+                android:hint="Surname"
                 android:drawablePadding="10dp"
                 android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:padding="10dp" android:id="@+id/etUbication"/>
+                android:padding="10dp" android:id="@+id/etSurnameProfile"/>
         <EditText
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginTop="20dp"
-                android:hint="Description"
+                android:hint="Email"
                 android:drawablePadding="10dp"
                 android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:padding="10dp" android:id="@+id/etDescription"/>
-        <EditText
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginTop="20dp"
-                android:hint="Welcome message"
-                android:drawablePadding="10dp"
-                android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:padding="10dp" android:id="@+id/etWelcome"/>
+                android:padding="10dp" android:id="@+id/etMailProfile"/>
+
 
         <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/btn_signin"
-                android:text="Create"
+                android:text="Confirm"
                 android:textAllCaps="false"
                 android:textSize="21sp"
                 android:layout_marginTop="30dp"
-                android:layout_marginBottom="30dp" android:id="@+id/btnCreateWorkgroup"/>
+                android:layout_marginBottom="30dp" android:id="@+id/btnConfirmProfile"/>
 
 
     </LinearLayout>
-
 
 
 
