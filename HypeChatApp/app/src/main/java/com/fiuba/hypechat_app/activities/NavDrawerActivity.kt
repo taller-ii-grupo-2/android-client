@@ -81,6 +81,14 @@ class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         Picasso.get().load(workGroup.urlImage).into(headerView.imgNavLogo)
         headerView.txtNameOrg.text =  workGroup.name
         headerView.txtDescOrg.text = workGroup.description
+
+        var navMenu = navView.menu
+        navMenu.add("Add channel")
+        var channels = navMenu.addSubMenu("Channels")
+        channels.add("Futbol")
+        channels.add("Tenis")
+        var directMessages = navMenu.addSubMenu("Direct Messages")
+        directMessages.add("yo")
     }
 
 
@@ -153,24 +161,7 @@ class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
-            R.id.nav_home -> {
-                // Handle the camera action
-            }
-            R.id.nav_gallery -> {
 
-            }
-            R.id.nav_slideshow -> {
-
-            }
-            R.id.nav_tools -> {
-
-            }
-            R.id.nav_share -> {
-
-            }
-            R.id.nav_send -> {
-
-            }
         }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         drawerLayout.closeDrawer(GravityCompat.START)
