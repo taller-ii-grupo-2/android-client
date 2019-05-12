@@ -70,6 +70,18 @@
                 android:padding="10dp" android:id="@+id/etMailProfile"/>
 
 
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvCaca"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
+                android:background="@color/colorPrimaryDark"
+                app:layout_constraintBottom_toTopOf="@+id/btnConfirmProfile"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
         <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

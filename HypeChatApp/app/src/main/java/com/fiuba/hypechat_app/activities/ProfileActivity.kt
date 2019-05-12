@@ -12,6 +12,12 @@ class ProfileActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.toolbarProfile))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
+/*
+* Armar interfaz basica de profile
+Cargar imagen por defecto si no suben una
+Cargar localizacion gps
+Añadir al profile el servicio de cambio de pw
 
+*/
 
 }
