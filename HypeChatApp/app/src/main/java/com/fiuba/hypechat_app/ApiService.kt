@@ -18,6 +18,8 @@ interface ApiService {
 
     @GET ("users/all")
     fun getListUsers(): Call<List<User>>
+
+
 }
 
 class DefaultResponse(val message:String)

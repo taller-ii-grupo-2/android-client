@@ -146,7 +146,8 @@ class WorkspaceCreationActivity : AppCompatActivity() {
 
 
     private fun loadDefaultImage() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val defaultImageUrl = "https://firebasestorage.googleapis.com/v0/b/hypechatapp-ebdd6.appspot.com/o/images%2Ffiuba_logo.png?alt=media&token=ed9d116e-1b68-423b-87a3-06b6af21fb37"
+        createNewWorkgroup(defaultImageUrl)
     }
 
 
