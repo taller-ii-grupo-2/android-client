@@ -8,6 +8,16 @@
         tools:context=".activities.WorkspaceCreationActivity"
         android:background="@drawable/general_background">
 
+    <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarProfile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimaryDark"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+
+            app:titleTextColor="@color/colorPrimary"
+            app:title="Workgroup Creation"/>
+
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -51,16 +61,6 @@
                 android:drawablePadding="10dp"
                 android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:padding="10dp" android:id="@+id/etUbication"/>
-        <EditText
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginTop="20dp"
-                android:drawableStart="@drawable/ic_user"
-                android:hint="User creator"
-                android:inputType="textEmailAddress"
-                android:drawablePadding="10dp"
-                android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:padding="10dp" android:id="@+id/etUserCreator"/>
         <EditText
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"

@@ -14,9 +14,22 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
+        <activity android:name=".activities.ChangePasswordActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".activities.ProfileActivity"/>
+        </activity>
+        <activity android:name=".activities.ProfileActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".activities.NavDrawerActivity"/>
+
+
+        </activity>
         <activity android:name=".activities.WorkspaceCreationActivity">
-          <!--  <meta-data android:name="android.support.PARENT_ACTIVITY"
-                       android:value=".activities.WorkspaceActivity"/>-->
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".activities.WorkspaceActivity"/>
         </activity>
         <activity
                 android:name=".activities.WorkspaceActivity"

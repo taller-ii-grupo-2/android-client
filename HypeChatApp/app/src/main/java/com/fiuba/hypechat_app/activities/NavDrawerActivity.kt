@@ -1,5 +1,6 @@
 package com.fiuba.hypechat_app.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 
@@ -18,6 +19,7 @@ import com.fiuba.hypechat_app.RetrofitClient
 import com.fiuba.hypechat_app.User
 import com.fiuba.hypechat_app.models.SocketHandler
 import com.fiuba.hypechat_app.models.Workgroup
+import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.content_nav_drawer.*
@@ -26,6 +28,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import com.xwray.groupie.Item
 import kotlinx.android.synthetic.main.chat_row.view.*
+import kotlinx.android.synthetic.main.nav_header_nav_drawer.view.*
 
 
 class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -37,7 +40,8 @@ class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        val workGroup =         intent.getParcelableExtra<Workgroup>(WorkspaceActivity.GROUP_KEY)
+
+        val workGroup =  intent.getParcelableExtra<Workgroup>(WorkspaceActivity.GROUP_KEY)
         toolbar.title = workGroup.name
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
@@ -45,10 +49,14 @@ class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         val toggle = ActionBarDrawerToggle(
             this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
         )
+
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
-
         navView.setNavigationItemSelectedListener(this)
+
+
+        setDataIntoNavBar(navView, workGroup)
+
 
         //fetchUsers()
         val adapter = GroupAdapter<ViewHolder>()
@@ -58,14 +66,36 @@ class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             val textToSend = txtChat.text.toString()
             adapter.add(ChatItem(textToSend))
             SocketHandler.send(textToSend)
+            txtChat.text = null
 
         }
+
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        val workGroup =  data!!.getParcelableExtra<Workgroup>(WorkspaceActivity.GROUP_KEY)
+    }
+
+    private fun setDataIntoNavBar(navView: NavigationView, workGroup:Workgroup) {
+        val headerView = navView.getHeaderView(0)
+        Picasso.get().load(workGroup.urlImage).into(headerView.imgNavLogo)
+        headerView.txtNameOrg.text =  workGroup.name
+        headerView.txtDescOrg.text = workGroup.description
+
+        var navMenu = navView.menu
+        navMenu.add("Add channel")
+        var channels = navMenu.addSubMenu("Channels")
+        channels.add("Futbol")
+        channels.add("Tenis")
+        var directMessages = navMenu.addSubMenu("Direct Messages")
+        directMessages.add("yo")
+    }
+
 
     @Synchronized
     private fun receiveMessages(adapter :GroupAdapter<ViewHolder>) {
-        var socket = SocketHandler.getSocket()
-        socket.on("message"){
+        //var socket = SocketHandler.getSocket()
+        SocketHandler.getSocket().on("message"){
                 args ->
             val getData = args.joinToString()
             Log.d("SocketHandler", getData)
@@ -116,32 +146,22 @@ class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.action_profile -> setProfileActivity()
+
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun setProfileActivity(): Boolean {
+        val intent = Intent(this, ProfileActivity::class.java)
+        startActivityForResult(intent,20)
+        return true
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
-            R.id.nav_home -> {
-                // Handle the camera action
-            }
-            R.id.nav_gallery -> {
 
-            }
-            R.id.nav_slideshow -> {
-
-            }
-            R.id.nav_tools -> {
-
-            }
-            R.id.nav_share -> {
-
-            }
-            R.id.nav_send -> {
-
-            }
         }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         drawerLayout.closeDrawer(GravityCompat.START)
@@ -155,6 +175,7 @@ class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 class ChatItem(val text: String): Item<ViewHolder>(){
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.itemView.txtChatRow.text = text
+
     }
 
     override fun getLayout(): Int {

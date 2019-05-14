@@ -4,11 +4,13 @@
 
     <item android:id="@+id/workspace_createNew"
           android:title="Create new"
-          app:showAsAction="ifRoom"/>
+          app:showAsAction="ifRoom"
+            android:icon="@mipmap/neworkgroup"/>
 
     <item android:id="@+id/workspace_signout"
           android:title="Sign out"
-          app:showAsAction="ifRoom"/>
+          app:showAsAction="ifRoom"
+          android:icon="@mipmap/signout"/>
 
 
 </menu>
