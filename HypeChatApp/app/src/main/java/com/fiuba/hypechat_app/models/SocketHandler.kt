@@ -1,11 +1,7 @@
 package com.fiuba.hypechat_app.models
 import android.util.Log
-import com.fiuba.hypechat_app.activities.ChatItem
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
-import com.github.nkzawa.emitter.Emitter
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.ViewHolder
 
 
 object SocketHandler {
@@ -15,9 +11,10 @@ object SocketHandler {
      * Para entender en @Synchronized: https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-synchronized/
      */
     @Synchronized
-    fun setSocket(url: String) {
+    fun setSocket(url: String, mail: String) {
         this.socket = IO.socket(url)
         socket?.connect()
+        socket?.emit("identification", mail)
     }
 
     @Synchronized
@@ -26,12 +23,7 @@ object SocketHandler {
         Log.d ("SocketHandler", msg)
     }
 
-
     fun getSocket():Socket{
         return this.socket!!
     }
-
-
-
-
 }

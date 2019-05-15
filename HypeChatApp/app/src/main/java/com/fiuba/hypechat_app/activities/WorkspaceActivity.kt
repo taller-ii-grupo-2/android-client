@@ -10,6 +10,7 @@ import android.view.MenuItem
 import com.fiuba.hypechat_app.R
 import com.fiuba.hypechat_app.RetrofitClient
 import com.fiuba.hypechat_app.SignInActivity
+import com.fiuba.hypechat_app.models.Moi
 import com.fiuba.hypechat_app.models.SocketHandler
 import com.fiuba.hypechat_app.models.Workgroup
 
@@ -34,7 +35,7 @@ class WorkspaceActivity : AppCompatActivity() {
         setContentView(R.layout.activity_workspace)
 
         val SERVER_URL = "https://hypechatgrupo2-app-server-stag.herokuapp.com/"
-        SocketHandler.setSocket(SERVER_URL)
+        SocketHandler.setSocket(SERVER_URL, Moi.get_mail())
         verifyUserIsSignIn()
 
       /*  val adapter = GroupAdapter<ViewHolder>()
