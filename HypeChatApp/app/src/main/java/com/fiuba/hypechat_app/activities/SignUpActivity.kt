@@ -71,9 +71,9 @@ class SignUpActivity : AppCompatActivity() {
     private fun enableView() {
         btnLocation.isEnabled = true
         btnLocation.alpha = 1F
-        btnLocation.setOnClickListener { getLocation()
-        disableView()}
-        Toast.makeText(this, "Done", Toast.LENGTH_SHORT).show()
+        getLocation()
+        disableView()
+        Toast.makeText(this, "Location setted", Toast.LENGTH_SHORT).show()
     }
 
     private fun checkPermission(permissionArray: Array<String>): Boolean {
@@ -94,32 +94,7 @@ class SignUpActivity : AppCompatActivity() {
 
             if (hasGps) {
                 Log.d("CodeAndroidLocation", "hasGps")
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0F, object :
-                    LocationListener {
-                    override fun onLocationChanged(location: Location?) {
-                        if (location != null) {
-                            locationGps = location
-                          /*  tv_result.setText("\nGPS ")
-                            tv_result.setText("\nLatitude : " + locationGps!!.latitude)
-                            tv_result.setText("\nLongitude : " + locationGps!!.longitude)*/
-                            Log.d("CodeAndroidLocation", " GPS Latitude : " + locationGps!!.latitude)
-                            Log.d("CodeAndroidLocation", " GPS Longitude : " + locationGps!!.longitude)
-                        }
-                    }
 
-                    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
-
-                    }
-
-                    override fun onProviderEnabled(provider: String?) {
-
-                    }
-
-                    override fun onProviderDisabled(provider: String?) {
-
-                    }
-
-                })
 
                 val localGpsLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
                 if (localGpsLocation != null)
@@ -127,31 +102,7 @@ class SignUpActivity : AppCompatActivity() {
             }
             if (hasNetwork) {
                 Log.d("CodeAndroidLocation", "hasGps")
-                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 0F, object : LocationListener {
-                    override fun onLocationChanged(location: Location?) {
-                        if (location != null) {
-                            locationNetwork = location
-                    /*        tv_result.setText("\nNetwork ")
-                            tv_result.setText("\nLatitude : " + locationNetwork!!.latitude)
-                            tv_result.setText("\nLongitude : " + locationNetwork!!.longitude)*/
-                            Log.d("CodeAndroidLocation", " Network Latitude : " + locationNetwork!!.latitude)
-                            Log.d("CodeAndroidLocation", " Network Longitude : " + locationNetwork!!.longitude)
-                        }
-                    }
 
-                    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
-
-                    }
-
-                    override fun onProviderEnabled(provider: String?) {
-
-                    }
-
-                    override fun onProviderDisabled(provider: String?) {
-
-                    }
-
-                })
 
                 val localNetworkLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
                 if (localNetworkLocation != null)
@@ -197,7 +148,8 @@ class SignUpActivity : AppCompatActivity() {
             if (allSuccess)
                 enableView()
 
-        }    }
+        }
+    }
 
     private fun signUpValidation() {
         if (usernamebox.text.toString().isEmpty()){
