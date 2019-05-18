@@ -26,4 +26,4 @@ class DefaultResponse(val message:String)
 
 class Token (val token:String)
 
-class User (val mail:String, val name: String)
+class User (val mail:String, val name: String, val latitude: Double, val longitude: Double)

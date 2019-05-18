@@ -47,7 +47,17 @@
                 android:drawablePadding="10dp"
                 android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:padding="10dp" android:id="@+id/passwordbox"/>
-
+        <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btnbordercolor"
+                android:text="Get your location"
+                android:textAllCaps="false"
+                android:textSize="21sp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="30dp" android:id="@+id/btnLocation"/>
+        <TextView android:layout_width="match_parent" android:layout_height="match_parent"
+        android:id="@+id/tv_result"/>
 
         <Button
                 android:layout_width="match_parent"
