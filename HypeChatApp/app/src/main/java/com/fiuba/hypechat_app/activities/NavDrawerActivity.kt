@@ -147,9 +147,16 @@ class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
             R.id.action_profile -> setProfileActivity()
+            R.id.action_maps-> showMapActivity()
 
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun showMapActivity(): Boolean {
+        val intent = Intent(this, MapsActivity::class.java)
+        startActivityForResult(intent,20)
+        return true
     }
 
     private fun setProfileActivity(): Boolean {
