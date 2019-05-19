@@ -28,9 +28,9 @@ object SocketHandler {
 
     private fun put_msg_together(msg: String) {
         var asdf = JSONObject()
-        asdf.put("organization", "")
-        asdf.put("channel", "")
-        asdf.put("dm_dest", "")
+        asdf.put("organization", Moi.get_current_organization())
+        asdf.put("channel", Moi.get_current_channel())
+        asdf.put("dm_dest", Moi.get_current_dm_dest())
         asdf.put("body", msg)
     }
 
