@@ -66,7 +66,7 @@ class WorkspaceActivity : AppCompatActivity() {
 
                     val workgroupItem = item as WorkgroupItem
                     val intent = Intent(view.context, NavDrawerActivity::class.java)
-                    Moi.update_current_organization(workgroupItem.currentWorkgroup)
+                    Moi.update_current_organization(workgroupItem.currentWorkgroup.name)
 //                    TODO cambiar esto de channel.
                     Moi.update_current_channel("general")
                     intent.putExtra(GROUP_KEY, workgroupItem.currentWorkgroup)
