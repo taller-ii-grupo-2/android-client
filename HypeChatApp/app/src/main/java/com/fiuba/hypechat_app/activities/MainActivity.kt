@@ -18,49 +18,44 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val btnDatabase = findViewById(R.id.btnDatabase) as Button
-        btnDatabase.setOnClickListener{
+        btnDatabase.setOnClickListener {
             fetchJSON()
             changeViewToLogin()
         }
     }
 
     private fun changeViewToLogin() {
-        startActivity(Intent(this,SignInActivity::class.java))
+        startActivity(Intent(this, SignInActivity::class.java))
     }
 
     fun fetchJSON() {
-         println("Attempt to fetch JSON")
+        println("Attempt to fetch JSON")
 
-         val url = "https://hypechatgrupo2-app-server.herokuapp.com/android"
+        val url = "https://hypechatgrupo2-app-server.herokuapp.com/android"
 
-         val request = Request.Builder()
-             .url(url)
-             .build()
+        val request = Request.Builder()
+            .url(url)
+            .build()
 
-         val client = OkHttpClient()
-         client.newCall(request).enqueue(object: Callback{
-             override fun onResponse(call: Call, response: Response) {
-                 val body = response.body()?.string()
-                 println(body)
-                 runOnUiThread {
-                     showScreen(body.toString())
-                 }
+        val client = OkHttpClient()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onResponse(call: Call, response: Response) {
+                val body = response.body()?.string()
+                println(body)
+                runOnUiThread {
+                    showScreen(body.toString())
+                }
+            }
 
-             }
-             override fun onFailure(call: Call, e: IOException) {
-                 println ("Fail to execute request")
-             }
-         })
-
-
+            override fun onFailure(call: Call, e: IOException) {
+                println("Fail to execute request")
+            }
+        })
     }
 
-    fun showScreen(textInput:String){
+    fun showScreen(textInput: String) {
         val txt = findViewById(R.id.txtCheckpoint) as TextView
         txt.setText(textInput)
 
     }
-
-
-
 }

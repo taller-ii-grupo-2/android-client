@@ -41,7 +41,7 @@ class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         setSupportActionBar(toolbar)
 
 
-        val workGroup =  intent.getParcelableExtra<Workgroup>(WorkspaceActivity.GROUP_KEY)
+        val workGroup = intent.getParcelableExtra<Workgroup>(WorkspaceActivity.GROUP_KEY)
         toolbar.title = workGroup.name
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
@@ -73,13 +73,13 @@ class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        val workGroup =  data!!.getParcelableExtra<Workgroup>(WorkspaceActivity.GROUP_KEY)
+        val workGroup = data!!.getParcelableExtra<Workgroup>(WorkspaceActivity.GROUP_KEY)
     }
 
-    private fun setDataIntoNavBar(navView: NavigationView, workGroup:Workgroup) {
+    private fun setDataIntoNavBar(navView: NavigationView, workGroup: Workgroup) {
         val headerView = navView.getHeaderView(0)
         Picasso.get().load(workGroup.urlImage).into(headerView.imgNavLogo)
-        headerView.txtNameOrg.text =  workGroup.name
+        headerView.txtNameOrg.text = workGroup.name
         headerView.txtDescOrg.text = workGroup.description
 
         var navMenu = navView.menu
@@ -93,10 +93,9 @@ class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
 
     @Synchronized
-    private fun receiveMessages(adapter :GroupAdapter<ViewHolder>) {
+    private fun receiveMessages(adapter: GroupAdapter<ViewHolder>) {
         //var socket = SocketHandler.getSocket()
-        SocketHandler.getSocket().on("message"){
-                args ->
+        SocketHandler.getSocket().on("message") { args ->
             val getData = args.joinToString()
             Log.d("SocketHandler", getData)
             runOnUiThread {
@@ -110,7 +109,7 @@ class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
     private fun fetchUsers() {
         RetrofitClient.instance.getListUsers()
-            .enqueue(object: Callback<List<User>> {
+            .enqueue(object : Callback<List<User>> {
                 override fun onFailure(call: Call<List<User>>, t: Throwable) {
                     Toast.makeText(baseContext, t.message, Toast.LENGTH_LONG).show()
                 }
@@ -154,7 +153,7 @@ class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
     private fun setProfileActivity(): Boolean {
         val intent = Intent(this, ProfileActivity::class.java)
-        startActivityForResult(intent,20)
+        startActivityForResult(intent, 20)
         return true
     }
 
@@ -172,7 +171,7 @@ class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 }
 
 
-class ChatItem(val text: String): Item<ViewHolder>(){
+class ChatItem(val text: String) : Item<ViewHolder>() {
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.itemView.txtChatRow.text = text
 

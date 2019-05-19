@@ -1,4 +1,5 @@
 package com.fiuba.hypechat_app.models
+
 import android.util.Log
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
@@ -23,7 +24,7 @@ object SocketHandler {
         put_msg_together(msg)
 
         socket?.emit("message", msg)
-        Log.d ("SocketHandler", msg)
+        Log.d("SocketHandler", msg)
     }
 
     private fun put_msg_together(msg: String) {
@@ -34,7 +35,7 @@ object SocketHandler {
         asdf.put("body", msg)
     }
 
-    fun getSocket():Socket{
+    fun getSocket(): Socket {
         return this.socket!!
     }
 }
