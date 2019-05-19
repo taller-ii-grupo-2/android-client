@@ -11,8 +11,7 @@ class Workgroup(
     val userCreator: String,
     val description: String,
     val welcomeMsg: String,
-    val urlImage: String,
-    val id: Int
+    val urlImage: String
 ) : Parcelable {
     constructor() : this("", "", "", "", "", "")
 }
