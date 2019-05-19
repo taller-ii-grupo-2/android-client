@@ -3,11 +3,9 @@ package com.fiuba.hypechat_app.models
 class Channel {
 //    private var organization: Organization
     private var name: String
-    private var id: Int
 
-    constructor(name: String, id: Int){
+    constructor(organization_name: String, channel_name: String){
 //        this.organization = organization
-        this.name = name
-        this.id = id
+        this.name = channel_name
     }
 }
