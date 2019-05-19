@@ -2,6 +2,7 @@ package com.fiuba.hypechat_app.models
 import android.util.Log
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
+import org.json.JSONObject
 
 
 object SocketHandler {
@@ -19,8 +20,18 @@ object SocketHandler {
 
     @Synchronized
     fun send(msg: String) {
+        put_msg_together(msg)
+
         socket?.emit("message", msg)
         Log.d ("SocketHandler", msg)
+    }
+
+    private fun put_msg_together(msg: String) {
+        var asdf = JSONObject()
+        asdf.put("organization", "")
+        asdf.put("channel", "")
+        asdf.put("dm_dest", "")
+        asdf.put("body", msg)
     }
 
     fun getSocket():Socket{

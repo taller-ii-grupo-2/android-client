@@ -12,7 +12,6 @@ object Moi {
     /* personal info */
     private lateinit var username: String
     private lateinit var mail: String
-    private lateinit var cookie: String
 
     private const val moi_filename = "moi"
     private lateinit var moi_fd: File
@@ -20,8 +19,11 @@ object Moi {
     private var dm_messages = mutableListOf<DirectMessage>()
     private var channel_messages = mutableListOf<ChannelMessage>()
 
-    private var organizations = mutableListOf<Organization>()
+    private var organizations = mutableListOf<Workgroup>()
     private var channels = mutableListOf<Channel>()
+
+    private var current_organization = ""
+    private var current_channel = ""
 
     fun set_id_values(mail: String){
         this.mail = mail
@@ -44,7 +46,7 @@ object Moi {
         return asdf.toString()
     }
 
-    fun add_dm(author: String, timestamp: String, body: String){
+    fun save_dm(author: String, timestamp: String, body: String){
         dm_messages.add(DirectMessage(author, timestamp, body))
     }
 
@@ -78,11 +80,18 @@ object Moi {
         }
     }
 
-    fun add_organization(orga_name: String, orga_id: Int){
-        organizations.add(Organization(orga_name, orga_id))
+    fun save_workgroup(workgroup_name: String, workgroup_id: Int){
+        organizations.add(Workgroup())
+    }
+    fun save_channel(channel_name: String, channel_id: Int){
+        channels.add(Channel(channel_name, channel_id))
     }
 
-    fun add_channel(channel_name: String, channel_id: Int){
-        channels.add(Channel(channel_name, channel_id))
+    fun update_current_channel(channel: String){
+        current_channel = channel
+    }
+
+    fun update_current_organization(organization: String){
+        current_organization = organization
     }
 }

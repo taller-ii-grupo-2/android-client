@@ -38,18 +38,8 @@ class WorkspaceActivity : AppCompatActivity() {
         SocketHandler.setSocket(SERVER_URL, Moi.get_mail())
         verifyUserIsSignIn()
 
-      /*  val adapter = GroupAdapter<ViewHolder>()
-        adapter.add(WorkgroupItem())
-        adapter.add(WorkgroupItem())
-        adapter.add(WorkgroupItem())
-
-        rvWorkgroup.adapter = adapter
-*/
-
         fetchWorkgroups()
-
-
-        }
+    }
 
     companion object {
         val GROUP_KEY = "GROUP_KEY"
@@ -57,7 +47,7 @@ class WorkspaceActivity : AppCompatActivity() {
 
     private fun fetchWorkgroups() {
         val ref = FirebaseDatabase.getInstance().getReference("/workgroup")
-        ref.addListenerForSingleValueEvent(object: ValueEventListener {
+        ref.addListenerForSingleValueEvent(object : ValueEventListener {
 
             override fun onDataChange(p0: DataSnapshot) {
                 val adapter = GroupAdapter<ViewHolder>()
@@ -76,14 +66,15 @@ class WorkspaceActivity : AppCompatActivity() {
 
                     val workgroupItem = item as WorkgroupItem
                     val intent = Intent(view.context, NavDrawerActivity::class.java)
+                    Moi.update_current_organization(workgroupItem.currentWorkgroup)
+//                    TODO cambiar esto de channel.
+                    Moi.update_current_channel("general")
                     intent.putExtra(GROUP_KEY, workgroupItem.currentWorkgroup)
                     startActivity(intent)
 
                 }
                 rvWorkgroup.adapter = adapter
             }
-
-
 
             override fun onCancelled(p0: DatabaseError) {
 
@@ -93,11 +84,11 @@ class WorkspaceActivity : AppCompatActivity() {
 
     private fun verifyUserIsSignIn() {
         val uid = FirebaseAuth.getInstance().uid
-        if (uid == null){
+        if (uid == null) {
             val intent = Intent(this, SignInActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
-    }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -106,7 +97,7 @@ class WorkspaceActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when(item?.itemId){
+        when (item?.itemId) {
             R.id.workspace_signout -> {
                 FirebaseAuth.getInstance().signOut()
                 val galletita = RetrofitClient.CookiesInterceptor()
@@ -118,19 +109,13 @@ class WorkspaceActivity : AppCompatActivity() {
             R.id.workspace_createNew -> {
                 val intent = Intent(this, WorkspaceCreationActivity::class.java)
                 startActivity(intent)
-
             }
         }
         return super.onOptionsItemSelected(item)
     }
-
-
 }
 
-
-
-
-class WorkgroupItem( val currentWorkgroup: Workgroup): Item<ViewHolder>() {
+class WorkgroupItem(val currentWorkgroup: Workgroup) : Item<ViewHolder>() {
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.itemView.txtViewWorkgroup.text = currentWorkgroup.name
 
