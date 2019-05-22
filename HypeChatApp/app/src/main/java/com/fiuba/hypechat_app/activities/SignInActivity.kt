@@ -162,13 +162,13 @@ class SignInActivity : AppCompatActivity() {
         val email = user?.email
         val uid = user?.uid
         val ref = FirebaseDatabase.getInstance().getReference("/users/$uid")
-        val userFb = User(email!!,name!!, -34.618625, -58.368508 )
+       /* val userFb = User(email!!,name!!, -34.618625, -58.368508 )
         ref.setValue(userFb)
             .addOnSuccessListener {
                 Log.d("SignInActivity", "User added to database")
             }
 
-        sendDataToSv(userFb)
+        sendDataToSv(userFb)*/
 
 
         val tokenUser = FirebaseAuth.getInstance().currentUser!!.getIdToken(true)

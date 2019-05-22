@@ -57,14 +57,6 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginTop="20dp"
-                android:hint="Ubication"
-                android:drawablePadding="10dp"
-                android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:padding="10dp" android:id="@+id/etUbication"/>
-        <EditText
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginTop="20dp"
                 android:hint="Description"
                 android:drawablePadding="10dp"
                 android:layout_width="match_parent" android:layout_height="wrap_content"

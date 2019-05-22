@@ -7,9 +7,11 @@ import android.util.Log
 
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import com.fiuba.hypechat_app.R
 import com.fiuba.hypechat_app.RetrofitClient
 import com.fiuba.hypechat_app.SignInActivity
+import com.fiuba.hypechat_app.WorkgroupPhotoAndName
 import com.fiuba.hypechat_app.models.SocketHandler
 import com.fiuba.hypechat_app.models.Workgroup
 
@@ -25,6 +27,9 @@ import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.activity_workspace.*
 import kotlinx.android.synthetic.main.workgroup_row.view.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class WorkspaceActivity : AppCompatActivity() {
@@ -45,16 +50,41 @@ class WorkspaceActivity : AppCompatActivity() {
         rvWorkgroup.adapter = adapter
 */
 
-        fetchWorkgroups()
-
+        //fetchWorkgroups()
+        fetchWorkgroupsPhotoAndName()
 
         }
+
+    private fun fetchWorkgroupsPhotoAndName() {
+        RetrofitClient.instance.getWorkgroupNameAndPhotoProfile()
+            .enqueue(object: Callback<List<WorkgroupPhotoAndName>> {
+                override fun onFailure(call: Call<List<WorkgroupPhotoAndName>>, t: Throwable) {
+                    Toast.makeText(baseContext, "Error loading workgroup data", Toast.LENGTH_LONG).show()
+                }
+
+                override fun onResponse(call: Call<List<WorkgroupPhotoAndName>>, response: Response<List<WorkgroupPhotoAndName>>) {
+                    if (response.isSuccessful) {
+                        //Toast.makeText(baseContext, response.message(), Toast.LENGTH_SHORT).show()
+                        val adapter = GroupAdapter<ViewHolder>()
+                        val workgroupList = response.body()
+                        workgroupList?.forEach {
+                            if (it != null)
+                                adapter.add(WorkgroupItem(it))
+                        }
+
+                    } else {
+                        Toast.makeText(baseContext, "Failed to add item", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            })
+    }
 
     companion object {
         val GROUP_KEY = "GROUP_KEY"
     }
 
-    private fun fetchWorkgroups() {
+    // FUNCTION TO FETCH DATA WITH FIREBASE
+   /* private fun fetchWorkgroups() {
         val ref = FirebaseDatabase.getInstance().getReference("/workgroup")
         ref.addListenerForSingleValueEvent(object: ValueEventListener {
 
@@ -88,7 +118,7 @@ class WorkspaceActivity : AppCompatActivity() {
 
             }
         })
-    }
+    }*/
 
     private fun verifyUserIsSignIn() {
         val uid = FirebaseAuth.getInstance().uid
@@ -96,7 +126,7 @@ class WorkspaceActivity : AppCompatActivity() {
             val intent = Intent(this, SignInActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
-    }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -117,7 +147,6 @@ class WorkspaceActivity : AppCompatActivity() {
             R.id.workspace_createNew -> {
                 val intent = Intent(this, WorkspaceCreationActivity::class.java)
                 startActivity(intent)
-
             }
         }
         return super.onOptionsItemSelected(item)
@@ -127,7 +156,7 @@ class WorkspaceActivity : AppCompatActivity() {
 
 
 
-class WorkgroupItem( val currentWorkgroup: Workgroup): Item<ViewHolder>() {
+class WorkgroupItem( val currentWorkgroup: WorkgroupPhotoAndName): Item<ViewHolder>() {
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.itemView.txtViewWorkgroup.text = currentWorkgroup.name
 
