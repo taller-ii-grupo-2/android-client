@@ -30,13 +30,13 @@ class DefaultResponse(val message:String)
 class Token (val token:String)
 
 class User (
-    val username:String,
-    val name:String,
-    val sername:String,
-    val urlImageProfile:String,
-    val mail: String,
+    val longitude: Double,
     val latitude: Double,
-    val longitude: Double
-)
+    val mail: String,
+    val urlImageProfile:String,
+    val surname:String,
+    val name:String,
+    val username:String
+    )
 
 class WorkgroupPhotoAndName (val urlImage: String, val name:String)

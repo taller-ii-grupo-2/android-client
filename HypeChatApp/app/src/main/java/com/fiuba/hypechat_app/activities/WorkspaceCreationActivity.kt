@@ -97,7 +97,7 @@ class WorkspaceCreationActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     Toast.makeText(baseContext, "Successfully workgroup added", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(baseContext, "Failed to add work", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(baseContext, "Failed to create group", Toast.LENGTH_SHORT).show()
                 }
             }
 

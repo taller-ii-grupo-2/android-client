@@ -230,7 +230,7 @@ class SignUpActivity : AppCompatActivity() {
         val longitude = locationGps!!.longitude
         val password = passwordbox.text.toString()
 
-        val user = User(username,name, surname, urlImageProfile, mail, latitude, longitude)
+        val user = User(longitude, latitude,mail,urlImageProfile,surname,name,username)
         mAuth.createUserWithEmailAndPassword(mail, password )
             .addOnCompleteListener(this) { task->
                 if (task.isSuccessful) {
@@ -294,11 +294,10 @@ class SignUpActivity : AppCompatActivity() {
         val filename = usernamebox.text.toString() + UUID.randomUUID().toString()
         val ref = FirebaseStorage.getInstance().getReference("/images/$filename")
         val progressDialog = ProgressDialog(this)
-        progressDialog.setTitle("Creating workgroup, just wait")
+        progressDialog.setTitle("Creating user, just wait")
         progressDialog.show()
         ref.putFile(photoUri!!)
             .addOnSuccessListener {taskSnapshot ->
-
                 ref.downloadUrl.addOnCompleteListener {taskSnapshot->
                     var url = taskSnapshot.result
                     createUser(url.toString())
