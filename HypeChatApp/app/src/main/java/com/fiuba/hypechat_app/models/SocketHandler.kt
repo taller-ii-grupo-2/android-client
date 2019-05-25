@@ -15,8 +15,8 @@ object SocketHandler {
     @Synchronized
     fun setSocket(url: String, mail: String) {
         this.socket = IO.socket(url)
-        socket?.connect()
-        socket?.emit("identification", mail)
+//        socket?.connect()
+//        socket?.emit("identification", mail)
     }
 
     @Synchronized
