@@ -54,10 +54,10 @@
         <activity android:name=".activities.WorkspaceCreationActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".activities.WorkspaceActivity"/>
+                    android:value=".activities.WorkspacesListActivity"/>
         </activity>
         <activity
-                android:name=".activities.WorkspaceActivity"
+                android:name=".activities.WorkspacesListActivity"
                 android:theme="@style/Worskpace">
         </activity>
         <activity

@@ -5,7 +5,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".activities.WorkspaceActivity"
+        tools:context=".activities.WorkspacesListActivity"
         android:background="@drawable/general_background">
 
     <androidx.recyclerview.widget.RecyclerView

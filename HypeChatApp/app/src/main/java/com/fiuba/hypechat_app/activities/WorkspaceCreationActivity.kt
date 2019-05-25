@@ -77,7 +77,7 @@ class WorkspaceCreationActivity : AppCompatActivity() {
                 Log.d("WorkgroupCreationAct", "Workgroup added to database")
             }
 
-        val intent = Intent(this, WorkspaceActivity::class.java)
+        val intent = Intent(this, WorkspacesListActivity::class.java)
         startActivity(intent)
     }
 

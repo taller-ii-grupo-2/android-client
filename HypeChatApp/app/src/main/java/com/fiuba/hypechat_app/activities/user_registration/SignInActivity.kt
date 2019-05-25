@@ -14,7 +14,7 @@ import com.facebook.FacebookException
 
 import com.facebook.login.LoginResult
 import com.fiuba.hypechat_app.*
-import com.fiuba.hypechat_app.activities.WorkspaceActivity
+import com.fiuba.hypechat_app.activities.WorkspacesListActivity
 import com.fiuba.hypechat_app.models.Moi
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
@@ -103,7 +103,7 @@ class SignInActivity : AppCompatActivity() {
                             signUserToSV(idToken!!)
                         }
                     Moi.set_id_values(etEmail.text.toString())
-                    val intent = Intent(this, WorkspaceActivity::class.java)
+                    val intent = Intent(this, WorkspacesListActivity::class.java)
                     // Dont allow go back
                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
                     startActivity(intent)
@@ -140,7 +140,7 @@ class SignInActivity : AppCompatActivity() {
     private fun updateUI(user: FirebaseUser?) {
         if (user != null) {
             saveUserToFirebaseDB()
-            val intent = Intent(this, WorkspaceActivity::class.java)
+            val intent = Intent(this, WorkspacesListActivity::class.java)
             /*
              * Dont allow go back
              */

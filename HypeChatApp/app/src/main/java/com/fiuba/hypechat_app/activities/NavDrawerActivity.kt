@@ -40,7 +40,7 @@ class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         setSupportActionBar(toolbar)
 
 
-        val workGroup = intent.getParcelableExtra<Workgroup>(WorkspaceActivity.GROUP_KEY)
+        val workGroup = intent.getParcelableExtra<Workgroup>(WorkspacesListActivity.GROUP_KEY)
         toolbar.title = workGroup.name
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
@@ -67,7 +67,7 @@ class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        val workGroup = data!!.getParcelableExtra<Workgroup>(WorkspaceActivity.GROUP_KEY)
+        val workGroup = data!!.getParcelableExtra<Workgroup>(WorkspacesListActivity.GROUP_KEY)
     }
 
     private fun setDataIntoNavBar(navView: NavigationView, workGroup: Workgroup) {

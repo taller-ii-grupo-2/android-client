@@ -27,7 +27,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class WorkspaceActivity : AppCompatActivity() {
+class WorkspacesListActivity : AppCompatActivity() {
 
     private lateinit var context: Context
 
