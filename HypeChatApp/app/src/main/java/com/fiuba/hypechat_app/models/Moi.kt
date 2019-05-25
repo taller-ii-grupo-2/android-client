@@ -9,6 +9,9 @@ object Moi {
      * Oneself here denotes the logged user.
      */
 
+//    val SERVER_URL = "https://hypechatgrupo2-app-server-stag.herokuapp.com/"
+    val SERVER_URL = "http://192.168.2.110:5000/"
+
     /* personal info */
 //    private lateinit var username: String
     private lateinit var mail: String

@@ -35,10 +35,8 @@ class WorkspacesListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_workspace)
 
-        val SERVER_URL = "https://hypechatgrupo2-app-server-stag.herokuapp.com/"
-
         verifyUserIsSignedIn()
-        SocketHandler.setSocket(SERVER_URL, Moi.get_mail())
+        SocketHandler.setSocket(Moi.SERVER_URL, Moi.get_mail())
 
         fetchWorkgroupsPhotoAndName()
     }

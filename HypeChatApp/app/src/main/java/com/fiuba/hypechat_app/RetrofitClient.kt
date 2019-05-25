@@ -1,5 +1,6 @@
 package com.fiuba.hypechat_app
 
+import com.fiuba.hypechat_app.models.Moi
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
@@ -9,10 +10,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 
 
 object RetrofitClient {
-
-
-    private const val BASE_URL = "https://hypechatgrupo2-app-server-stag.herokuapp.com/"
-
     //Logger
     private val logger = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
@@ -55,7 +52,7 @@ object RetrofitClient {
 
     val instance: ApiService by lazy {
         val retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(Moi.SERVER_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient.build())
             .build()
