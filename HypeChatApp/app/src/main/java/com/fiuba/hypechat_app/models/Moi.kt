@@ -1,5 +1,6 @@
 package com.fiuba.hypechat_app.models
 
+import com.google.firebase.auth.FirebaseAuth
 
 
 object Moi {
@@ -53,7 +54,13 @@ object Moi {
     }
 
     fun get_mail(): String {
-        return this.mail;
+        var mail = ""
+        try {
+            mail = FirebaseAuth.getInstance().currentUser!!.email.toString()
+        }catch (t: Throwable){
+            mail = ""
+        }
+        return mail
     }
 
     fun save_workgroup(workgroup_name: String, workgroup_id: Int) {
