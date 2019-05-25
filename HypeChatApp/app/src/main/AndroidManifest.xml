@@ -41,7 +41,7 @@
                 android:name=".activities.MapsActivity"
                 android:label="@string/title_activity_maps">
         </activity>
-        <activity android:name=".activities.ChangePasswordActivity">
+        <activity android:name=".activities.user_registration.ChangePasswordActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value=".activities.ProfileActivity"/>

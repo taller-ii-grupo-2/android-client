@@ -12,6 +12,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.fiuba.hypechat_app.R
+import com.fiuba.hypechat_app.activities.user_registration.ChangePasswordActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_profile.*
