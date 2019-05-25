@@ -1,7 +1,6 @@
 package com.fiuba.hypechat_app.models
 
-import org.json.JSONObject
-import java.io.File
+
 
 object Moi {
     /* Moi name refers to Me - myself in french. This object is intended to contain all
@@ -12,9 +11,7 @@ object Moi {
     /* personal info */
 //    private lateinit var username: String
     private lateinit var mail: String
-
-    private const val moi_filename = "moi"
-    private lateinit var moi_fd: File
+   // private lateinit var context: Context
 
     private var dm_messages = mutableListOf<DirectMessage>()
     private var channel_messages = mutableListOf<ChannelMessage>()
@@ -26,23 +23,10 @@ object Moi {
     private var current_channel = ""
     private var current_dm_dest = ""
 
+
     fun set_id_values(mail: String){
         this.mail = mail
-        moi_fd = File(moi_filename)
-        moi_fd.writeText(this.toString())
-    }
 
-    private fun recuperate_from_file() {
-        moi_fd = File(moi_filename)
-        var js = JSONObject(moi_fd.readText())
-
-        this.mail = js["mail"] as String
-    }
-
-    override fun toString(): String {
-        var asdf = JSONObject()
-        asdf.put("mail", mail)
-        return asdf.toString()
     }
 
     fun save_dm(author: String, timestamp: String, body: String){
@@ -71,17 +55,14 @@ object Moi {
     }
 
     fun get_mail(): String {
-        if (this.mail.isNotEmpty()) {
-            return this.mail
-        }else{
-            recuperate_from_file()
-            return this.mail
-        }
+        return this.mail;
     }
 
     fun save_workgroup(workgroup_name: String, workgroup_id: Int){
         organizations.add(Workgroup())
     }
+
+
     fun save_channel(organization_name: String, channel_name: String){
         channels.add(Channel(organization_name, channel_name))
     }

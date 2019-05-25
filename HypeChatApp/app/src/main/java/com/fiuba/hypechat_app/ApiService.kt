@@ -22,6 +22,9 @@ interface ApiService {
     @GET ("user/organizations")
     fun getWorkgroupNameAndPhotoProfile():Call<List<WorkgroupPhotoAndName>>
 
+    @GET ("user/organizations/channels")
+    fun getWholeOrgaData(@Body org_name:String):Call<Workspace>
+
 
 }
 
@@ -40,3 +43,5 @@ class User (
     )
 
 class WorkgroupPhotoAndName (val urlImage: String, val name:String)
+
+class Workspace()
