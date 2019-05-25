@@ -85,8 +85,6 @@ class WorkspaceCreationActivity : AppCompatActivity() {
     }
 
     private fun sendDataToSv(workgroup: Workgroup) {
-
-
         RetrofitClient.instance.createWorkgroup(workgroup)
             .enqueue(object: Callback<DefaultResponse> {
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
@@ -111,6 +109,7 @@ class WorkspaceCreationActivity : AppCompatActivity() {
         }
         val filename = etName.text.toString() + UUID.randomUUID().toString()
         val ref = FirebaseStorage.getInstance().getReference("/images/$filename")
+        Log.d("WorkspaceCreationAct", "Paso la referencia")
         val progressDialog = ProgressDialog(this)
         progressDialog.setTitle("Creating workgroup, just wait")
         progressDialog.show()

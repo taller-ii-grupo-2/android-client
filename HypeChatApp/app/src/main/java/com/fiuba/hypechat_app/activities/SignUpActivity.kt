@@ -37,6 +37,7 @@ class SignUpActivity : AppCompatActivity() {
 
 
     private lateinit var mAuth: FirebaseAuth
+    private lateinit var mAuthDatabase: FirebaseDatabase
     lateinit var locationManager: LocationManager
     private var hasGps = false
     private var hasNetwork = false
@@ -53,12 +54,12 @@ class SignUpActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
         mAuth = FirebaseAuth.getInstance()
+        mAuthDatabase = FirebaseDatabase.getInstance()
         signupbtn.isEnabled = false
 
         signupbtn.setOnClickListener {
             signUpValidation()
             uploadImageWorkgroupToFirebase()
-
 
         }
 
@@ -220,8 +221,8 @@ class SignUpActivity : AppCompatActivity() {
 
 
     private fun createUser (urlImageProfile: String){
-        val uid = FirebaseAuth.getInstance().uid ?:""
-        val ref = FirebaseDatabase.getInstance().getReference("/users/$uid")
+        val uid = mAuth.uid ?:""
+        val ref = mAuthDatabase.getReference("/users/$uid")
         val username = usernamebox.text.toString()
         val name = namebox.text.toString()
         val surname = surnamebox.text.toString()

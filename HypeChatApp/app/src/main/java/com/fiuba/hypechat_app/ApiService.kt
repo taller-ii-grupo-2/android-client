@@ -40,7 +40,7 @@ class User (
     val surname:String,
     val name:String,
     val username:String
-    )
+)
 
 class WorkgroupPhotoAndName (val urlImage: String, val name:String)
 

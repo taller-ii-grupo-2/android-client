@@ -15,19 +15,15 @@ import com.fiuba.hypechat_app.SignInActivity
 import com.fiuba.hypechat_app.WorkgroupPhotoAndName
 import com.fiuba.hypechat_app.models.Moi
 import com.fiuba.hypechat_app.models.SocketHandler
-import com.fiuba.hypechat_app.models.Workgroup
 
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+
 import com.squareup.picasso.Picasso
 
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
-import kotlinx.android.synthetic.main.activity_workspace.*
+
 import kotlinx.android.synthetic.main.workgroup_row.view.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -133,8 +129,6 @@ class WorkspaceActivity : AppCompatActivity() {
             val intent = Intent(this, SignInActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
-        } else {
-            Moi.set_id_values(FirebaseAuth.getInstance().currentUser!!.email.toString())
         }
     }
 
