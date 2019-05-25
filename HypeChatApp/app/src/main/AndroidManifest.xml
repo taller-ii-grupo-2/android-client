@@ -79,10 +79,6 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity
-                android:name=".activities.MainActivity"
-                android:label="@string/title_activity_login">
-        </activity>
 
         <meta-data
                 android:name="com.facebook.sdk.ApplicationId"
