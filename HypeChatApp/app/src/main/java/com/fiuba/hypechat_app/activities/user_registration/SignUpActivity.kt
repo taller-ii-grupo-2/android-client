@@ -46,6 +46,8 @@ class SignUpActivity : AppCompatActivity() {
     lateinit var service: ApiService
     var photoUri: Uri? = null
 
+    private val FIREBASE_MIN_PASS_LENGTH = 6
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
@@ -53,8 +55,9 @@ class SignUpActivity : AppCompatActivity() {
         signupbtn.isEnabled = false
 
         signupbtn.setOnClickListener {
-            signUpValidation()
-            uploadImageWorkgroupToFirebase()
+            if (signUpValidation()) {
+                uploadImageWorkgroupToFirebase()
+            }
         }
 
         btnLocation.setOnClickListener {
@@ -91,7 +94,7 @@ class SignUpActivity : AppCompatActivity() {
         btnLocation.alpha = 1F
         getLocation()
         disableView()
-        Toast.makeText(this, "Location setted", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Location set", Toast.LENGTH_SHORT).show()
     }
 
     private fun checkPermission(permissionArray: Array<String>): Boolean {
@@ -175,42 +178,50 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
-    private fun signUpValidation() {
+    private fun signUpValidation(): Boolean {
         if (usernamebox.text.toString().isEmpty()) {
             usernamebox.error = "Plase enter your username"
             usernamebox.requestFocus()
-            return
+            return false
         }
 
         if (namebox.text.toString().isEmpty()) {
             namebox.error = "Plase enter your name"
             namebox.requestFocus()
-            return
+            return false
         }
 
         if (surnamebox.text.toString().isEmpty()) {
             surnamebox.error = "Plase enter your surnamebox"
             surnamebox.requestFocus()
-            return
+            return false
         }
 
         if (emailbox.text.toString().isEmpty()) {
             emailbox.error = "Plase enter your email"
             emailbox.requestFocus()
-            return
+            return false
         }
 
         if (!Patterns.EMAIL_ADDRESS.matcher(emailbox.text.toString()).matches()) {
             emailbox.error = "Plase enter a valid email"
             emailbox.requestFocus()
-            return
+            return false
         }
 
         if (passwordbox.text.toString().isEmpty()) {
             passwordbox.error = "Plase enter your password"
             passwordbox.requestFocus()
-            return
+            return false
         }
+
+        if (passwordbox.text.toString().length <= FIREBASE_MIN_PASS_LENGTH) {
+            passwordbox.error = "Password shoud be at least 6 characters long"
+            passwordbox.requestFocus()
+            return false
+        }
+
+        return true
     }
 
     private fun createUser(urlImageProfile: String) {
