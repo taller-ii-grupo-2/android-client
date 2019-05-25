@@ -31,7 +31,7 @@ import kotlinx.android.synthetic.main.chat_row.view.*
 import kotlinx.android.synthetic.main.nav_header_nav_drawer.view.*
 
 
-class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

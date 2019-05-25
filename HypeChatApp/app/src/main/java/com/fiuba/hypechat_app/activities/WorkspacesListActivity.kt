@@ -95,7 +95,7 @@ class WorkspacesListActivity : AppCompatActivity() {
                  adapter.setOnItemClickListener { item, view ->
 
                      val workgroupItem = item as WorkgroupItem
-                     val intent = Intent(view.context, NavDrawerActivity::class.java)
+                     val intent = Intent(view.context, ChatActivity::class.java)
                      Moi.update_current_organization(workgroupItem.currentWorkgroup.name)
  //                    TODO cambiar esto de channel.
                      Moi.update_current_channel("general")
