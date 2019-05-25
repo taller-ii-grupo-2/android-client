@@ -1,5 +1,6 @@
 package com.fiuba.hypechat_app.activities
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,9 +8,11 @@ import android.util.Log
 
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import com.fiuba.hypechat_app.R
 import com.fiuba.hypechat_app.RetrofitClient
 import com.fiuba.hypechat_app.SignInActivity
+import com.fiuba.hypechat_app.WorkgroupPhotoAndName
 import com.fiuba.hypechat_app.models.Moi
 import com.fiuba.hypechat_app.models.SocketHandler
 import com.fiuba.hypechat_app.models.Workgroup
@@ -26,26 +29,68 @@ import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.activity_workspace.*
 import kotlinx.android.synthetic.main.workgroup_row.view.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class WorkspaceActivity : AppCompatActivity() {
+
+    private lateinit var context: Context
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_workspace)
 
         val SERVER_URL = "https://hypechatgrupo2-app-server-stag.herokuapp.com/"
-        SocketHandler.setSocket(SERVER_URL, Moi.get_mail())
-        verifyUserIsSignIn()
 
-        fetchWorkgroups()
+
+        verifyUserIsSignIn()
+        SocketHandler.setSocket(SERVER_URL, Moi.get_mail())
+
+      /*  val adapter = GroupAdapter<ViewHolder>()
+        adapter.add(WorkgroupItem())
+        adapter.add(WorkgroupItem())
+        adapter.add(WorkgroupItem())
+
+        rvWorkgroup.adapter = adapter
+*/
+
+        //fetchWorkgroups()
+        fetchWorkgroupsPhotoAndName()
+
+        }
+
+    private fun fetchWorkgroupsPhotoAndName() {
+        RetrofitClient.instance.getWorkgroupNameAndPhotoProfile()
+            .enqueue(object: Callback<List<WorkgroupPhotoAndName>> {
+                override fun onFailure(call: Call<List<WorkgroupPhotoAndName>>, t: Throwable) {
+                    Toast.makeText(baseContext, "Error loading workgroup data", Toast.LENGTH_LONG).show()
+                }
+
+                override fun onResponse(call: Call<List<WorkgroupPhotoAndName>>, response: Response<List<WorkgroupPhotoAndName>>) {
+                    if (response.isSuccessful) {
+                        //Toast.makeText(baseContext, response.message(), Toast.LENGTH_SHORT).show()
+                        val adapter = GroupAdapter<ViewHolder>()
+                        val workgroupList = response.body()
+                        workgroupList?.forEach {
+                            if (it != null)
+                                adapter.add(WorkgroupItem(it))
+                        }
+
+                    } else {
+                        Toast.makeText(baseContext, "Failed to add item", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            })
     }
 
     companion object {
         val GROUP_KEY = "GROUP_KEY"
     }
 
-    private fun fetchWorkgroups() {
+    // FUNCTION TO FETCH DATA WITH FIREBASE
+   /* private fun fetchWorkgroups() {
         val ref = FirebaseDatabase.getInstance().getReference("/workgroup")
         ref.addListenerForSingleValueEvent(object : ValueEventListener {
 
@@ -80,7 +125,7 @@ class WorkspaceActivity : AppCompatActivity() {
 
             }
         })
-    }
+    }*/
 
     private fun verifyUserIsSignIn() {
         val uid = FirebaseAuth.getInstance().uid
@@ -88,6 +133,8 @@ class WorkspaceActivity : AppCompatActivity() {
             val intent = Intent(this, SignInActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
+        } else {
+            Moi.set_id_values(FirebaseAuth.getInstance().currentUser!!.email.toString())
         }
     }
 
@@ -115,7 +162,10 @@ class WorkspaceActivity : AppCompatActivity() {
     }
 }
 
-class WorkgroupItem(val currentWorkgroup: Workgroup) : Item<ViewHolder>() {
+
+
+
+class WorkgroupItem( val currentWorkgroup: WorkgroupPhotoAndName): Item<ViewHolder>() {
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.itemView.txtViewWorkgroup.text = currentWorkgroup.name
 

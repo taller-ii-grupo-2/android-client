@@ -61,7 +61,7 @@ class ProfileActivity : AppCompatActivity() {
                 ref.downloadUrl.addOnCompleteListener {taskSnapshot->
                     var url = taskSnapshot.result
                     updateProfileDataToSv(url.toString())
-                    Log.d("WorkspaceCreationAct", "Image added to firebase: ${url.toString()}")
+                    Log.d("ProfileAcitivity", "Image added to firebase: ${url.toString()}")
                 }
 
                 Toast.makeText(applicationContext,"Workgroup created", Toast.LENGTH_SHORT).show()

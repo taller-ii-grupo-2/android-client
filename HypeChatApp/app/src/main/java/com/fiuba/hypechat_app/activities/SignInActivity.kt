@@ -21,21 +21,18 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_sign_in.*
-import org.json.JSONObject
+
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.BufferedInputStream
-import java.io.BufferedWriter
-import java.io.OutputStreamWriter
-import java.net.HttpURLConnection
-import java.net.URL
+
 
 
 class SignInActivity : AppCompatActivity() {
 
     private lateinit var mAuth: FirebaseAuth
     private var callbackManager: CallbackManager? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +57,9 @@ class SignInActivity : AppCompatActivity() {
         btnfb.setReadPermissions("email", "public_profile")
         btnfb.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult) {
+
                 handleFacebookAccessToken(loginResult.accessToken)
+
             }
 
             override fun onCancel() {
@@ -75,6 +74,8 @@ class SignInActivity : AppCompatActivity() {
 
 
     }
+
+
 
 
 
@@ -162,13 +163,13 @@ class SignInActivity : AppCompatActivity() {
         val email = user?.email
         val uid = user?.uid
         val ref = FirebaseDatabase.getInstance().getReference("/users/$uid")
-        val userFb = User(email!!,name!!)
+       /* val userFb = User(email!!,name!!, -34.618625, -58.368508 )
         ref.setValue(userFb)
             .addOnSuccessListener {
                 Log.d("SignInActivity", "User added to database")
             }
 
-        sendDataToSv(userFb)
+        sendDataToSv(userFb)*/
 
 
         val tokenUser = FirebaseAuth.getInstance().currentUser!!.getIdToken(true)

@@ -16,7 +16,6 @@ import com.fiuba.hypechat_app.DefaultResponse
 import com.fiuba.hypechat_app.R
 import com.fiuba.hypechat_app.RetrofitClient
 import com.fiuba.hypechat_app.models.Workgroup
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_workspace_creation.*
@@ -56,11 +55,6 @@ class WorkspaceCreationActivity : AppCompatActivity() {
             etName.requestFocus()
             return
         }
-        if (etUbication.text.toString().isEmpty()){
-            etUbication.error = "Plase enter your ubication"
-            etUbication.requestFocus()
-            return
-        }
 
         if (etDescription.text.toString().isEmpty()){
             etDescription.error = "Plase enter your description"
@@ -77,8 +71,7 @@ class WorkspaceCreationActivity : AppCompatActivity() {
 
     private fun createNewWorkgroup(urlImage:String) {
         val name = etName.text.toString()
-        val workgroup = Workgroup (name,etUbication.text.toString(),
-            FirebaseAuth.getInstance().currentUser!!.email!!,etDescription.text.toString(),etWelcome.text.toString(), urlImage)
+        val workgroup = Workgroup (name, etDescription.text.toString(),etWelcome.text.toString(), urlImage)
         val ref = FirebaseDatabase.getInstance().getReference("/workgroup/${name}")
         sendDataToSv(workgroup)
         ref.setValue(workgroup)
@@ -104,7 +97,7 @@ class WorkspaceCreationActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     Toast.makeText(baseContext, "Successfully workgroup added", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(baseContext, "Failed to add work", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(baseContext, "Failed to create group", Toast.LENGTH_SHORT).show()
                 }
             }
 
