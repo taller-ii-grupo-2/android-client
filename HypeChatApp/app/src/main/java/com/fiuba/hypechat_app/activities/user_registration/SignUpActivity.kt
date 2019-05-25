@@ -1,4 +1,4 @@
-package com.fiuba.hypechat_app.activities
+package com.fiuba.hypechat_app.activities.user_registration
 
 import android.Manifest
 import android.annotation.SuppressLint

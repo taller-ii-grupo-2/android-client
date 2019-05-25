@@ -65,12 +65,12 @@
                 android:label="@string/title_activity_nav_drawer"
                 android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".activities.ForgotActivity">
+        <activity android:name=".activities.user_registration.ForgotActivity">
         </activity>
-        <activity android:name=".activities.SignUpActivity">
+        <activity android:name=".activities.user_registration.SignUpActivity">
         </activity>
         <activity
-                android:name=".activities.SignInActivity"
+                android:name=".activities.user_registration.SignInActivity"
                 android:theme="@style/SignInPage"
                 android:windowSoftInputMode="adjustResize">
             <intent-filter>

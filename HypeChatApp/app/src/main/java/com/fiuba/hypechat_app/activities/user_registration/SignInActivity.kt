@@ -1,4 +1,4 @@
-package com.fiuba.hypechat_app.activities
+package com.fiuba.hypechat_app.activities.user_registration
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +14,7 @@ import com.facebook.FacebookException
 
 import com.facebook.login.LoginResult
 import com.fiuba.hypechat_app.*
+import com.fiuba.hypechat_app.activities.WorkspaceActivity
 import com.fiuba.hypechat_app.models.Moi
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth

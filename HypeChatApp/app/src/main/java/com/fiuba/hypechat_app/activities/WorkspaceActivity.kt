@@ -11,6 +11,7 @@ import android.widget.Toast
 import com.fiuba.hypechat_app.R
 import com.fiuba.hypechat_app.RetrofitClient
 import com.fiuba.hypechat_app.WorkgroupPhotoAndName
+import com.fiuba.hypechat_app.activities.user_registration.SignInActivity
 import com.fiuba.hypechat_app.models.Moi
 import com.fiuba.hypechat_app.models.SocketHandler
 

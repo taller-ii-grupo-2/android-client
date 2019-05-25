@@ -1,4 +1,4 @@
-package com.fiuba.hypechat_app.activities
+package com.fiuba.hypechat_app.activities.user_registration
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
