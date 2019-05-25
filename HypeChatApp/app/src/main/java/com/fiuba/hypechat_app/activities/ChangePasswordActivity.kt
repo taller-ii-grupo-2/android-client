@@ -21,7 +21,6 @@ class ChangePasswordActivity : AppCompatActivity() {
             val intent = Intent(this, ProfileActivity::class.java)
             startActivity(intent)
         }
-
     }
 
     private fun changePassword() {
@@ -29,8 +28,6 @@ class ChangePasswordActivity : AppCompatActivity() {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Toast.makeText(baseContext, "Successfully password change", Toast.LENGTH_SHORT).show()
-
-
                 } else {
                     Toast.makeText(baseContext, "Fail to change password", Toast.LENGTH_SHORT).show()
                 }

@@ -10,7 +10,6 @@ import android.view.MenuItem
 import android.widget.Toast
 import com.fiuba.hypechat_app.R
 import com.fiuba.hypechat_app.RetrofitClient
-import com.fiuba.hypechat_app.SignInActivity
 import com.fiuba.hypechat_app.WorkgroupPhotoAndName
 import com.fiuba.hypechat_app.models.Moi
 import com.fiuba.hypechat_app.models.SocketHandler
@@ -37,31 +36,23 @@ class WorkspaceActivity : AppCompatActivity() {
 
         val SERVER_URL = "https://hypechatgrupo2-app-server-stag.herokuapp.com/"
 
-
         verifyUserIsSignedIn()
         SocketHandler.setSocket(SERVER_URL, Moi.get_mail())
 
-      /*  val adapter = GroupAdapter<ViewHolder>()
-        adapter.add(WorkgroupItem())
-        adapter.add(WorkgroupItem())
-        adapter.add(WorkgroupItem())
-
-        rvWorkgroup.adapter = adapter
-*/
-
-        //fetchWorkgroups()
         fetchWorkgroupsPhotoAndName()
-
-        }
+    }
 
     private fun fetchWorkgroupsPhotoAndName() {
         RetrofitClient.instance.getWorkgroupNameAndPhotoProfile()
-            .enqueue(object: Callback<List<WorkgroupPhotoAndName>> {
+            .enqueue(object : Callback<List<WorkgroupPhotoAndName>> {
                 override fun onFailure(call: Call<List<WorkgroupPhotoAndName>>, t: Throwable) {
                     Toast.makeText(baseContext, "Error loading workgroup data", Toast.LENGTH_LONG).show()
                 }
 
-                override fun onResponse(call: Call<List<WorkgroupPhotoAndName>>, response: Response<List<WorkgroupPhotoAndName>>) {
+                override fun onResponse(
+                    call: Call<List<WorkgroupPhotoAndName>>,
+                    response: Response<List<WorkgroupPhotoAndName>>
+                ) {
                     if (response.isSuccessful) {
                         //Toast.makeText(baseContext, response.message(), Toast.LENGTH_SHORT).show()
                         val adapter = GroupAdapter<ViewHolder>()
@@ -83,42 +74,42 @@ class WorkspaceActivity : AppCompatActivity() {
     }
 
     // FUNCTION TO FETCH DATA WITH FIREBASE
-   /* private fun fetchWorkgroups() {
-        val ref = FirebaseDatabase.getInstance().getReference("/workgroup")
-        ref.addListenerForSingleValueEvent(object : ValueEventListener {
+    /* private fun fetchWorkgroups() {
+         val ref = FirebaseDatabase.getInstance().getReference("/workgroup")
+         ref.addListenerForSingleValueEvent(object : ValueEventListener {
 
-            override fun onDataChange(p0: DataSnapshot) {
-                val adapter = GroupAdapter<ViewHolder>()
+             override fun onDataChange(p0: DataSnapshot) {
+                 val adapter = GroupAdapter<ViewHolder>()
 
-                p0.children.forEach {
-                    Log.d("New workgroups", it.toString())
-                    val workgroup = it.getValue(Workgroup::class.java)
-                    if (workgroup != null) {
-                        adapter.add(WorkgroupItem(workgroup))
-                    }
-                }
+                 p0.children.forEach {
+                     Log.d("New workgroups", it.toString())
+                     val workgroup = it.getValue(Workgroup::class.java)
+                     if (workgroup != null) {
+                         adapter.add(WorkgroupItem(workgroup))
+                     }
+                 }
 
-                //rvWorkgroup.adapter = adapter
+                 //rvWorkgroup.adapter = adapter
 
-                adapter.setOnItemClickListener { item, view ->
+                 adapter.setOnItemClickListener { item, view ->
 
-                    val workgroupItem = item as WorkgroupItem
-                    val intent = Intent(view.context, NavDrawerActivity::class.java)
-                    Moi.update_current_organization(workgroupItem.currentWorkgroup.name)
-//                    TODO cambiar esto de channel.
-                    Moi.update_current_channel("general")
-                    intent.putExtra(GROUP_KEY, workgroupItem.currentWorkgroup)
-                    startActivity(intent)
+                     val workgroupItem = item as WorkgroupItem
+                     val intent = Intent(view.context, NavDrawerActivity::class.java)
+                     Moi.update_current_organization(workgroupItem.currentWorkgroup.name)
+ //                    TODO cambiar esto de channel.
+                     Moi.update_current_channel("general")
+                     intent.putExtra(GROUP_KEY, workgroupItem.currentWorkgroup)
+                     startActivity(intent)
 
-                }
-                rvWorkgroup.adapter = adapter
-            }
+                 }
+                 rvWorkgroup.adapter = adapter
+             }
 
-            override fun onCancelled(p0: DatabaseError) {
+             override fun onCancelled(p0: DatabaseError) {
 
-            }
-        })
-    }*/
+             }
+         })
+     }*/
 
     private fun verifyUserIsSignedIn() {
         val uid = FirebaseAuth.getInstance().uid
@@ -156,9 +147,7 @@ class WorkspaceActivity : AppCompatActivity() {
 }
 
 
-
-
-class WorkgroupItem( val currentWorkgroup: WorkgroupPhotoAndName): Item<ViewHolder>() {
+class WorkgroupItem(val currentWorkgroup: WorkgroupPhotoAndName) : Item<ViewHolder>() {
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.itemView.txtViewWorkgroup.text = currentWorkgroup.name
 

@@ -8,10 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import okhttp3.logging.HttpLoggingInterceptor
 
 
-
 object RetrofitClient {
-
-
 
 
     private const val BASE_URL = "https://hypechatgrupo2-app-server-stag.herokuapp.com/"
@@ -20,9 +17,7 @@ object RetrofitClient {
     private val logger = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
 
-    class CookiesInterceptor: Interceptor  {
-
-
+    class CookiesInterceptor : Interceptor {
 
 
         private var cookie: String? = null
@@ -44,11 +39,10 @@ object RetrofitClient {
             return response
         }
 
-        fun clearCookie(){
+        fun clearCookie() {
             cookie = null
         }
     }
-
 
 
     private val cookiesInterceptor: CookiesInterceptor by lazy {
@@ -56,11 +50,10 @@ object RetrofitClient {
     }
 
     private val okHttpClient = OkHttpClient.Builder().addInterceptor(cookiesInterceptor)
-                                                      .addInterceptor(logger)
+        .addInterceptor(logger)
 
 
-
-    val instance: ApiService by lazy{
+    val instance: ApiService by lazy {
         val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())

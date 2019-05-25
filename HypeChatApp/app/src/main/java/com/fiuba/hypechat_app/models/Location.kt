@@ -19,23 +19,24 @@ import kotlinx.android.synthetic.main.activity_sign_up.*
 
 private const val PERMISSION_REQUEST = 10
 
-class Location: AppCompatActivity() {
+class Location : AppCompatActivity() {
     lateinit var locationManager: LocationManager
     private var hasGps = false
     private var hasNetwork = false
     private var locationGps: Location? = null
     private var locationNetwork: Location? = null
-    private var permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+    private var permissions =
+        arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
 
-    fun getLatitude():Double{
+    fun getLatitude(): Double {
         return locationGps!!.latitude
     }
 
-    fun getLongitud():Double{
+    fun getLongitud(): Double {
         return locationGps!!.longitude
     }
 
-     fun setLocation() {
+    fun setLocation() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (this.checkPermission(permissions)) {
                 this.enableView()
@@ -47,20 +48,22 @@ class Location: AppCompatActivity() {
         }
     }
 
-     fun disableView() {
+    fun disableView() {
         btnLocation.isEnabled = false
         btnLocation.alpha = 0.5F
     }
 
-     fun enableView() {
+    fun enableView() {
         btnLocation.isEnabled = true
         btnLocation.alpha = 1F
-        btnLocation.setOnClickListener { getLocation()
-            disableView()}
+        btnLocation.setOnClickListener {
+            getLocation()
+            disableView()
+        }
         Toast.makeText(this, "Done", Toast.LENGTH_SHORT).show()
     }
 
-     fun checkPermission(permissionArray: Array<String>): Boolean {
+    fun checkPermission(permissionArray: Array<String>): Boolean {
         var allSuccess = true
         for (i in permissionArray.indices) {
             if (checkCallingOrSelfPermission(permissionArray[i]) == PackageManager.PERMISSION_DENIED)
@@ -70,7 +73,7 @@ class Location: AppCompatActivity() {
     }
 
     @SuppressLint("MissingPermission")
-     fun getLocation() {
+    fun getLocation() {
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         hasGps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
         hasNetwork = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
@@ -91,18 +94,11 @@ class Location: AppCompatActivity() {
                         }
                     }
 
-                    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
+                    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
 
-                    }
+                    override fun onProviderEnabled(provider: String?) {}
 
-                    override fun onProviderEnabled(provider: String?) {
-
-                    }
-
-                    override fun onProviderDisabled(provider: String?) {
-
-                    }
-
+                    override fun onProviderDisabled(provider: String?) {}
                 })
 
                 val localGpsLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
@@ -124,17 +120,11 @@ class Location: AppCompatActivity() {
                         }
                     }
 
-                    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
+                    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
 
-                    }
+                    override fun onProviderEnabled(provider: String?) {}
 
-                    override fun onProviderEnabled(provider: String?) {
-
-                    }
-
-                    override fun onProviderDisabled(provider: String?) {
-
-                    }
+                    override fun onProviderDisabled(provider: String?) {}
 
                 })
 
@@ -143,14 +133,14 @@ class Location: AppCompatActivity() {
                     locationNetwork = localNetworkLocation
             }
 
-            if(locationGps!= null && locationNetwork!= null){
-                if(locationGps!!.accuracy > locationNetwork!!.accuracy){
+            if (locationGps != null && locationNetwork != null) {
+                if (locationGps!!.accuracy > locationNetwork!!.accuracy) {
                     /*    tv_result.setText("\nNetwork ")
                         tv_result.setText("\nLatitude : " + locationNetwork!!.latitude)
                         tv_result.setText("\nLongitude : " + locationNetwork!!.longitude)*/
                     Log.d("CodeAndroidLocation", " Network Latitude : " + locationNetwork!!.latitude)
                     Log.d("CodeAndroidLocation", " Network Longitude : " + locationNetwork!!.longitude)
-                }else{
+                } else {
                     /*tv_result.setText("\nGPS ")
                     tv_result.setText("\nLatitude : " + locationGps!!.latitude)
                     tv_result.setText("\nLongitude : " + locationGps!!.longitude)*/
@@ -171,7 +161,10 @@ class Location: AppCompatActivity() {
             for (i in permissions.indices) {
                 if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
                     allSuccess = false
-                    val requestAgain = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && shouldShowRequestPermissionRationale(permissions[i])
+                    val requestAgain =
+                        Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && shouldShowRequestPermissionRationale(
+                            permissions[i]
+                        )
                     if (requestAgain) {
                         Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
                     } else {
@@ -181,7 +174,6 @@ class Location: AppCompatActivity() {
             }
             if (allSuccess)
                 enableView()
-
         }
     }
 }

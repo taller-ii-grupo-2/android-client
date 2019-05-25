@@ -1,4 +1,4 @@
-package com.fiuba.hypechat_app
+package com.fiuba.hypechat_app.activities
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -9,7 +9,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
-import android.location.LocationListener
 import android.location.LocationManager
 import android.net.Uri
 import android.os.Build
@@ -24,8 +23,8 @@ import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import android.provider.Settings
 import androidx.annotation.RequiresApi
+import com.fiuba.hypechat_app.*
 import com.google.firebase.storage.FirebaseStorage
-import kotlinx.android.synthetic.main.activity_workspace_creation.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -35,19 +34,17 @@ private const val PERMISSION_REQUEST = 10
 
 class SignUpActivity : AppCompatActivity() {
 
-
     private lateinit var mAuth: FirebaseAuth
     lateinit var locationManager: LocationManager
     private var hasGps = false
     private var hasNetwork = false
     private var locationGps: Location? = null
     private var locationNetwork: Location? = null
-    private var permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+    private var permissions =
+        arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
     private var geocoder: Geocoder? = null
     lateinit var service: ApiService
     var photoUri: Uri? = null
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,21 +55,17 @@ class SignUpActivity : AppCompatActivity() {
         signupbtn.setOnClickListener {
             signUpValidation()
             uploadImageWorkgroupToFirebase()
-
-
         }
 
         btnLocation.setOnClickListener {
             setLocation()
             signupbtn.isEnabled = true
-
         }
-
 
         btnSelectProfilephoto.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
-            startActivityForResult(intent,0)
+            startActivityForResult(intent, 0)
         }
     }
 
@@ -120,28 +113,27 @@ class SignUpActivity : AppCompatActivity() {
             if (hasGps) {
                 Log.d("CodeAndroidLocation", "hasGps")
 
-
                 val localGpsLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
                 if (localGpsLocation != null)
                     locationGps = localGpsLocation
             }
+
             if (hasNetwork) {
                 Log.d("CodeAndroidLocation", "hasGps")
-
 
                 val localNetworkLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
                 if (localNetworkLocation != null)
                     locationNetwork = localNetworkLocation
             }
 
-            if(locationGps!= null && locationNetwork!= null){
-                if(locationGps!!.accuracy > locationNetwork!!.accuracy){
-                /*    tv_result.setText("\nNetwork ")
-                    tv_result.setText("\nLatitude : " + locationNetwork!!.latitude)
-                    tv_result.setText("\nLongitude : " + locationNetwork!!.longitude)*/
+            if (locationGps != null && locationNetwork != null) {
+                if (locationGps!!.accuracy > locationNetwork!!.accuracy) {
+                    /*    tv_result.setText("\nNetwork ")
+                        tv_result.setText("\nLatitude : " + locationNetwork!!.latitude)
+                        tv_result.setText("\nLongitude : " + locationNetwork!!.longitude)*/
                     Log.d("CodeAndroidLocation", " Network Latitude : " + locationNetwork!!.latitude)
                     Log.d("CodeAndroidLocation", " Network Longitude : " + locationNetwork!!.longitude)
-                }else{
+                } else {
                     /*tv_result.setText("\nGPS ")
                     tv_result.setText("\nLatitude : " + locationGps!!.latitude)
                     tv_result.setText("\nLongitude : " + locationGps!!.longitude)*/
@@ -166,61 +158,63 @@ class SignUpActivity : AppCompatActivity() {
             for (i in permissions.indices) {
                 if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
                     allSuccess = false
-                    val requestAgain = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && shouldShowRequestPermissionRationale(permissions[i])
+                    val requestAgain = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+                            shouldShowRequestPermissionRationale(permissions[i])
                     if (requestAgain) {
                         Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
                     } else {
-                        Toast.makeText(this, "Go to settings and enable the permission", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this, "Go to settings and enable the permission",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }
             if (allSuccess)
                 enableView()
-
         }
     }
 
     private fun signUpValidation() {
-        if (usernamebox.text.toString().isEmpty()){
+        if (usernamebox.text.toString().isEmpty()) {
             usernamebox.error = "Plase enter your username"
             usernamebox.requestFocus()
             return
         }
-        if (namebox.text.toString().isEmpty()){
+
+        if (namebox.text.toString().isEmpty()) {
             namebox.error = "Plase enter your name"
             namebox.requestFocus()
             return
         }
-        if (surnamebox.text.toString().isEmpty()){
+
+        if (surnamebox.text.toString().isEmpty()) {
             surnamebox.error = "Plase enter your surnamebox"
             surnamebox.requestFocus()
             return
         }
-        if (emailbox.text.toString().isEmpty()){
+
+        if (emailbox.text.toString().isEmpty()) {
             emailbox.error = "Plase enter your email"
             emailbox.requestFocus()
             return
         }
 
-        if (!Patterns.EMAIL_ADDRESS.matcher(emailbox.text.toString()).matches()){
+        if (!Patterns.EMAIL_ADDRESS.matcher(emailbox.text.toString()).matches()) {
             emailbox.error = "Plase enter a valid email"
             emailbox.requestFocus()
             return
         }
 
-        if (passwordbox.text.toString().isEmpty()){
+        if (passwordbox.text.toString().isEmpty()) {
             passwordbox.error = "Plase enter your password"
             passwordbox.requestFocus()
             return
         }
-
-
     }
 
-
-
-    private fun createUser (urlImageProfile: String){
-        val uid = FirebaseAuth.getInstance().uid ?:""
+    private fun createUser(urlImageProfile: String) {
+        val uid = FirebaseAuth.getInstance().uid ?: ""
         val ref = FirebaseDatabase.getInstance().getReference("/users/$uid")
         val username = usernamebox.text.toString()
         val name = namebox.text.toString()
@@ -230,12 +224,12 @@ class SignUpActivity : AppCompatActivity() {
         val longitude = locationGps!!.longitude
         val password = passwordbox.text.toString()
 
-        val user = User(longitude, latitude,mail,urlImageProfile,surname,name,username)
-        mAuth.createUserWithEmailAndPassword(mail, password )
-            .addOnCompleteListener(this) { task->
+        val user = User(longitude, latitude, mail, urlImageProfile, surname, name, username)
+        mAuth.createUserWithEmailAndPassword(mail, password)
+            .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     sendDataToSv(user)
-                    startActivity(Intent(this,SignInActivity::class.java))
+                    startActivity(Intent(this, SignInActivity::class.java))
                 } else {
                     Toast.makeText(baseContext, "Sign up failed", Toast.LENGTH_SHORT).show()
                 }
@@ -243,20 +237,13 @@ class SignUpActivity : AppCompatActivity() {
         ref.setValue(user)
             .addOnSuccessListener {
                 Log.d("SignUpActivity", "User added to database")
-
             }
-
-
-
-
-
-
     }
 
-    private fun sendDataToSv(user:User) {
+    private fun sendDataToSv(user: User) {
 
         RetrofitClient.instance.createUser(user)
-            .enqueue(object: Callback<DefaultResponse>{
+            .enqueue(object : Callback<DefaultResponse> {
                 override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                     Toast.makeText(baseContext, t.message, Toast.LENGTH_LONG).show()
                 }
@@ -275,19 +262,19 @@ class SignUpActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == 0 && resultCode == Activity.RESULT_OK && data != null){
+        if (requestCode == 0 && resultCode == Activity.RESULT_OK && data != null) {
             Log.d("WorkspaceCreationAct", "Enter if")
             photoUri = data.data
             val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, photoUri)
             CircleImageViewSignUp.setImageBitmap(bitmap)
-            btnSelectProfilephoto.background=null
-            btnSelectProfilephoto.text=null
+            btnSelectProfilephoto.background = null
+            btnSelectProfilephoto.text = null
 
         }
     }
 
     private fun uploadImageWorkgroupToFirebase() {
-        if (photoUri== null) {
+        if (photoUri == null) {
             loadDefaultImage()
             return
         }
@@ -297,29 +284,23 @@ class SignUpActivity : AppCompatActivity() {
         progressDialog.setTitle("Creating user, just wait")
         progressDialog.show()
         ref.putFile(photoUri!!)
-            .addOnSuccessListener {taskSnapshot ->
-                ref.downloadUrl.addOnCompleteListener {taskSnapshot->
+            .addOnSuccessListener { taskSnapshot ->
+                ref.downloadUrl.addOnCompleteListener { taskSnapshot ->
                     var url = taskSnapshot.result
                     createUser(url.toString())
                     Log.d("ProfileAcitivity", "Image added to firebase: ${url.toString()}")
                 }
-
-
             }
-            .addOnProgressListener {taskSnapShot->
+            .addOnProgressListener { taskSnapShot ->
                 signupbtn.isEnabled = false
-                val progress = 100 * taskSnapShot.bytesTransferred/taskSnapShot.totalByteCount
+                val progress = 100 * taskSnapShot.bytesTransferred / taskSnapShot.totalByteCount
                 progressDialog.setMessage("% ${progress}")
             }
     }
 
-
-
     private fun loadDefaultImage() {
-        val defaultImageUrl = "https://firebasestorage.googleapis.com/v0/b/hypechatapp-ebdd6.appspot.com/o/images%2FTrama.jpg?alt=media&token=4d0375e4-5a04-4041-8f4c-b6b4738b9b48"
+        val defaultImageUrl =
+            "https://firebasestorage.googleapis.com/v0/b/hypechatapp-ebdd6.appspot.com/o/images%2FTrama.jpg?alt=media&token=4d0375e4-5a04-4041-8f4c-b6b4738b9b48"
         createUser(defaultImageUrl)
     }
-
-
 }
-

@@ -33,7 +33,6 @@ import kotlinx.android.synthetic.main.nav_header_nav_drawer.view.*
 
 class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_nav_drawer)
@@ -54,11 +53,8 @@ class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         toggle.syncState()
         navView.setNavigationItemSelectedListener(this)
 
-
         setDataIntoNavBar(navView, workGroup)
 
-
-        //fetchUsers()
         val adapter = GroupAdapter<ViewHolder>()
         rvChat.adapter = adapter
         receiveMessages(adapter)
@@ -67,9 +63,7 @@ class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             adapter.add(ChatItem(textToSend))
             SocketHandler.send(textToSend)
             txtChat.text = null
-
         }
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -91,7 +85,6 @@ class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         directMessages.add("yo")
     }
 
-
     @Synchronized
     private fun receiveMessages(adapter: GroupAdapter<ViewHolder>) {
         //var socket = SocketHandler.getSocket()
@@ -101,11 +94,8 @@ class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             runOnUiThread {
                 adapter.add(ChatItem(getData))
             }
-
-
         }
     }
-
 
     private fun fetchUsers() {
         RetrofitClient.instance.getListUsers()
@@ -117,7 +107,6 @@ class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                 override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
                     if (response.isSuccessful) {
                         Toast.makeText(baseContext, response.message(), Toast.LENGTH_SHORT).show()
-
                     } else {
                         Toast.makeText(baseContext, "Failed to add item", Toast.LENGTH_SHORT).show()
                     }
@@ -135,18 +124,21 @@ class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        /*
+         * Inflate the menu; this adds items to the action bar if it is present.
+         */
         menuInflater.inflate(R.menu.nav_drawer, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+        /* Handle action bar item clicks here. The action bar will
+         * automatically handle clicks on the Home/Up button, so long
+         * as you specify a parent activity in AndroidManifest.xml.
+         */
         return when (item.itemId) {
             R.id.action_profile -> setProfileActivity()
-            R.id.action_maps-> showMapActivity()
+            R.id.action_maps -> showMapActivity()
 
             else -> super.onOptionsItemSelected(item)
         }
@@ -154,7 +146,7 @@ class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
     private fun showMapActivity(): Boolean {
         val intent = Intent(this, MapsActivity::class.java)
-        startActivityForResult(intent,20)
+        startActivityForResult(intent, 20)
         return true
     }
 
@@ -167,21 +159,18 @@ class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
-
         }
+
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
-
-
 }
 
 
 class ChatItem(val text: String) : Item<ViewHolder>() {
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.itemView.txtChatRow.text = text
-
     }
 
     override fun getLayout(): Int {

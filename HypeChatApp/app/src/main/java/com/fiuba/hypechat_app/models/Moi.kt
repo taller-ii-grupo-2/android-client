@@ -7,12 +7,12 @@ object Moi {
     /* Moi name refers to Me - myself in french. This object is intended to contain all
      * info needed to identify oneself and to make oneself useful.
      * Oneself here denotes the logged user.
-     * */
+     */
 
     /* personal info */
 //    private lateinit var username: String
     private lateinit var mail: String
-   // private lateinit var context: Context
+    // private lateinit var context: Context
 
     private var dm_messages = mutableListOf<DirectMessage>()
     private var channel_messages = mutableListOf<ChannelMessage>()
@@ -57,7 +57,7 @@ object Moi {
         var mail = ""
         try {
             mail = FirebaseAuth.getInstance().currentUser!!.email.toString()
-        }catch (t: Throwable){
+        } catch (t: Throwable) {
             mail = ""
         }
         return mail

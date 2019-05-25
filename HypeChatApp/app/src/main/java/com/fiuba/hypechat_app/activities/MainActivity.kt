@@ -1,14 +1,11 @@
-package com.fiuba.hypechat_app
+package com.fiuba.hypechat_app.activities
 
 import android.content.Intent
-import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.widget.Button
 import android.widget.TextView
-import com.google.firebase.FirebaseApp
-import kotlinx.android.synthetic.main.activity_main.*
+import androidx.appcompat.app.AppCompatActivity
+import com.fiuba.hypechat_app.R
 import okhttp3.*
 import java.io.IOException
 
@@ -56,6 +53,5 @@ class MainActivity : AppCompatActivity() {
     fun showScreen(textInput: String) {
         val txt = findViewById(R.id.txtCheckpoint) as TextView
         txt.setText(textInput)
-
     }
 }
