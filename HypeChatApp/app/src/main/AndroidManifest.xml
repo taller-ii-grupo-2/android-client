@@ -16,8 +16,8 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <application
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
@@ -37,7 +37,6 @@
         <meta-data
                 android:name="com.google.android.geo.API_KEY"
                 android:value="AIzaSyDzOccKRWJrGdkhvxkw7h3cg_inyHEhCys"/>
-
         <activity
                 android:name=".activities.MapsActivity"
                 android:label="@string/title_activity_maps">
@@ -60,11 +59,6 @@
         <activity
                 android:name=".activities.WorkspaceActivity"
                 android:theme="@style/Worskpace">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
         <activity
                 android:name=".activities.NavDrawerActivity"
@@ -111,5 +105,4 @@
             </intent-filter>
         </activity>
     </application>
-
 </manifest>
