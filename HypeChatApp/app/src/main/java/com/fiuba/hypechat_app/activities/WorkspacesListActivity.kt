@@ -130,6 +130,7 @@ class WorkspacesListActivity : AppCompatActivity() {
                 FirebaseAuth.getInstance().signOut()
                 val galletita = RetrofitClient.CookiesInterceptor()
                 galletita.clearCookie()
+                SocketHandler.disconnect()
                 val intent = Intent(this, SignInActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)

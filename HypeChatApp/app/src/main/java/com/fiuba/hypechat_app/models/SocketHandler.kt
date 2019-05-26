@@ -38,4 +38,8 @@ object SocketHandler {
     fun getSocket(): Socket {
         return this.socket!!
     }
+
+    fun disconnect() {
+        socket?.disconnect()
+    }
 }
