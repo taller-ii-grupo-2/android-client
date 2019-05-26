@@ -155,8 +155,9 @@ class SignUpActivity : AppCompatActivity() {
             startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
         }
 
+        Toast.makeText(this, "Setting location...", Toast.LENGTH_SHORT).show()
+
         while (locationGps == null) {
-            Toast.makeText(this, "Setting location...", Toast.LENGTH_SHORT).show()
             hasGps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
             hasNetwork = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
             if (hasGps || hasNetwork) {
@@ -265,7 +266,7 @@ class SignUpActivity : AppCompatActivity() {
             return false
         }
 
-        if (passwordbox.text.toString().length <= FIREBASE_MIN_PASS_LENGTH) {
+        if (passwordbox.text.toString().length < FIREBASE_MIN_PASS_LENGTH) {
             passwordbox.error = "Password shoud be at least 6 characters long"
             passwordbox.requestFocus()
             return false
