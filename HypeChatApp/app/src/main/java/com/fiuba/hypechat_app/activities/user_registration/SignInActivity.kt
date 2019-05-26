@@ -102,10 +102,6 @@ class SignInActivity : AppCompatActivity() {
                             Log.d("TokenActivity", "Token:${idToken}")
                             signUserToSV(idToken!!)
                         }
-                    val intent = Intent(this, WorkspacesListActivity::class.java)
-                    // Dont allow go back
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    startActivity(intent)
                 } else {
                     updateUI(null)
                 }
@@ -183,13 +179,17 @@ class SignInActivity : AppCompatActivity() {
 
                 override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                     if (response.isSuccessful) {
-                        Toast.makeText(baseContext, "Successfully Logged", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(baseContext, "Successfully Logged in", Toast.LENGTH_SHORT).show()
 
                     } else {
-                        Toast.makeText(baseContext, "Failed to logged", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(baseContext, "Failed to log in", Toast.LENGTH_SHORT).show()
                     }
                 }
             })
+        val intent = Intent(this, WorkspacesListActivity::class.java)
+        // Dont allow go back
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
     }
 
     private fun sendDataToSv(user: User) {
