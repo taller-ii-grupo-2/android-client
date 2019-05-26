@@ -9,6 +9,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
+import android.location.LocationListener
 import android.location.LocationManager
 import android.net.Uri
 import android.os.Build
@@ -108,50 +109,99 @@ class SignUpActivity : AppCompatActivity() {
 
     @SuppressLint("MissingPermission")
     private fun getLocation() {
+        /*
+         * For android official doc on location:
+         * https://developer.android.com/guide/topics/location/strategies#common-application-cases
+         */
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         hasGps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
         hasNetwork = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
-        if (hasGps || hasNetwork) {
 
-            if (hasGps) {
-                Log.d("CodeAndroidLocation", "hasGps")
+        // Define a listener that responds to location updates
+        val locationListenerGPS = object : LocationListener {
 
-                val localGpsLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-                if (localGpsLocation != null)
-                    locationGps = localGpsLocation
+            override fun onLocationChanged(location: Location) {
+                // Called when a new location is found by the network location provider.
+                locationGps = location
             }
 
-            if (hasNetwork) {
-                Log.d("CodeAndroidLocation", "hasGps")
-
-                val localNetworkLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
-                if (localNetworkLocation != null)
-                    locationNetwork = localNetworkLocation
+            override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {
             }
 
-            if (locationGps != null && locationNetwork != null) {
-                if (locationGps!!.accuracy > locationNetwork!!.accuracy) {
-                    /*    tv_result.setText("\nNetwork ")
-                        tv_result.setText("\nLatitude : " + locationNetwork!!.latitude)
-                        tv_result.setText("\nLongitude : " + locationNetwork!!.longitude)*/
-                    Log.d("CodeAndroidLocation", " Network Latitude : " + locationNetwork!!.latitude)
-                    Log.d("CodeAndroidLocation", " Network Longitude : " + locationNetwork!!.longitude)
-                } else {
-                    /*tv_result.setText("\nGPS ")
-                    tv_result.setText("\nLatitude : " + locationGps!!.latitude)
-                    tv_result.setText("\nLongitude : " + locationGps!!.longitude)*/
-                    Log.d("CodeAndroidLocation", " GPS Latitude : " + locationGps!!.latitude)
-                    Log.d("CodeAndroidLocation", " GPS Longitude : " + locationGps!!.longitude)
-                }
+            override fun onProviderEnabled(provider: String) {
             }
 
-        } else {
+            override fun onProviderDisabled(provider: String) {
+            }
+        }
+
+        val locationListenerNETWORK = object : LocationListener {
+
+            override fun onLocationChanged(location: Location) {
+                // Called when a new location is found by the network location provider.
+                locationNetwork = location
+            }
+            override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {
+            }
+
+            override fun onProviderEnabled(provider: String) {
+            }
+
+            override fun onProviderDisabled(provider: String) {
+            }
+        }
+
+        if (!(hasGps || hasNetwork)){
             startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
         }
 
-        var geocoder = Geocoder(this, Locale.getDefault())
-        var address = geocoder.getFromLocation(locationGps!!.latitude, locationGps!!.longitude, 1)
-        tv_result.setText(address.get(0).getAddressLine(0))
+        while (locationGps == null) {
+            Toast.makeText(this, "Setting location...", Toast.LENGTH_SHORT).show()
+            hasGps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+            hasNetwork = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+            if (hasGps || hasNetwork) {
+
+                if (hasGps) {
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,
+                        0f, locationListenerGPS)
+                    Log.d("CodeAndroidLocation", "hasGps")
+
+                    val localGpsLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+                    if (localGpsLocation != null)
+                        locationGps = localGpsLocation
+                }
+
+                if (hasNetwork) {
+                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0,
+                        0f, locationListenerNETWORK)
+                    Log.d("CodeAndroidLocation", "hasGps")
+
+                    val localNetworkLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+                    if (localNetworkLocation != null)
+                        locationNetwork = localNetworkLocation
+                }
+
+                if (locationGps != null && locationNetwork != null) {
+                    if (locationGps!!.accuracy > locationNetwork!!.accuracy) {
+                        /*    tv_result.setText("\nNetwork ")
+                        tv_result.setText("\nLatitude : " + locationNetwork!!.latitude)
+                        tv_result.setText("\nLongitude : " + locationNetwork!!.longitude)*/
+                        Log.d("CodeAndroidLocation", " Network Latitude : " + locationNetwork!!.latitude)
+                        Log.d("CodeAndroidLocation", " Network Longitude : " + locationNetwork!!.longitude)
+                    } else {
+                        /*tv_result.setText("\nGPS ")
+                    tv_result.setText("\nLatitude : " + locationGps!!.latitude)
+                    tv_result.setText("\nLongitude : " + locationGps!!.longitude)*/
+                        Log.d("CodeAndroidLocation", " GPS Latitude : " + locationGps!!.latitude)
+                        Log.d("CodeAndroidLocation", " GPS Longitude : " + locationGps!!.longitude)
+                    }
+                }
+            }
+        }
+
+        val geocoder = Geocoder(this, Locale.getDefault())
+        val address = geocoder.getFromLocation(locationGps!!.latitude, locationGps!!.longitude, 1)
+        tv_result.text = address.get(0).getAddressLine(0)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
