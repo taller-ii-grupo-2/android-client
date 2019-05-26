@@ -102,7 +102,6 @@ class SignInActivity : AppCompatActivity() {
                             Log.d("TokenActivity", "Token:${idToken}")
                             signUserToSV(idToken!!)
                         }
-                    Moi.set_id_values(etEmail.text.toString())
                     val intent = Intent(this, WorkspacesListActivity::class.java)
                     // Dont allow go back
                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)

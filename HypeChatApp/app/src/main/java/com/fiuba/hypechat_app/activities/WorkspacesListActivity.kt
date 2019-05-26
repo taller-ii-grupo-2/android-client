@@ -116,8 +116,6 @@ class WorkspacesListActivity : AppCompatActivity() {
             val intent = Intent(this, SignInActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
-        } else {
-            Moi.set_id_values(FirebaseAuth.getInstance().currentUser!!.email.toString())
         }
     }
 

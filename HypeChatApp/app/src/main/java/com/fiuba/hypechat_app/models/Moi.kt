@@ -27,9 +27,6 @@ object Moi {
     private var current_channel = ""
     private var current_dm_dest = ""
 
-    fun set_id_values(mail: String) {
-        this.mail = mail
-    }
 
     fun save_dm(author: String, timestamp: String, body: String) {
         dm_messages.add(DirectMessage(author, timestamp, body))
