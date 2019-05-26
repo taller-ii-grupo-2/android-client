@@ -50,6 +50,8 @@
                 android:layout_marginEnd="20dp"
                 android:layout_marginTop="20dp"
                 android:hint="Workspace name"
+                android:singleLine="true"
+                android:maxLength="@integer/MAX_ORGANIZATION_NAME_LENGTH"
                 android:drawablePadding="10dp"
                 android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:padding="10dp" android:id="@+id/etName"/>
@@ -58,6 +60,8 @@
                 android:layout_marginEnd="20dp"
                 android:layout_marginTop="20dp"
                 android:hint="Description"
+                android:maxLength="@integer/MAX_ORGANIZATION_DESCRIPTION_LENGTH"
+                android:lines="3"
                 android:drawablePadding="10dp"
                 android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:padding="10dp" android:id="@+id/etDescription"/>
@@ -66,6 +70,8 @@
                 android:layout_marginEnd="20dp"
                 android:layout_marginTop="20dp"
                 android:hint="Welcome message"
+                android:maxLength="@integer/MAX_ORGANIZATION_WELCOME_MSG_LENGTH"
+                android:lines="3"
                 android:drawablePadding="10dp"
                 android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:padding="10dp" android:id="@+id/etWelcome"/>

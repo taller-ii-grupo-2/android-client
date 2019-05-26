@@ -41,30 +41,59 @@ class WorkspaceCreationActivity : AppCompatActivity() {
         }
 
         btnCreateWorkgroup.setOnClickListener {
-            verifyTextGaps()
-            uploadImageWorkgroupToFirebase()
+            if (inputFieldsAreOk()) {
+                uploadImageWorkgroupToFirebase()
+            }
         }
     }
 
     @SuppressLint("SetTextI18n")
-    private fun verifyTextGaps() {
+    private fun inputFieldsAreOk(): Boolean {
 
         if (etName.text.toString().isEmpty()) {
             etName.error = "Plase enter your workspace name"
             etName.requestFocus()
-            return
+            return false
         }
 
         if (etDescription.text.toString().isEmpty()) {
             etDescription.error = "Plase enter your description"
             etDescription.requestFocus()
-            return
+            return false
         }
 
         if (etWelcome.text.toString().isEmpty()) {
             etWelcome.setText("Hello ! Wellcome to Hypechat")
+            return false
+        }
+        return true
+    }
+
+    private fun uploadImageWorkgroupToFirebase() {
+        if (photoUri == null) {
+            loadDefaultImage()
             return
         }
+
+        val filename = etName.text.toString() + UUID.randomUUID().toString()
+        val ref = FirebaseStorage.getInstance().getReference("/images/$filename")
+        val progressDialog = ProgressDialog(this)
+        progressDialog.setTitle("Creating workgroup, just wait")
+        progressDialog.show()
+        ref.putFile(photoUri!!)
+            .addOnSuccessListener { taskSnapshot ->
+                ref.downloadUrl.addOnCompleteListener { taskSnapshot ->
+                    var url = taskSnapshot.result
+                    createNewWorkgroup(url.toString())
+                    Log.d("WorkspaceCreationAct", "Image added to firebase: ${url.toString()}")
+                }
+                Toast.makeText(applicationContext, "Workgroup created", Toast.LENGTH_SHORT).show()
+            }
+            .addOnProgressListener { taskSnapShot ->
+                btnCreateWorkgroup.isEnabled = false
+                val progress = 100 * taskSnapShot.bytesTransferred / taskSnapShot.totalByteCount
+                progressDialog.setMessage("% ${progress}")
+            }
     }
 
     private fun createNewWorkgroup(urlImage: String) {
@@ -97,33 +126,6 @@ class WorkspaceCreationActivity : AppCompatActivity() {
                     }
                 }
             })
-    }
-
-    private fun uploadImageWorkgroupToFirebase() {
-        if (photoUri == null) {
-            loadDefaultImage()
-            return
-        }
-
-        val filename = etName.text.toString() + UUID.randomUUID().toString()
-        val ref = FirebaseStorage.getInstance().getReference("/images/$filename")
-        val progressDialog = ProgressDialog(this)
-        progressDialog.setTitle("Creating workgroup, just wait")
-        progressDialog.show()
-        ref.putFile(photoUri!!)
-            .addOnSuccessListener { taskSnapshot ->
-                ref.downloadUrl.addOnCompleteListener { taskSnapshot ->
-                    var url = taskSnapshot.result
-                    createNewWorkgroup(url.toString())
-                    Log.d("WorkspaceCreationAct", "Image added to firebase: ${url.toString()}")
-                }
-                Toast.makeText(applicationContext, "Workgroup created", Toast.LENGTH_SHORT).show()
-            }
-            .addOnProgressListener { taskSnapShot ->
-                btnCreateWorkgroup.isEnabled = false
-                val progress = 100 * taskSnapShot.bytesTransferred / taskSnapShot.totalByteCount
-                progressDialog.setMessage("% ${progress}")
-            }
     }
 
     private fun loadDefaultImage() {
