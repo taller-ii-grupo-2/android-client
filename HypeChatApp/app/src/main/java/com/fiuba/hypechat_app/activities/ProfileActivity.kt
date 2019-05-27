@@ -12,6 +12,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.fiuba.hypechat_app.R
+import com.fiuba.hypechat_app.activities.user_registration.ChangePasswordActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_profile.*
@@ -29,7 +30,7 @@ class ProfileActivity : AppCompatActivity() {
         btnSelectphotoProfile.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
-            startActivityForResult(intent,0)
+            startActivityForResult(intent, 0)
         }
 
         setProfileFields()
@@ -46,7 +47,7 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun uploadImageWorkgroupToFirebase() {
-        if (photoUri== null) {
+        if (photoUri == null) {
             loadDefaultImage()
             return
         }
@@ -56,25 +57,26 @@ class ProfileActivity : AppCompatActivity() {
         progressDialog.setTitle("Creating workgroup, just wait")
         progressDialog.show()
         ref.putFile(photoUri!!)
-            .addOnSuccessListener {taskSnapshot ->
+            .addOnSuccessListener { taskSnapshot ->
 
-                ref.downloadUrl.addOnCompleteListener {taskSnapshot->
+                ref.downloadUrl.addOnCompleteListener { taskSnapshot ->
                     var url = taskSnapshot.result
                     updateProfileDataToSv(url.toString())
                     Log.d("ProfileAcitivity", "Image added to firebase: ${url.toString()}")
                 }
 
-                Toast.makeText(applicationContext,"Workgroup created", Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, "Workgroup created", Toast.LENGTH_SHORT).show()
             }
-            .addOnProgressListener {taskSnapShot->
+            .addOnProgressListener { taskSnapShot ->
                 btnCreateWorkgroup.isEnabled = false
-                val progress = 100 * taskSnapShot.bytesTransferred/taskSnapShot.totalByteCount
+                val progress = 100 * taskSnapShot.bytesTransferred / taskSnapShot.totalByteCount
                 progressDialog.setMessage("% ${progress}")
             }
     }
 
     private fun loadDefaultImage() {
-        val defaultImageUrl = "https://firebasestorage.googleapis.com/v0/b/hypechatapp-ebdd6.appspot.com/o/images%2FTrama.jpg?alt=media&token=4d0375e4-5a04-4041-8f4c-b6b4738b9b48"
+        val defaultImageUrl =
+            "https://firebasestorage.googleapis.com/v0/b/hypechatapp-ebdd6.appspot.com/o/images%2FTrama.jpg?alt=media&token=4d0375e4-5a04-4041-8f4c-b6b4738b9b48"
         updateProfileDataToSv(defaultImageUrl)
     }
 
@@ -106,7 +108,7 @@ class ProfileActivity : AppCompatActivity() {
             })*/
     }
 
-    private fun updateProfileDataToSv(url:String) {
+    private fun updateProfileDataToSv(url: String) {
 
     }
 
@@ -114,13 +116,13 @@ class ProfileActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == 0 && resultCode == Activity.RESULT_OK && data != null){
+        if (requestCode == 0 && resultCode == Activity.RESULT_OK && data != null) {
             Log.d("WorkspaceCreationAct", "Enter if")
             photoUri = data.data
             val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, photoUri)
             CircleImageViewProfile.setImageBitmap(bitmap)
-            btnSelectphotoProfile.background=null
-            btnSelectphotoProfile.text=null
+            btnSelectphotoProfile.background = null
+            btnSelectphotoProfile.text = null
 
         }
 

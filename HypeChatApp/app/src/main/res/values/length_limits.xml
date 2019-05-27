@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="MAX_ORGANIZATION_NAME_LENGTH">32</integer>
+    <integer name="MAX_CHANNEL_NAME_LENGTH">32</integer>
+    <integer name="MAX_MSG_BODY_LENGTH">1024</integer>
+    <integer name="MAX_ORGANIZATION_DESCRIPTION_LENGTH">1024</integer>
+    <integer name="MAX_ORGANIZATION_WELCOME_MSG_LENGTH">1024</integer>
+</resources>

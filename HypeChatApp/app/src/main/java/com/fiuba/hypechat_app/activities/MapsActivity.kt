@@ -42,6 +42,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.moveCamera(CameraUpdateFactory.newLatLng(fiuba))
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(fiuba, 1f))
 
+//        TODO check permision explicitly as suggested
         mMap.isMyLocationEnabled = true
     }
 }

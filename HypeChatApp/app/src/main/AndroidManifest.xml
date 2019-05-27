@@ -16,8 +16,8 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <application
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
@@ -37,12 +37,11 @@
         <meta-data
                 android:name="com.google.android.geo.API_KEY"
                 android:value="AIzaSyDzOccKRWJrGdkhvxkw7h3cg_inyHEhCys"/>
-
         <activity
                 android:name=".activities.MapsActivity"
                 android:label="@string/title_activity_maps">
         </activity>
-        <activity android:name=".activities.ChangePasswordActivity">
+        <activity android:name=".activities.user_registration.ChangePasswordActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value=".activities.ProfileActivity"/>
@@ -50,33 +49,29 @@
         <activity android:name=".activities.ProfileActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".activities.NavDrawerActivity"/>
+                    android:value=".activities.ChatActivity"/>
         </activity>
-        <activity android:name=".activities.WorkspaceCreationActivity">
+        <activity android:name=".activities.WorkspaceCreationActivity"
+        android:windowSoftInputMode="adjustResize">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".activities.WorkspaceActivity"/>
+                    android:value=".activities.WorkspacesListActivity"/>
         </activity>
         <activity
-                android:name=".activities.WorkspaceActivity"
+                android:name=".activities.WorkspacesListActivity"
                 android:theme="@style/Worskpace">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
         <activity
-                android:name=".activities.NavDrawerActivity"
+                android:name=".activities.ChatActivity"
                 android:label="@string/title_activity_nav_drawer"
                 android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".ForgotActivity">
+        <activity android:name=".activities.user_registration.ForgotActivity">
         </activity>
-        <activity android:name=".SignUpActivity">
+        <activity android:name=".activities.user_registration.SignUpActivity">
         </activity>
         <activity
-                android:name=".SignInActivity"
+                android:name=".activities.user_registration.SignInActivity"
                 android:theme="@style/SignInPage"
                 android:windowSoftInputMode="adjustResize">
             <intent-filter>
@@ -84,10 +79,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-        </activity>
-        <activity
-                android:name=".MainActivity"
-                android:label="@string/title_activity_login">
         </activity>
 
         <meta-data
@@ -111,5 +102,4 @@
             </intent-filter>
         </activity>
     </application>
-
 </manifest>

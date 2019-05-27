@@ -7,7 +7,7 @@ class DirectMessage {
     private var timestamp: String
     private var msg_body: String
 
-    constructor(author: String, timestamp: String, msg_body: String){
+    constructor(author: String, timestamp: String, msg_body: String) {
         this.author = author
         this.timestamp = timestamp
         this.msg_body = msg_body

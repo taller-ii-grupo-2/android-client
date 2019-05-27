@@ -11,7 +11,7 @@ class ChannelMessage {
     private var timestamp: String
     private var msg_body: String
 
-    constructor(organization: String, channel: String, author: String, timestamp: String, msg_body: String){
+    constructor(organization: String, channel: String, author: String, timestamp: String, msg_body: String) {
         this.organization = organization
         this.channel = channel
         this.author = author
