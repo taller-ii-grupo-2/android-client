@@ -31,8 +31,7 @@ import kotlinx.android.synthetic.main.chat_row.view.*
 import kotlinx.android.synthetic.main.nav_header_nav_drawer.view.*
 
 
-class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-
+class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +40,7 @@ class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         setSupportActionBar(toolbar)
 
 
-        val workGroup =  intent.getParcelableExtra<Workgroup>(WorkspaceActivity.GROUP_KEY)
+        val workGroup = intent.getParcelableExtra<Workgroup>(WorkspacesListActivity.GROUP_KEY)
         toolbar.title = workGroup.name
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
@@ -54,11 +53,8 @@ class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         toggle.syncState()
         navView.setNavigationItemSelectedListener(this)
 
-
         setDataIntoNavBar(navView, workGroup)
 
-
-        //fetchUsers()
         val adapter = GroupAdapter<ViewHolder>()
         rvChat.adapter = adapter
         receiveMessages(adapter)
@@ -67,19 +63,17 @@ class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             adapter.add(ChatItem(textToSend))
             SocketHandler.send(textToSend)
             txtChat.text = null
-
         }
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        val workGroup =  data!!.getParcelableExtra<Workgroup>(WorkspaceActivity.GROUP_KEY)
+        val workGroup = data!!.getParcelableExtra<Workgroup>(WorkspacesListActivity.GROUP_KEY)
     }
 
-    private fun setDataIntoNavBar(navView: NavigationView, workGroup:Workgroup) {
+    private fun setDataIntoNavBar(navView: NavigationView, workGroup: Workgroup) {
         val headerView = navView.getHeaderView(0)
         Picasso.get().load(workGroup.urlImage).into(headerView.imgNavLogo)
-        headerView.txtNameOrg.text =  workGroup.name
+        headerView.txtNameOrg.text = workGroup.name
         headerView.txtDescOrg.text = workGroup.description
 
         var navMenu = navView.menu
@@ -91,26 +85,21 @@ class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         directMessages.add("yo")
     }
 
-
     @Synchronized
-    private fun receiveMessages(adapter :GroupAdapter<ViewHolder>) {
+    private fun receiveMessages(adapter: GroupAdapter<ViewHolder>) {
         //var socket = SocketHandler.getSocket()
-        SocketHandler.getSocket().on("message"){
-                args ->
+        SocketHandler.getSocket().on("message") { args ->
             val getData = args.joinToString()
             Log.d("SocketHandler", getData)
             runOnUiThread {
                 adapter.add(ChatItem(getData))
             }
-
-
         }
     }
 
-
     private fun fetchUsers() {
         RetrofitClient.instance.getListUsers()
-            .enqueue(object: Callback<List<User>> {
+            .enqueue(object : Callback<List<User>> {
                 override fun onFailure(call: Call<List<User>>, t: Throwable) {
                     Toast.makeText(baseContext, t.message, Toast.LENGTH_LONG).show()
                 }
@@ -118,7 +107,6 @@ class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                 override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
                     if (response.isSuccessful) {
                         Toast.makeText(baseContext, response.message(), Toast.LENGTH_SHORT).show()
-
                     } else {
                         Toast.makeText(baseContext, "Failed to add item", Toast.LENGTH_SHORT).show()
                     }
@@ -136,46 +124,53 @@ class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        /*
+         * Inflate the menu; this adds items to the action bar if it is present.
+         */
         menuInflater.inflate(R.menu.nav_drawer, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+        /* Handle action bar item clicks here. The action bar will
+         * automatically handle clicks on the Home/Up button, so long
+         * as you specify a parent activity in AndroidManifest.xml.
+         */
         return when (item.itemId) {
             R.id.action_profile -> setProfileActivity()
+            R.id.action_maps -> showMapActivity()
 
             else -> super.onOptionsItemSelected(item)
         }
     }
 
+    private fun showMapActivity(): Boolean {
+        val intent = Intent(this, MapsActivity::class.java)
+        startActivityForResult(intent, 20)
+        return true
+    }
+
     private fun setProfileActivity(): Boolean {
         val intent = Intent(this, ProfileActivity::class.java)
-        startActivityForResult(intent,20)
+        startActivityForResult(intent, 20)
         return true
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
-
         }
+
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
-
-
 }
 
 
-class ChatItem(val text: String): Item<ViewHolder>(){
+class ChatItem(val text: String) : Item<ViewHolder>() {
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.itemView.txtChatRow.text = text
-
     }
 
     override fun getLayout(): Int {

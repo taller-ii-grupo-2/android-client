@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.fiuba.hypechat_app">
+
+    <!--
+         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but you must specify either coarse or fine
+         location permissions for the 'MyLocation' functionality.
+    -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
     <uses-permission android:name="android.permission.READ_PROFILE"/>
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
     <uses-permission android:name="android.permission.INTERNET"/>
-
-
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <application
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
@@ -15,7 +25,23 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".activities.ChangePasswordActivity">
+
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
+        -->
+        <meta-data
+                android:name="com.google.android.geo.API_KEY"
+                android:value="AIzaSyDzOccKRWJrGdkhvxkw7h3cg_inyHEhCys"/>
+        <activity
+                android:name=".activities.MapsActivity"
+                android:label="@string/title_activity_maps">
+        </activity>
+        <activity android:name=".activities.user_registration.ChangePasswordActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value=".activities.ProfileActivity"/>
@@ -23,35 +49,29 @@
         <activity android:name=".activities.ProfileActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".activities.NavDrawerActivity"/>
-
-
+                    android:value=".activities.ChatActivity"/>
         </activity>
-        <activity android:name=".activities.WorkspaceCreationActivity">
+        <activity android:name=".activities.WorkspaceCreationActivity"
+        android:windowSoftInputMode="adjustResize">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".activities.WorkspaceActivity"/>
+                    android:value=".activities.WorkspacesListActivity"/>
         </activity>
         <activity
-                android:name=".activities.WorkspaceActivity"
+                android:name=".activities.WorkspacesListActivity"
                 android:theme="@style/Worskpace">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
         <activity
-                android:name=".activities.NavDrawerActivity"
+                android:name=".activities.ChatActivity"
                 android:label="@string/title_activity_nav_drawer"
                 android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".ForgotActivity">
+        <activity android:name=".activities.user_registration.ForgotActivity">
         </activity>
-        <activity android:name=".SignUpActivity">
+        <activity android:name=".activities.user_registration.SignUpActivity">
         </activity>
         <activity
-                android:name=".SignInActivity"
+                android:name=".activities.user_registration.SignInActivity"
                 android:theme="@style/SignInPage"
                 android:windowSoftInputMode="adjustResize">
             <intent-filter>
@@ -59,10 +79,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-        </activity>
-        <activity
-                android:name=".MainActivity"
-                android:label="@string/title_activity_login">
         </activity>
 
         <meta-data
@@ -86,5 +102,4 @@
             </intent-filter>
         </activity>
     </application>
-
 </manifest>

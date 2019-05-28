@@ -5,4 +5,8 @@
           android:title="@string/action_profile"
           android:orderInCategory="100"
           app:showAsAction="never"/>
+    <item android:id="@+id/action_maps"
+          android:title="@string/action_maps"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
 </menu>
