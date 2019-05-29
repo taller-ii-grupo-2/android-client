@@ -16,6 +16,7 @@ import com.facebook.login.LoginResult
 import com.fiuba.hypechat_app.*
 import com.fiuba.hypechat_app.activities.WorkspacesListActivity
 import com.fiuba.hypechat_app.models.Moi
+import com.fiuba.hypechat_app.models.SocketHandler
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -35,6 +36,11 @@ class SignInActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
+
+        FirebaseAuth.getInstance().signOut()
+        val galletita = RetrofitClient.CookiesInterceptor()
+        galletita.clearCookie()
+        SocketHandler.disconnect()
 
         mAuth = FirebaseAuth.getInstance()
 

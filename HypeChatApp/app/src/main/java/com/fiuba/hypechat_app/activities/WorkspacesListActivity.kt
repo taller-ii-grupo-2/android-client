@@ -21,6 +21,7 @@ import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
+import kotlinx.android.synthetic.main.activity_workspace.*
 import kotlinx.android.synthetic.main.workgroup_row.view.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -29,7 +30,7 @@ import retrofit2.Response
 
 class WorkspacesListActivity : AppCompatActivity() {
 
-    private lateinit var context: Context
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,9 +40,18 @@ class WorkspacesListActivity : AppCompatActivity() {
         SocketHandler.setSocket(Moi.SERVER_URL, Moi.get_mail())
 
         fetchWorkgroupsPhotoAndName()
+
+        Hardcoding.setOnClickListener {
+            Moi.update_current_organization_name("Orga Test")
+            val intent = Intent(this, ChatActivity::class.java)
+            startActivity(intent)
+        }
+
+
     }
 
     private fun fetchWorkgroupsPhotoAndName() {
+        val adapter = GroupAdapter<ViewHolder>()
         RetrofitClient.instance.getWorkgroupNameAndPhotoProfile()
             .enqueue(object : Callback<List<WorkgroupPhotoAndName>> {
                 override fun onFailure(call: Call<List<WorkgroupPhotoAndName>>, t: Throwable) {
@@ -54,11 +64,11 @@ class WorkspacesListActivity : AppCompatActivity() {
                 ) {
                     if (response.isSuccessful) {
                         //Toast.makeText(baseContext, response.message(), Toast.LENGTH_SHORT).show()
-                        val adapter = GroupAdapter<ViewHolder>()
+
                         val workgroupList = response.body()
                         workgroupList?.forEach {
-                            if (it != null)
-                                adapter.add(WorkgroupItem(it))
+                            adapter.add(WorkgroupItem(it))
+                            rvWorkgroup.adapter = adapter
                         }
 
                     } else {
@@ -66,11 +76,24 @@ class WorkspacesListActivity : AppCompatActivity() {
                     }
                 }
             })
+
+             adapter.setOnItemClickListener { item, view ->
+
+            val workgroupItem = item as WorkgroupItem
+
+
+             //HARDCODING
+                 //Moi.update_current_organization(workgroupItem.currentWorkgroup.name)
+
+                // Moi.update_current_channel("general")
+
+            val intent = Intent(this, ChatActivity::class.java)
+            startActivity(intent)
+
+        }
     }
 
-    companion object {
-        val GROUP_KEY = "GROUP_KEY"
-    }
+
 
     // FUNCTION TO FETCH DATA WITH FIREBASE
     /* private fun fetchWorkgroups() {
@@ -154,5 +177,9 @@ class WorkgroupItem(val currentWorkgroup: WorkgroupPhotoAndName) : Item<ViewHold
 
     override fun getLayout(): Int {
         return R.layout.workgroup_row
+    }
+
+    fun getWorkgroupName():String{
+        return currentWorkgroup.name
     }
 }

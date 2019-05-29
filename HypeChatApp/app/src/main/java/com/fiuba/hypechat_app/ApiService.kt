@@ -1,5 +1,6 @@
 package com.fiuba.hypechat_app
 
+import com.fiuba.hypechat_app.models.Channel
 import com.fiuba.hypechat_app.models.Workgroup
 import retrofit2.Call
 import retrofit2.http.*
@@ -20,8 +21,8 @@ interface ApiService {
     @GET("user/organizations")
     fun getWorkgroupNameAndPhotoProfile(): Call<List<WorkgroupPhotoAndName>>
 
-    @GET("user/organizations/channels")
-    fun getWholeOrgaData(@Body org_name: String): Call<Workspace>
+    @POST("user/organizations/{name}/channels")
+    fun getWholeOrgaData(@Path ("name") organame: String): Call<Workspace>
 }
 
 class DefaultResponse(val message: String)
@@ -40,4 +41,5 @@ class User(
 
 class WorkgroupPhotoAndName(val urlImage: String, val name: String)
 
-class Workspace()
+class Workspace(val description: String, val welcomMsg: String, val urlImage:String, val channels: MutableList<String>, val members: MutableList<String>)
+

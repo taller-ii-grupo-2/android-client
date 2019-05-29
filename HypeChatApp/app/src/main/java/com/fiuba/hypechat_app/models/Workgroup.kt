@@ -7,4 +7,6 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 class Workgroup (val name:String, val description:String, val welcomMsg:String,val urlImage:String ):Parcelable{
     constructor() : this("", "", "", "")
+
+
 }
