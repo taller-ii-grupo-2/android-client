@@ -87,30 +87,49 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             listChannel, members
         )
 
+        //Guardo el objeto que recibo en Moi
         Moi.save_workspace(workspace)
 
+        //Seteo el texto de la toolbar con el nombre de la orga
         toolbar.title = Moi.get_current_organization_name()
         val headerView = navView.getHeaderView(0)
+
+        //Seteo logo de la orga
         Picasso.get().load(Moi.get_current_organization().urlImage).into(headerView.imgNavLogo)
 
+        //Seteo campos del NavView
         headerView.txtNameOrg.text = Moi.get_current_organization_name()
         headerView.txtDescOrg.text = Moi.get_current_organization().description
 
+        //Menu del NavView
         val navMenu = navView.menu
-        navMenu.add("Add channel") // Esto va fijo
+        navMenu.add (0,0,0,"Add channel").setIcon(R.mipmap.newchannel) // Esto va fijo, de aca se dispara el activity para agregar un channel
 
         val channels = navMenu.addSubMenu("Channels")
 
+        //Obtengo lista de canales por medio de Moi
         val listChannels = Moi.get_channel_list()
+
+        //Agrego lista de strings con miembros a Moi para despues mostrar en NavView
+        Moi.get_current_organization().setListMembers(workspace.members)
         var contador = 0
         listChannels.forEach {
             //channels.add(it.channel_name)
-            channels.add(0, contador, 0, it.channel_name)
+            channels.add(0, contador, 1, it.channel_name)
             contador++
         }
 
+        //Agrego miembros de la orga al NavView
         val directMessages = navMenu.addSubMenu("Direct Messages")
-        directMessages.add("Falta hacer en moi")
+        val listMembers = Moi.get_current_organization().getListMembers()
+        var contadorMiembros = 0
+        listMembers.forEach {
+            directMessages.add(0, contador,1,it)
+            contador++
+        }
+
+
+
     }
 
 
@@ -130,12 +149,9 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     response: Response<Workspace>
                 ) {
                     if (response.isSuccessful) {
-                        //Toast.makeText(baseContext, response.message(), Toast.LENGTH_SHORT).show()
 
                         workspace = response.body()!!
-
                         Moi.save_workspace(workspace!!)
-                        //adapter.add(WorkgroupItem(it))
 
 
                     } else {
@@ -174,22 +190,6 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    private fun fetchUsers() {
-        RetrofitClient.instance.getListUsers()
-            .enqueue(object : Callback<List<User>> {
-                override fun onFailure(call: Call<List<User>>, t: Throwable) {
-                    Toast.makeText(baseContext, t.message, Toast.LENGTH_LONG).show()
-                }
-
-                override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
-                    if (response.isSuccessful) {
-                        Toast.makeText(baseContext, response.message(), Toast.LENGTH_SHORT).show()
-                    } else {
-                        Toast.makeText(baseContext, "Failed to add item", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            })
-    }
 
     override fun onBackPressed() {
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
@@ -235,13 +235,30 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         val listChannels = Moi.get_channel_list()
+        val listMembers = Moi.get_current_organization().getListMembers()
         var contador = 0
+
         // Handle navigation view item clicks here.
+        if(item.order==0) {
+            Toast.makeText(this, "Add channel", Toast.LENGTH_SHORT).show()
+            return true
+        }
+
+
         listChannels.forEach {
-            when (item.itemId) {
+            when (item.itemId ) {
                 contador -> Toast.makeText(this, it.channel_name, Toast.LENGTH_SHORT).show()
+
             }
             contador++
+        }
+        listMembers.forEach {
+            when (item.itemId) {
+                contador -> Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+
+            }
+            contador++
+
         }
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)

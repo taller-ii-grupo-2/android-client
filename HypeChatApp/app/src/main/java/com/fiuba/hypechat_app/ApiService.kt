@@ -21,8 +21,8 @@ interface ApiService {
     @GET("user/organizations")
     fun getWorkgroupNameAndPhotoProfile(): Call<List<WorkgroupPhotoAndName>>
 
-    @POST("user/organizations/{name}/channels")
-    fun getWholeOrgaData(@Path ("name") organame: String): Call<Workspace>
+    @GET("organizations/users/(orgname)")
+    fun getWholeOrgaData(@Path ("orgname") organame: String): Call<Workspace>
 }
 
 class DefaultResponse(val message: String)
