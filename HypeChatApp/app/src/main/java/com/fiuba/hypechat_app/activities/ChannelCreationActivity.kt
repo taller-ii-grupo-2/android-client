@@ -48,6 +48,7 @@ class ChannelCreationActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                     if (response.isSuccessful) {
                         Toast.makeText(baseContext, "Successfully channel created", Toast.LENGTH_SHORT).show()
+                        Moi.add_channel(channel)
                         //A donde habria que ir ?
                     } else {
                         Toast.makeText(baseContext, "Failed to create channel", Toast.LENGTH_SHORT).show()

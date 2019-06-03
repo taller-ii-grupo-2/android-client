@@ -25,6 +25,7 @@ object Moi {
     private var channels = mutableListOf<Channel>()
 
     private var current_organization_name : String = ""
+    private  var current_dm_dest_name: String =""
     private  var current_organization : Workgroup = Workgroup()
     private  var current_channel : Channel = Channel("","")
     private  var current_dm_dest : DirectMessage = DirectMessage("","","")
@@ -81,13 +82,18 @@ object Moi {
 
     fun update_current_channel(channel: Channel) {
         current_channel = channel
-        //current_dm_dest = ""
+
     }
 
     fun update_current_dm_dest(dm_dest: DirectMessage) {
         current_dm_dest = dm_dest
         current_organization_name = ""
         //current_channel =""
+    }
+
+    fun update_current_dm_dest_name(dm_dest: String) {
+        current_dm_dest_name = dm_dest
+
     }
 
     fun get_current_organization_name(): String {
@@ -104,6 +110,10 @@ object Moi {
 
     fun get_current_dm_dest(): DirectMessage? {
         return this.current_dm_dest
+    }
+
+    fun get_current_dm_dest_name(): String? {
+        return this.current_dm_dest_name
     }
 
     fun save_workspace(workspace: Workspace) {
@@ -124,7 +134,11 @@ object Moi {
 
         channels.forEach {
             if (it.nameOrga == channel)
-                current_channel = it;
+                current_channel = it
         }
+    }
+
+    fun add_channel(channel: Channel){
+        channels.add(channel)
     }
 }

@@ -29,6 +29,10 @@ interface ApiService {
 
     @GET("/users")
     fun getUserProfile() : Call<UserProfile>
+
+    @PUT("/users")
+    fun updateUserProfile(@Body userprof:updateUserProfile) : Call<DefaultResponse>
+
 }
 
 class DefaultResponse(val message: String)
@@ -51,6 +55,13 @@ class UserProfile(
     val surname: String,
     val urlImageProfile: String,
     val workgroupAndChannelList: List<WorkgroupAndChannelList>
+)
+
+class updateUserProfile(
+    val username:String,
+    val name:String,
+    val surname: String,
+    val urlImageProfile: String
 )
 
 class WorkgroupAndChannelList (val workgroupName: String, val channelList:MutableList<String>)

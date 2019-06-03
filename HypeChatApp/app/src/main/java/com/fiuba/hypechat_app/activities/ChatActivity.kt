@@ -251,14 +251,20 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         listChannels.forEach {
             when (item.itemId ) {
-                contador -> Toast.makeText(this, it.channel_name, Toast.LENGTH_SHORT).show()
+                contador ->
+                        {   Toast.makeText(this, it.channel_name, Toast.LENGTH_SHORT).show()
+                            Moi.set_current_channel(it.channel_name)
+                        }
 
             }
             contador++
         }
         listMembers.forEach {
             when (item.itemId) {
-                contador -> Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                contador -> {
+                        Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                        Moi.update_current_dm_dest_name(it)
+                }
 
             }
             contador++

@@ -63,7 +63,7 @@ class ProfileActivity : AppCompatActivity() {
         val filename = etName.text.toString() + UUID.randomUUID().toString()
         val ref = FirebaseStorage.getInstance().getReference("/images/$filename")
         val progressDialog = ProgressDialog(this)
-        progressDialog.setTitle("Creating workgroup, just wait")
+        progressDialog.setTitle("Uploading changes, just wait")
         progressDialog.show()
         ref.putFile(photoUri!!)
             .addOnSuccessListener { taskSnapshot ->
@@ -74,7 +74,7 @@ class ProfileActivity : AppCompatActivity() {
                     Log.d("ProfileAcitivity", "Image added to firebase: ${url.toString()}")
                 }
 
-                Toast.makeText(applicationContext, "Workgroup created", Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, "Profile updated", Toast.LENGTH_SHORT).show()
             }
             .addOnProgressListener { taskSnapShot ->
                 btnCreateWorkgroup.isEnabled = false
@@ -106,7 +106,7 @@ class ProfileActivity : AppCompatActivity() {
                         loadFields( response.body()!!)
 
                     } else {
-                        Toast.makeText(baseContext, "Failed to add item", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(baseContext, "Failed to load profile ", Toast.LENGTH_SHORT).show()
                     }
                 }
             })
@@ -131,6 +131,26 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun updateProfileDataToSv(url: String) {
+        val username = etUsernameProfile.text.toString()
+        val name = etNameProfile.text.toString()
+        val surename = etSurnameProfile.text.toString()
+        val userProf = updateUserProfile(username,name,surename,url)
+        RetrofitClient.instance.updateUserProfile(userProf)
+            .enqueue(object: Callback<DefaultResponse> {
+                override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
+                    Toast.makeText(baseContext, t.message, Toast.LENGTH_LONG).show()
+                }
+
+                override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
+                    if (response.isSuccessful) {
+                        Toast.makeText(baseContext, "Profile updated", Toast.LENGTH_SHORT).show()
+
+                    } else {
+                        Toast.makeText(baseContext, "Failed to update profile ", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            })
+
 
     }
 
@@ -139,7 +159,6 @@ class ProfileActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == 0 && resultCode == Activity.RESULT_OK && data != null) {
-            Log.d("WorkspaceCreationAct", "Enter if")
             photoUri = data.data
             val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, photoUri)
             CircleImageViewProfile.setImageBitmap(bitmap)
