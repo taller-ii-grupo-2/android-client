@@ -45,9 +45,9 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
         )
 
-        MoiHardcoding(navView)
+       //MoiHardcoding(navView)
 
-        //val workspace= fetchWorgroupData()
+      //  val workspace= fetchWorgroupData()
 
         //val workGroup = intent.getParcelableExtra<Workgroup>(WorkspacesListActivity.GROUP_KEY)
         //toolbar.title = Moi.get_current_organization()
@@ -100,6 +100,7 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         //Seteo campos del NavView
         headerView.txtNameOrg.text = Moi.get_current_organization_name()
         headerView.txtDescOrg.text = Moi.get_current_organization().description
+        Moi.set_current_channel("general")
 
         //Menu del NavView
         val navMenu = navView.menu
@@ -127,6 +128,8 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             directMessages.add(0, contador,1,it)
             contador++
         }
+
+
 
 
 
@@ -241,6 +244,7 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         if(item.order==0) {
             Toast.makeText(this, "Add channel", Toast.LENGTH_SHORT).show()
+
             return true
         }
 

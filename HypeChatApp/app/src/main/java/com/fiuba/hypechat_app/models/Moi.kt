@@ -119,4 +119,12 @@ object Moi {
     fun get_channel_list(): MutableList<Channel> {
         return channels
     }
+
+    fun set_current_channel(channel: String) {
+
+        channels.forEach {
+            if (it.nameOrga == channel)
+                current_channel = it;
+        }
+    }
 }

@@ -21,8 +21,14 @@ interface ApiService {
     @GET("user/organizations")
     fun getWorkgroupNameAndPhotoProfile(): Call<List<WorkgroupPhotoAndName>>
 
-    @GET("organizations/users/(orgname)")
+    @GET("organizations/users/{orgname}")
     fun getWholeOrgaData(@Path ("orgname") organame: String): Call<Workspace>
+
+    @POST("/channel")
+    fun createChannel(@Body channel: Channel) : Call<DefaultResponse>
+
+    @GET("/users")
+    fun getUserProfile() : Call<UserProfile>
 }
 
 class DefaultResponse(val message: String)
@@ -38,6 +44,16 @@ class User(
     val name: String,
     val username: String
 )
+
+class UserProfile(
+    val username:String,
+    val name:String,
+    val surname: String,
+    val urlImageProfile: String,
+    val workgroupAndChannelList: List<WorkgroupAndChannelList>
+)
+
+class WorkgroupAndChannelList (val workgroupName: String, val channelList:MutableList<String>)
 
 class WorkgroupPhotoAndName(val urlImage: String, val name: String)
 

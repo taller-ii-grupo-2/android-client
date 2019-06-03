@@ -12,11 +12,17 @@ import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.fiuba.hypechat_app.R
+import com.fiuba.hypechat_app.RetrofitClient
+import com.fiuba.hypechat_app.User
+import com.fiuba.hypechat_app.UserProfile
 import com.fiuba.hypechat_app.activities.user_registration.ChangePasswordActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.activity_workspace_creation.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.*
 
 class ProfileActivity : AppCompatActivity() {
@@ -81,31 +87,31 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun setProfileFields() {
-        var user = FirebaseAuth.getInstance().currentUser
         getProfileDataFromSv()
-
-        //etMailProfile.setText(user?.email.toString())
-
 
     }
 
     private fun getProfileDataFromSv() {
-        /*
-        *  RetrofitClient.instance.getListUsers()
-            .enqueue(object: Callback<List<User>> {
-                override fun onFailure(call: Call<List<User>>, t: Throwable) {
+        RetrofitClient.instance.getUserProfile()
+            .enqueue(object: Callback<UserProfile> {
+                override fun onFailure(call: Call<UserProfile>, t: Throwable) {
                     Toast.makeText(baseContext, t.message, Toast.LENGTH_LONG).show()
                 }
 
-                override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
+                override fun onResponse(call: Call<UserProfile>, response: Response<UserProfile>) {
                     if (response.isSuccessful) {
-                        Toast.makeText(baseContext, response.message(), Toast.LENGTH_SHORT).show()
+                        loadFiels( response.body()!!)
 
                     } else {
                         Toast.makeText(baseContext, "Failed to add item", Toast.LENGTH_SHORT).show()
                     }
                 }
-            })*/
+            })
+    }
+
+    private fun loadFiels(body: UserProfile) {
+
+
     }
 
     private fun updateProfileDataToSv(url: String) {
