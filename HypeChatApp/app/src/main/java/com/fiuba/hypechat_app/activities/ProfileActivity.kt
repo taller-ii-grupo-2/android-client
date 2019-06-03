@@ -11,15 +11,18 @@ import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import com.fiuba.hypechat_app.R
-import com.fiuba.hypechat_app.RetrofitClient
-import com.fiuba.hypechat_app.User
-import com.fiuba.hypechat_app.UserProfile
+import com.fiuba.hypechat_app.*
 import com.fiuba.hypechat_app.activities.user_registration.ChangePasswordActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
+import com.squareup.picasso.Picasso
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.Item
+import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.activity_workspace_creation.*
+import kotlinx.android.synthetic.main.list_row.view.*
+import kotlinx.android.synthetic.main.workgroup_row.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -100,7 +103,7 @@ class ProfileActivity : AppCompatActivity() {
 
                 override fun onResponse(call: Call<UserProfile>, response: Response<UserProfile>) {
                     if (response.isSuccessful) {
-                        loadFiels( response.body()!!)
+                        loadFields( response.body()!!)
 
                     } else {
                         Toast.makeText(baseContext, "Failed to add item", Toast.LENGTH_SHORT).show()
@@ -109,7 +112,20 @@ class ProfileActivity : AppCompatActivity() {
             })
     }
 
-    private fun loadFiels(body: UserProfile) {
+    private fun loadFields(body: UserProfile) {
+        val adapter = GroupAdapter<ViewHolder>()
+        etNameProfile.setText(body.name)
+        etSurnameProfile.setText(body.surname)
+        etUsernameProfile.setText(body.username)
+        Picasso.get().load(body.urlImageProfile).into(CircleImageViewProfile)
+
+        body.workgroupAndChannelList.forEach {
+            adapter.add(ListItemWorkgroupAndChannel(it))
+            rvOrganizationsProfile.adapter = adapter
+        }
+
+
+
 
 
     }
@@ -134,12 +150,21 @@ class ProfileActivity : AppCompatActivity() {
 
 
     }
-/*
-* Armar interfaz basica de profile DONE
-Cargar imagen por defecto si no suben una
-Cargar localizacion gps
-Añadir al profile el servicio de cambio de pw
 
-*/
+}
+
+class ListItemWorkgroupAndChannel(var item: WorkgroupAndChannelList) : Item<ViewHolder>() {
+    override fun bind(viewHolder: ViewHolder, position: Int) {
+        viewHolder.itemView.txtWorkgroupList.text = item.workgroupName
+        var text : String =""
+        item.channelList.forEach {
+           text = it + "\n"
+        }
+        viewHolder.itemView.txtChannelList.text = text
+    }
+
+    override fun getLayout(): Int {
+        return R.layout.list_row
+    }
 
 }
