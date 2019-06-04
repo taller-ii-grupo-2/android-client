@@ -94,11 +94,11 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val headerView = navView.getHeaderView(0)
 
         //Seteo logo de la orga
-        Picasso.get().load(Moi.getCurrentOrganization().urlImage).into(headerView.imgNavLogo)
+        Picasso.get().load(Moi.getUrlImageForCurrentOrga()).into(headerView.imgNavLogo)
 
         //Seteo campos del NavView
         headerView.txtNameOrg.text = Moi.getCurrentOrganizationName()
-        headerView.txtDescOrg.text = Moi.getCurrentOrganization().description
+        headerView.txtDescOrg.text = Moi.getCurrentOrganizationsDescription()
         Moi.setCurrentChannel("general")
 
         //Menu del NavView

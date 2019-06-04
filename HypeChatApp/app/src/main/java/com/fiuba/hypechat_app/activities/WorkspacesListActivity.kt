@@ -41,7 +41,7 @@ class WorkspacesListActivity : AppCompatActivity() {
         fetchWorkgroupsPhotoAndName()
 
         Hardcoding.setOnClickListener {
-            Moi.updateCurrentOrganizationName("Orga Test")
+            Moi.updateCurrentOrganization("Orga Test")
             val intent = Intent(this, ChatActivity::class.java)
             startActivity(intent)
         }
@@ -79,7 +79,6 @@ class WorkspacesListActivity : AppCompatActivity() {
              adapter.setOnItemClickListener { item, view ->
 
             val workgroupItem = item as WorkgroupItem
-
 
              //HARDCODING
                  //Moi.updateCurrentOrganization(workgroupItem.currentWorkgroup.name)

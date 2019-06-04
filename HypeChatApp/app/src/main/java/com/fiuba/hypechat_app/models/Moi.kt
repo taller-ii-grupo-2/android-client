@@ -24,10 +24,10 @@ object Moi {
     private var organizations = mutableListOf<Workgroup>()
     private var channels = mutableListOf<Channel>()
 
-    private var current_organization_name : String = ""
+    private lateinit var current_organization : Workgroup
+    private var current_channel_name : String = ""
     private  var current_dm_dest_name: String =""
-    private  var current_organization : Workgroup = Workgroup()
-    private  var current_channel : Channel = Channel("","")
+    private  var current_channel : Channel = Channel("")
     private  var current_dm_dest : DirectMessage = DirectMessage("","","")
 
 
@@ -68,16 +68,11 @@ object Moi {
 
 
     fun saveChannel(organization_name: String, channel_name: String) {
-        channels.add(Channel(organization_name, channel_name))
-    }
-
-    fun updateCurrentOrganizationName(organization: String) {
-        current_organization_name = organization
-        //current_dm_dest = ""
+        channels.add(Channel(channel_name))
     }
 
     fun updateCurrentOrganization(organization: Workgroup) {
-        current_organization= organization
+        current_organization = organization
         //current_dm_dest = ""
     }
 
@@ -88,8 +83,6 @@ object Moi {
 
     fun updateCurrentDmDest(dm_dest: DirectMessage) {
         current_dm_dest = dm_dest
-        current_organization_name = ""
-        //current_channel =""
     }
 
     fun updateCurrentDmDestName(dm_dest: String) {
@@ -98,7 +91,7 @@ object Moi {
     }
 
     fun getCurrentOrganizationName(): String {
-        return this.current_organization_name
+        return this.current_organization.name
     }
 
     fun getCurrentOrganization(): Workgroup {
@@ -118,14 +111,10 @@ object Moi {
     }
 
     fun saveWorkspace(workspace: Workspace) {
+        channels.clear()
         workspace.channels.forEach {
-            channels.add(Channel(current_organization_name,it))
+            channels.add(Channel(it))
         }
-
-        organizations.add(Workgroup(current_organization_name,workspace.description,
-            workspace.welcomMsg,workspace.urlImage))
-
-        this.updateCurrentOrganization(organizations.get(organizations.lastIndex))
     }
 
     fun getChannelList(): MutableList<Channel> {
@@ -133,14 +122,18 @@ object Moi {
     }
 
     fun setCurrentChannel(channel: String) {
-
-        channels.forEach {
-            if (it.nameOrga == channel)
-                current_channel = it
-        }
+        current_channel_name = channel
     }
 
     fun addChannel(channel: Channel){
         channels.add(channel)
+    }
+
+    fun getUrlImageForCurrentOrga(): String {
+        return current_organization.urlImage
+    }
+
+    fun getCurrentOrganizationsDescription(): String {
+        return current_organization.description
     }
 }
