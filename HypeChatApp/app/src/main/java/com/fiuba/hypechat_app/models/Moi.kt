@@ -10,8 +10,8 @@ object Moi {
      * Oneself here denotes the logged user.
      */
 
-    val SERVER_URL = "https://hypechatgrupo2-app-server-stag.herokuapp.com/"
-    //val SERVER_URL = "http://192.168.2.110:5000/"
+//    val SERVER_URL = "https://hypechatgrupo2-app-server-stag.herokuapp.com/"
+    val SERVER_URL = "http://192.168.2.110:5000/"
 
     /* personal info */
 //    private lateinit var username: String
@@ -31,11 +31,11 @@ object Moi {
     private  var current_dm_dest : DirectMessage = DirectMessage("","","")
 
 
-    fun save_dm(author: String, timestamp: String, body: String) {
+    fun saveDm(author: String, timestamp: String, body: String) {
         dm_messages.add(DirectMessage(author, timestamp, body))
     }
 
-    fun get_dms_from_author(author: String): MutableList<DirectMessage> {
+    fun getDmsFromAuthor(author: String): MutableList<DirectMessage> {
         var solicited_msgs = mutableListOf<DirectMessage>()
         for (msg in dm_messages)
             if (msg.is_authored_by(author)) {
@@ -44,11 +44,11 @@ object Moi {
         return solicited_msgs
     }
 
-    fun add_channel_message(organization: String, channel: String, author: String, timestamp: String, body: String) {
+    fun addChannelMessage(organization: String, channel: String, author: String, timestamp: String, body: String) {
         channel_messages.add(ChannelMessage(organization, channel, author, timestamp, body))
     }
 
-    fun get_messages_from_channel(organization: String, channel: String): MutableList<ChannelMessage> {
+    fun getMessagesFromChannel(organization: String, channel: String): MutableList<ChannelMessage> {
         var solicited_msgs = mutableListOf<ChannelMessage>()
         for (msg in channel_messages)
             if (msg.is_from(organization, channel))
@@ -56,7 +56,7 @@ object Moi {
         return solicited_msgs
     }
 
-    fun get_mail(): String {
+    fun getMail(): String {
         var mail = ""
         try {
             mail = FirebaseAuth.getInstance().currentUser!!.email.toString()
@@ -67,70 +67,72 @@ object Moi {
     }
 
 
-    fun save_channel(organization_name: String, channel_name: String) {
+    fun saveChannel(organization_name: String, channel_name: String) {
         channels.add(Channel(organization_name, channel_name))
     }
 
-    fun update_current_organization_name(organization: String) {
+    fun updateCurrentOrganizationName(organization: String) {
         current_organization_name = organization
         //current_dm_dest = ""
     }
-    fun update_current_organization(organization: Workgroup) {
+
+    fun updateCurrentOrganization(organization: Workgroup) {
         current_organization= organization
         //current_dm_dest = ""
     }
 
-    fun update_current_channel(channel: Channel) {
+    fun updateCurrentChannel(channel: Channel) {
         current_channel = channel
 
     }
 
-    fun update_current_dm_dest(dm_dest: DirectMessage) {
+    fun updateCurrentDmDest(dm_dest: DirectMessage) {
         current_dm_dest = dm_dest
         current_organization_name = ""
         //current_channel =""
     }
 
-    fun update_current_dm_dest_name(dm_dest: String) {
+    fun updateCurrentDmDestName(dm_dest: String) {
         current_dm_dest_name = dm_dest
 
     }
 
-    fun get_current_organization_name(): String {
+    fun getCurrentOrganizationName(): String {
         return this.current_organization_name
     }
 
-    fun get_current_organization(): Workgroup {
+    fun getCurrentOrganization(): Workgroup {
         return this.current_organization
     }
 
-    fun get_current_channel(): Channel? {
+    fun getCurrentChannel(): Channel? {
         return this.current_channel
     }
 
-    fun get_current_dm_dest(): DirectMessage? {
+    fun getCurrentDmDest(): DirectMessage? {
         return this.current_dm_dest
     }
 
-    fun get_current_dm_dest_name(): String? {
+    fun getCurrentDmDestName(): String? {
         return this.current_dm_dest_name
     }
 
-    fun save_workspace(workspace: Workspace) {
+    fun saveWorkspace(workspace: Workspace) {
         workspace.channels.forEach {
             channels.add(Channel(current_organization_name,it))
         }
 
-        organizations.add(Workgroup(current_organization_name,workspace.description,workspace.welcomMsg,workspace.urlImage))
+        organizations.add(Workgroup(current_organization_name,workspace.description,
+            workspace.welcomMsg,workspace.urlImage))
 
-        this.update_current_organization(organizations.get(organizations.lastIndex))
+        this.updateCurrentOrganization(organizations.get(organizations.lastIndex))
     }
 
-    fun get_channel_list(): MutableList<Channel> {
+    fun getChannelList(): MutableList<Channel> {
         return channels
     }
 
-    fun set_current_channel(channel: String) {
+    fun setCurrentChannel(channel: String) {
 
         channels.forEach {
             if (it.nameOrga == channel)
@@ -138,7 +140,7 @@ object Moi {
         }
     }
 
-    fun add_channel(channel: Channel){
+    fun addChannel(channel: Channel){
         channels.add(channel)
     }
 }

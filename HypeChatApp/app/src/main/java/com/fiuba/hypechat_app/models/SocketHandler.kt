@@ -21,17 +21,17 @@ object SocketHandler {
 
     @Synchronized
     fun send(msg: String) {
-        put_msg_together(msg)
+        putMsgTogether(msg)
 
         socket?.emit("message", msg)
         Log.d("SocketHandler", msg)
     }
 
-    private fun put_msg_together(msg: String) {
+    private fun putMsgTogether(msg: String) {
         var asdf = JSONObject()
-        asdf.put("organization", Moi.get_current_organization())
-        asdf.put("channel", Moi.get_current_channel())
-        asdf.put("dm_dest", Moi.get_current_dm_dest())
+        asdf.put("organization", Moi.getCurrentOrganization())
+        asdf.put("channel", Moi.getCurrentChannel())
+        asdf.put("dm_dest", Moi.getCurrentDmDest())
         asdf.put("body", msg)
     }
 

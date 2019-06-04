@@ -17,7 +17,6 @@ import com.fiuba.hypechat_app.*
 
 import com.fiuba.hypechat_app.models.Moi
 import com.fiuba.hypechat_app.models.SocketHandler
-import com.fiuba.hypechat_app.models.Workgroup
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
@@ -50,7 +49,7 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
       //  val workspace= fetchWorgroupData()
 
         //val workGroup = intent.getParcelableExtra<Workgroup>(WorkspacesListActivity.GROUP_KEY)
-        //toolbar.title = Moi.get_current_organization()
+        //toolbar.title = Moi.getCurrentOrganization()
 
 
         drawerLayout.addDrawerListener(toggle)
@@ -88,19 +87,19 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         )
 
         //Guardo el objeto que recibo en Moi
-        Moi.save_workspace(workspace)
+        Moi.saveWorkspace(workspace)
 
         //Seteo el texto de la toolbar con el nombre de la orga
-        toolbar.title = Moi.get_current_organization_name()
+        toolbar.title = Moi.getCurrentOrganizationName()
         val headerView = navView.getHeaderView(0)
 
         //Seteo logo de la orga
-        Picasso.get().load(Moi.get_current_organization().urlImage).into(headerView.imgNavLogo)
+        Picasso.get().load(Moi.getCurrentOrganization().urlImage).into(headerView.imgNavLogo)
 
         //Seteo campos del NavView
-        headerView.txtNameOrg.text = Moi.get_current_organization_name()
-        headerView.txtDescOrg.text = Moi.get_current_organization().description
-        Moi.set_current_channel("general")
+        headerView.txtNameOrg.text = Moi.getCurrentOrganizationName()
+        headerView.txtDescOrg.text = Moi.getCurrentOrganization().description
+        Moi.setCurrentChannel("general")
 
         //Menu del NavView
         val navMenu = navView.menu
@@ -109,10 +108,10 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val channels = navMenu.addSubMenu("Channels")
 
         //Obtengo lista de canales por medio de Moi
-        val listChannels = Moi.get_channel_list()
+        val listChannels = Moi.getChannelList()
 
         //Agrego lista de strings con miembros a Moi para despues mostrar en NavView
-        Moi.get_current_organization().setListMembers(workspace.members)
+        Moi.getCurrentOrganization().setListMembers(workspace.members)
         var contador = 0
         listChannels.forEach {
             //channels.add(it.channel_name)
@@ -122,7 +121,7 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         //Agrego miembros de la orga al NavView
         val directMessages = navMenu.addSubMenu("Direct Messages")
-        val listMembers = Moi.get_current_organization().getListMembers()
+        val listMembers = Moi.getCurrentOrganization().getListMembers()
         var contadorMiembros = 0
         listMembers.forEach {
             directMessages.add(0, contador,1,it)
@@ -140,8 +139,8 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         var workspace: Workspace? = null
         val adapter = GroupAdapter<ViewHolder>()
 
-        Log.d("MOI PRINT ->>>", Moi.get_current_organization_name())
-        RetrofitClient.instance.getWholeOrgaData(Moi.get_current_organization_name())
+        Log.d("MOI PRINT ->>>", Moi.getCurrentOrganizationName())
+        RetrofitClient.instance.getWholeOrgaData(Moi.getCurrentOrganizationName())
             .enqueue(object : Callback<Workspace> {
                 override fun onFailure(call: Call<Workspace>, t: Throwable) {
                     Toast.makeText(baseContext, "Error loading workgroup data", Toast.LENGTH_LONG).show()
@@ -154,7 +153,7 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     if (response.isSuccessful) {
 
                         workspace = response.body()!!
-                        Moi.save_workspace(workspace!!)
+                        Moi.saveWorkspace(workspace!!)
 
 
                     } else {
@@ -169,7 +168,7 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun setDataIntoNavBar(navView: NavigationView, workspace: Workspace) {
         val headerView = navView.getHeaderView(0)
         Picasso.get().load(workspace.urlImage).into(headerView.imgNavLogo)
-        headerView.txtNameOrg.text = Moi.get_current_organization_name()
+        headerView.txtNameOrg.text = Moi.getCurrentOrganizationName()
         headerView.txtDescOrg.text = workspace.description
 
         var navMenu = navView.menu
@@ -237,8 +236,8 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        val listChannels = Moi.get_channel_list()
-        val listMembers = Moi.get_current_organization().getListMembers()
+        val listChannels = Moi.getChannelList()
+        val listMembers = Moi.getCurrentOrganization().getListMembers()
         var contador = 0
 
         // Handle navigation view item clicks here.
@@ -253,7 +252,7 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             when (item.itemId ) {
                 contador ->
                         {   Toast.makeText(this, it.channel_name, Toast.LENGTH_SHORT).show()
-                            Moi.set_current_channel(it.channel_name)
+                            Moi.setCurrentChannel(it.channel_name)
                         }
 
             }
@@ -263,7 +262,7 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             when (item.itemId) {
                 contador -> {
                         Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
-                        Moi.update_current_dm_dest_name(it)
+                        Moi.updateCurrentDmDestName(it)
                 }
 
             }

@@ -1,6 +1,5 @@
 package com.fiuba.hypechat_app.activities
 
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -37,12 +36,12 @@ class WorkspacesListActivity : AppCompatActivity() {
         setContentView(R.layout.activity_workspace)
 
         verifyUserIsSignedIn()
-        SocketHandler.setSocket(Moi.SERVER_URL, Moi.get_mail())
+        SocketHandler.setSocket(Moi.SERVER_URL, Moi.getMail())
 
         fetchWorkgroupsPhotoAndName()
 
         Hardcoding.setOnClickListener {
-            Moi.update_current_organization_name("Orga Test")
+            Moi.updateCurrentOrganizationName("Orga Test")
             val intent = Intent(this, ChatActivity::class.java)
             startActivity(intent)
         }
@@ -83,9 +82,9 @@ class WorkspacesListActivity : AppCompatActivity() {
 
 
              //HARDCODING
-                 //Moi.update_current_organization(workgroupItem.currentWorkgroup.name)
+                 //Moi.updateCurrentOrganization(workgroupItem.currentWorkgroup.name)
 
-                // Moi.update_current_channel("general")
+                // Moi.updateCurrentChannel("general")
 
             val intent = Intent(this, ChatActivity::class.java)
             startActivity(intent)
@@ -117,9 +116,9 @@ class WorkspacesListActivity : AppCompatActivity() {
 
                      val workgroupItem = item as WorkgroupItem
                      val intent = Intent(view.context, ChatActivity::class.java)
-                     Moi.update_current_organization(workgroupItem.currentWorkgroup.name)
+                     Moi.updateCurrentOrganization(workgroupItem.currentWorkgroup.name)
  //                    TODO cambiar esto de channel.
-                     Moi.update_current_channel("general")
+                     Moi.updateCurrentChannel("general")
                      intent.putExtra(GROUP_KEY, workgroupItem.currentWorkgroup)
                      startActivity(intent)
 
