@@ -21,18 +21,18 @@ object SocketHandler {
 
     @Synchronized
     fun send(msg: String) {
-        put_msg_together(msg)
-
-        socket?.emit("message", msg)
+        socket?.emit("message", putMsgTogether(msg))
         Log.d("SocketHandler", msg)
     }
 
-    private fun put_msg_together(msg: String) {
-        var asdf = JSONObject()
-        asdf.put("organization", Moi.get_current_organization())
-        asdf.put("channel", Moi.get_current_channel())
-        asdf.put("dm_dest", Moi.get_current_dm_dest())
+    private fun putMsgTogether(msg: String): String {
+        val asdf = JSONObject()
+        asdf.put("organization", Moi.getCurrentOrganization())
+        asdf.put("channel", Moi.getCurrentChannelName())
+        asdf.put("dm_dest", Moi.getCurrentDmDest())
         asdf.put("body", msg)
+
+        return asdf.toString()
     }
 
     fun getSocket(): Socket {

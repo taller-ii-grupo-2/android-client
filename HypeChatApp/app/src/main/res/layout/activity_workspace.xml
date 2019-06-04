@@ -14,4 +14,7 @@
             android:id="@+id/rvWorkgroup"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"/>
+
+    <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+    android:id="@+id/Hardcoding" android:text="Hardcoding" android:gravity="bottom"/>
 </RelativeLayout>

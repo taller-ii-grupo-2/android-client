@@ -16,6 +16,7 @@ import com.facebook.login.LoginResult
 import com.fiuba.hypechat_app.*
 import com.fiuba.hypechat_app.activities.WorkspacesListActivity
 import com.fiuba.hypechat_app.models.Moi
+import com.fiuba.hypechat_app.models.SocketHandler
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -35,6 +36,11 @@ class SignInActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
+
+        FirebaseAuth.getInstance().signOut()
+        val galletita = RetrofitClient.CookiesInterceptor()
+        galletita.clearCookie()
+        SocketHandler.disconnect()
 
         mAuth = FirebaseAuth.getInstance()
 
@@ -152,14 +158,21 @@ class SignInActivity : AppCompatActivity() {
         val email = user?.email
         val uid = user?.uid
         val ref = FirebaseDatabase.getInstance().getReference("/users/$uid")
-
-        /* val userFb = User(email!!,name!!, -34.618625, -58.368508 )
+/*
+*  val longitude: Double,
+    val latitude: Double,
+    val mail: String,
+    val urlImageProfile: String,
+    val surname: String,
+    val name: String,
+    val username: String*/
+        val userFb = User(-58.368508,-34.618625, email!!,"https://firebasestorage.googleapis.com/v0/b/hypechatapp-ebdd6.appspot.com/o/images%2Findex.png?alt=media&token=b43e8b85-6ad9-4659-8caf-df3e50a62c2e","" ,"" ,email!! )
          ref.setValue(userFb)
              .addOnSuccessListener {
                  Log.d("SignInActivity", "User added to database")
              }
 
-         sendDataToSv(userFb)*/
+         sendDataToSv(userFb)
 
         val tokenUser = FirebaseAuth.getInstance().currentUser!!.getIdToken(true)
             .addOnCompleteListener {
@@ -180,16 +193,17 @@ class SignInActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                     if (response.isSuccessful) {
                         Toast.makeText(baseContext, "Successfully Logged in", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(baseContext, WorkspacesListActivity::class.java )
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        startActivity(intent)
 
                     } else {
                         Toast.makeText(baseContext, "Failed to log in", Toast.LENGTH_SHORT).show()
                     }
                 }
             })
-        val intent = Intent(this, WorkspacesListActivity::class.java)
-        // Dont allow go back
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
-        startActivity(intent)
+
+
     }
 
     private fun sendDataToSv(user: User) {
@@ -203,6 +217,9 @@ class SignInActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                     if (response.isSuccessful) {
                         Toast.makeText(baseContext, "Successfully Added", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(baseContext, WorkspacesListActivity::class.java )
+                        //intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        startActivity(intent)
                     } else {
                         Toast.makeText(baseContext, "Failed to add item", Toast.LENGTH_SHORT).show()
                     }

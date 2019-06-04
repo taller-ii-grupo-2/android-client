@@ -13,12 +13,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import android.widget.Toast
+import com.fiuba.hypechat_app.*
 
-import com.fiuba.hypechat_app.R
-import com.fiuba.hypechat_app.RetrofitClient
-import com.fiuba.hypechat_app.User
+import com.fiuba.hypechat_app.models.Moi
 import com.fiuba.hypechat_app.models.SocketHandler
-import com.fiuba.hypechat_app.models.Workgroup
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
@@ -27,6 +25,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import com.xwray.groupie.Item
+import kotlinx.android.synthetic.main.app_bar_nav_drawer.*
 import kotlinx.android.synthetic.main.chat_row.view.*
 import kotlinx.android.synthetic.main.nav_header_nav_drawer.view.*
 
@@ -39,21 +38,20 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-
-        val workGroup = intent.getParcelableExtra<Workgroup>(WorkspacesListActivity.GROUP_KEY)
-        toolbar.title = workGroup.name
-
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val toggle = ActionBarDrawerToggle(
             this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
         )
 
+        fetchWorgroupData()
+        setView(navView)
+
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
         navView.setNavigationItemSelectedListener(this)
 
-        setDataIntoNavBar(navView, workGroup)
+        //setDataIntoNavBar(navView, workspace)
 
         val adapter = GroupAdapter<ViewHolder>()
         rvChat.adapter = adapter
@@ -66,15 +64,79 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        val workGroup = data!!.getParcelableExtra<Workgroup>(WorkspacesListActivity.GROUP_KEY)
+    private fun setView(navView: NavigationView) {
+        //Seteo el texto de la toolbar con el nombre de la orga
+        toolbar.title = Moi.getCurrentOrganizationName()
+        toolbar.subtitle = Moi.getCurrentChannelName()
+        val headerView = navView.getHeaderView(0)
+
+        //Seteo logo de la orga
+        Picasso.get().load(Moi.getUrlImageForCurrentOrga()).into(headerView.imgNavLogo)
+
+        //Seteo campos del NavView
+        headerView.txtNameOrg.text = Moi.getCurrentOrganizationName()
+        headerView.txtDescOrg.text = Moi.getCurrentOrganizationsDescription()
+
+        //Menu del NavView
+        val navMenu = navView.menu
+        navMenu.add(0, 0, 0, "Add channel")
+            .setIcon(R.mipmap.newchannel) // Esto va fijo, de aca se dispara el activity para agregar un channel
+
+        val channels = navMenu.addSubMenu("Channels")
+
+        //Obtengo lista de canales por medio de Moi
+        val listChannels = Moi.getChannelList()
+
+        var contador = 0
+        listChannels.forEach {
+            //channels.add(it.channel_name)
+            channels.add(0, contador, 1, it.channel_name)
+            contador++
+        }
+
+        //Agrego miembros de la orga al NavView
+        val directMessages = navMenu.addSubMenu("Direct Messages")
+        val listMembers = Moi.getCurrentOrganization().getListMembers()
+        var contadorMiembros = 0
+        listMembers.forEach {
+            directMessages.add(0, contador, 1, it)
+            contador++
+        }
     }
 
-    private fun setDataIntoNavBar(navView: NavigationView, workGroup: Workgroup) {
+
+    private fun fetchWorgroupData() {
+        var workspace: Workspace? = null
+        val adapter = GroupAdapter<ViewHolder>()
+
+        Log.d("MOI PRINT ->>>", Moi.getOrgaNameForOrgaFetch())
+        RetrofitClient.instance.getWholeOrgaData(Moi.getOrgaNameForOrgaFetch())
+            .enqueue(object : Callback<Workspace> {
+                override fun onFailure(call: Call<Workspace>, t: Throwable) {
+                    Toast.makeText(baseContext, "Error loading workgroup data", Toast.LENGTH_LONG).show()
+                }
+
+                override fun onResponse(
+                    call: Call<Workspace>,
+                    response: Response<Workspace>
+                ) {
+                    if (response.isSuccessful) {
+
+                        workspace = response.body()!!
+                        Moi.saveWorkspace(workspace!!)
+                    } else {
+                        Toast.makeText(baseContext, "Failed to add item", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            })
+    }
+
+
+    private fun setDataIntoNavBar(navView: NavigationView, workspace: Workspace) {
         val headerView = navView.getHeaderView(0)
-        Picasso.get().load(workGroup.urlImage).into(headerView.imgNavLogo)
-        headerView.txtNameOrg.text = workGroup.name
-        headerView.txtDescOrg.text = workGroup.description
+        Picasso.get().load(workspace.urlImage).into(headerView.imgNavLogo)
+        headerView.txtNameOrg.text = Moi.getCurrentOrganizationName()
+        headerView.txtDescOrg.text = workspace.description
 
         var navMenu = navView.menu
         navMenu.add("Add channel")
@@ -97,22 +159,6 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    private fun fetchUsers() {
-        RetrofitClient.instance.getListUsers()
-            .enqueue(object : Callback<List<User>> {
-                override fun onFailure(call: Call<List<User>>, t: Throwable) {
-                    Toast.makeText(baseContext, t.message, Toast.LENGTH_LONG).show()
-                }
-
-                override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
-                    if (response.isSuccessful) {
-                        Toast.makeText(baseContext, response.message(), Toast.LENGTH_SHORT).show()
-                    } else {
-                        Toast.makeText(baseContext, "Failed to add item", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            })
-    }
 
     override fun onBackPressed() {
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
@@ -157,8 +203,35 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        val listChannels = Moi.getChannelList()
+        val listMembers = Moi.getCurrentOrganization().getListMembers()
+        var contador = 0
+
         // Handle navigation view item clicks here.
-        when (item.itemId) {
+        if (item.order == 0) {
+            Toast.makeText(this, "Add channel", Toast.LENGTH_SHORT).show()
+
+            return true
+        }
+
+
+        listChannels.forEach {
+            when (item.itemId) {
+                contador -> {
+                    Toast.makeText(this, it.channel_name, Toast.LENGTH_SHORT).show()
+                    Moi.setCurrentChannel(it.channel_name)
+                }
+            }
+            contador++
+        }
+        listMembers.forEach {
+            when (item.itemId) {
+                contador -> {
+                    Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                    Moi.updateCurrentDmDestName(it)
+                }
+            }
+            contador++
         }
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
@@ -166,7 +239,6 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 }
-
 
 class ChatItem(val text: String) : Item<ViewHolder>() {
     override fun bind(viewHolder: ViewHolder, position: Int) {
@@ -177,4 +249,5 @@ class ChatItem(val text: String) : Item<ViewHolder>() {
         return R.layout.chat_row
     }
 }
+
 

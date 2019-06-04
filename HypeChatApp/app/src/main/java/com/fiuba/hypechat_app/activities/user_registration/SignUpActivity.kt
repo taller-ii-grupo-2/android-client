@@ -36,6 +36,7 @@ private const val PERMISSION_REQUEST = 10
 class SignUpActivity : AppCompatActivity() {
 
     private lateinit var mAuth: FirebaseAuth
+    private lateinit var mAuthDatabase: FirebaseDatabase
     lateinit var locationManager: LocationManager
     private var hasGps = false
     private var hasNetwork = false
@@ -53,6 +54,7 @@ class SignUpActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
         mAuth = FirebaseAuth.getInstance()
+        mAuthDatabase = FirebaseDatabase.getInstance()
         signupbtn.isEnabled = false
 
         signupbtn.setOnClickListener {
