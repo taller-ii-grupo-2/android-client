@@ -79,7 +79,8 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         //Menu del NavView
         val navMenu = navView.menu
-        navMenu.add (0,0,0,"Add channel").setIcon(R.mipmap.newchannel) // Esto va fijo, de aca se dispara el activity para agregar un channel
+        navMenu.add(0, 0, 0, "Add channel")
+            .setIcon(R.mipmap.newchannel) // Esto va fijo, de aca se dispara el activity para agregar un channel
 
         val channels = navMenu.addSubMenu("Channels")
 
@@ -98,14 +99,9 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val listMembers = Moi.getCurrentOrganization().getListMembers()
         var contadorMiembros = 0
         listMembers.forEach {
-            directMessages.add(0, contador,1,it)
+            directMessages.add(0, contador, 1, it)
             contador++
         }
-
-
-
-
-
     }
 
 
@@ -128,8 +124,6 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                         workspace = response.body()!!
                         Moi.saveWorkspace(workspace!!)
-
-
                     } else {
                         Toast.makeText(baseContext, "Failed to add item", Toast.LENGTH_SHORT).show()
                     }
@@ -214,7 +208,7 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         var contador = 0
 
         // Handle navigation view item clicks here.
-        if(item.order==0) {
+        if (item.order == 0) {
             Toast.makeText(this, "Add channel", Toast.LENGTH_SHORT).show()
 
             return true
@@ -222,34 +216,28 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
         listChannels.forEach {
-            when (item.itemId ) {
-                contador ->
-                        {   Toast.makeText(this, it.channel_name, Toast.LENGTH_SHORT).show()
-                            Moi.setCurrentChannel(it.channel_name)
-                        }
-
+            when (item.itemId) {
+                contador -> {
+                    Toast.makeText(this, it.channel_name, Toast.LENGTH_SHORT).show()
+                    Moi.setCurrentChannel(it.channel_name)
+                }
             }
             contador++
         }
         listMembers.forEach {
             when (item.itemId) {
                 contador -> {
-                        Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
-                        Moi.updateCurrentDmDestName(it)
+                    Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                    Moi.updateCurrentDmDestName(it)
                 }
-
             }
             contador++
-
         }
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
-
     }
-
-
 }
 
 class ChatItem(val text: String) : Item<ViewHolder>() {

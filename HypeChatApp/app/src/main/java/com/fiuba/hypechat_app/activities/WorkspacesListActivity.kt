@@ -30,7 +30,6 @@ import retrofit2.Response
 class WorkspacesListActivity : AppCompatActivity() {
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_workspace)
@@ -68,62 +67,16 @@ class WorkspacesListActivity : AppCompatActivity() {
                 }
             })
 
-             adapter.setOnItemClickListener { item, view ->
+        adapter.setOnItemClickListener { item, view ->
 
             val workgroupItem = item as WorkgroupItem
-                 Moi.setOrgaNameForOrgaFetch(workgroupItem.getWorkgroupName())
-                 Moi.setCurrentChannel("general")
-
-             //HARDCODING
-                 //Moi.updateCurrentOrganization(workgroupItem.currentWorkgroup.name)
-
-                // Moi.updateCurrentChannel("general")
+            Moi.setOrgaNameForOrgaFetch(workgroupItem.getWorkgroupName())
+            Moi.setCurrentChannel("general")
 
             val intent = Intent(this, ChatActivity::class.java)
             startActivity(intent)
-
         }
     }
-
-
-
-    // FUNCTION TO FETCH DATA WITH FIREBASE
-    /* private fun fetchWorkgroups() {
-         val ref = FirebaseDatabase.getInstance().getReference("/workgroup")
-         ref.addListenerForSingleValueEvent(object : ValueEventListener {
-
-             override fun onDataChange(p0: DataSnapshot) {
-                 val adapter = GroupAdapter<ViewHolder>()
-
-                 p0.children.forEach {
-                     Log.d("New workgroups", it.toString())
-                     val workgroup = it.getValue(Workgroup::class.java)
-                     if (workgroup != null) {
-                         adapter.add(WorkgroupItem(workgroup))
-                     }
-                 }
-
-                 //rvWorkgroup.adapter = adapter
-
-                 adapter.setOnItemClickListener { item, view ->
-
-                     val workgroupItem = item as WorkgroupItem
-                     val intent = Intent(view.context, ChatActivity::class.java)
-                     Moi.updateCurrentOrganization(workgroupItem.currentWorkgroup.name)
- //                    TODO cambiar esto de channel.
-                     Moi.updateCurrentChannel("general")
-                     intent.putExtra(GROUP_KEY, workgroupItem.currentWorkgroup)
-                     startActivity(intent)
-
-                 }
-                 rvWorkgroup.adapter = adapter
-             }
-
-             override fun onCancelled(p0: DatabaseError) {
-
-             }
-         })
-     }*/
 
     private fun verifyUserIsSignedIn() {
         val uid = FirebaseAuth.getInstance().uid
@@ -159,7 +112,6 @@ class WorkspacesListActivity : AppCompatActivity() {
     }
 }
 
-
 class WorkgroupItem(val currentWorkgroup: WorkgroupPhotoAndName) : Item<ViewHolder>() {
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.itemView.txtViewWorkgroup.text = currentWorkgroup.name
@@ -171,7 +123,7 @@ class WorkgroupItem(val currentWorkgroup: WorkgroupPhotoAndName) : Item<ViewHold
         return R.layout.workgroup_row
     }
 
-    fun getWorkgroupName():String{
+    fun getWorkgroupName(): String {
         return currentWorkgroup.name
     }
 }

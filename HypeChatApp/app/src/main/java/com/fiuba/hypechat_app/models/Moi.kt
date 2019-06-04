@@ -10,7 +10,7 @@ object Moi {
      * Oneself here denotes the logged user.
      */
 
-//    val SERVER_URL = "https://hypechatgrupo2-app-server-stag.herokuapp.com/"
+    //    val SERVER_URL = "https://hypechatgrupo2-app-server-stag.herokuapp.com/"
     val SERVER_URL = "http://192.168.2.110:5000/"
 
     /* personal info */
@@ -23,11 +23,11 @@ object Moi {
 
     private var channels = mutableListOf<Channel>()
 
-    private lateinit var current_organization : Workgroup
-    private var current_channel_name : String = ""
-    private  var current_dm_dest_name: String =""
-    private  var current_channel : Channel = Channel("")
-    private  var current_dm_dest : DirectMessage = DirectMessage("","","")
+    private lateinit var current_organization: Workgroup
+    private var current_channel_name: String = ""
+    private var current_dm_dest_name: String = ""
+    private var current_channel: Channel = Channel("")
+    private var current_dm_dest: DirectMessage = DirectMessage("", "", "")
 
     private lateinit var orgaNameForOrgaFetch: String
 
@@ -116,7 +116,14 @@ object Moi {
         workspace.channels.forEach {
             channels.add(Channel(it))
         }
-        updateCurrentOrganization(Workgroup(orgaNameForOrgaFetch, workspace.description, workspace.welcomMsg, workspace.urlImage))
+        updateCurrentOrganization(
+            Workgroup(
+                orgaNameForOrgaFetch,
+                workspace.description,
+                workspace.welcomMsg,
+                workspace.urlImage
+            )
+        )
         current_organization.setListMembers(workspace.members)
     }
 
@@ -128,7 +135,7 @@ object Moi {
         current_channel_name = channel
     }
 
-    fun addChannel(channel: Channel){
+    fun addChannel(channel: Channel) {
         channels.add(channel)
     }
 
