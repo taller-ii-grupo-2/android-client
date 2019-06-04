@@ -39,14 +39,6 @@ class WorkspacesListActivity : AppCompatActivity() {
         SocketHandler.setSocket(Moi.SERVER_URL, Moi.getMail())
 
         fetchWorkgroupsPhotoAndName()
-
-        Hardcoding.setOnClickListener {
-            Moi.updateCurrentOrganization("Orga Test")
-            val intent = Intent(this, ChatActivity::class.java)
-            startActivity(intent)
-        }
-
-
     }
 
     private fun fetchWorkgroupsPhotoAndName() {
@@ -79,6 +71,8 @@ class WorkspacesListActivity : AppCompatActivity() {
              adapter.setOnItemClickListener { item, view ->
 
             val workgroupItem = item as WorkgroupItem
+                 Moi.setOrgaNameForOrgaFetch(workgroupItem.getWorkgroupName())
+                 Moi.setCurrentChannel("general")
 
              //HARDCODING
                  //Moi.updateCurrentOrganization(workgroupItem.currentWorkgroup.name)

@@ -44,13 +44,8 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
         )
 
-       //MoiHardcoding(navView)
-
-      //  val workspace= fetchWorgroupData()
-
-        //val workGroup = intent.getParcelableExtra<Workgroup>(WorkspacesListActivity.GROUP_KEY)
-        //toolbar.title = Moi.getCurrentOrganization()
-
+        fetchWorgroupData()
+        setView(navView)
 
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
@@ -69,28 +64,10 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    private fun MoiHardcoding(navView: NavigationView) {
-
-        var listChannel: MutableList<String> = ArrayList()
-        var members: MutableList<String> = ArrayList()
-        listChannel.add("Channel1")
-        listChannel.add("general")
-        listChannel.add("Channel Futbol")
-        members.add("Matias")
-        members.add("Agustin")
-        members.add("Augusto")
-
-        var workspace = Workspace(
-            "Este es una orga hardcodeada de prueba", "Bienvenido a esta orga nueva",
-            "https://firebasestorage.googleapis.com/v0/b/hypechatapp-ebdd6.appspot.com/o/images%2Ffiuba_logo.png?alt=media&token=ed9d116e-1b68-423b-87a3-06b6af21fb37",
-            listChannel, members
-        )
-
-        //Guardo el objeto que recibo en Moi
-        Moi.saveWorkspace(workspace)
-
+    private fun setView(navView: NavigationView) {
         //Seteo el texto de la toolbar con el nombre de la orga
         toolbar.title = Moi.getCurrentOrganizationName()
+        toolbar.subtitle = Moi.getCurrentChannelName()
         val headerView = navView.getHeaderView(0)
 
         //Seteo logo de la orga
@@ -99,7 +76,6 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         //Seteo campos del NavView
         headerView.txtNameOrg.text = Moi.getCurrentOrganizationName()
         headerView.txtDescOrg.text = Moi.getCurrentOrganizationsDescription()
-        Moi.setCurrentChannel("general")
 
         //Menu del NavView
         val navMenu = navView.menu
@@ -110,8 +86,6 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         //Obtengo lista de canales por medio de Moi
         val listChannels = Moi.getChannelList()
 
-        //Agrego lista de strings con miembros a Moi para despues mostrar en NavView
-        Moi.getCurrentOrganization().setListMembers(workspace.members)
         var contador = 0
         listChannels.forEach {
             //channels.add(it.channel_name)
@@ -135,12 +109,12 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
 
-    private fun fetchWorgroupData(): Workspace {
+    private fun fetchWorgroupData() {
         var workspace: Workspace? = null
         val adapter = GroupAdapter<ViewHolder>()
 
-        Log.d("MOI PRINT ->>>", Moi.getCurrentOrganizationName())
-        RetrofitClient.instance.getWholeOrgaData(Moi.getCurrentOrganizationName())
+        Log.d("MOI PRINT ->>>", Moi.getOrgaNameForOrgaFetch())
+        RetrofitClient.instance.getWholeOrgaData(Moi.getOrgaNameForOrgaFetch())
             .enqueue(object : Callback<Workspace> {
                 override fun onFailure(call: Call<Workspace>, t: Throwable) {
                     Toast.makeText(baseContext, "Error loading workgroup data", Toast.LENGTH_LONG).show()
@@ -161,7 +135,6 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     }
                 }
             })
-        return workspace!!
     }
 
 

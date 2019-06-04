@@ -21,7 +21,6 @@ object Moi {
     private var dm_messages = mutableListOf<DirectMessage>()
     private var channel_messages = mutableListOf<ChannelMessage>()
 
-    private var organizations = mutableListOf<Workgroup>()
     private var channels = mutableListOf<Channel>()
 
     private lateinit var current_organization : Workgroup
@@ -29,6 +28,8 @@ object Moi {
     private  var current_dm_dest_name: String =""
     private  var current_channel : Channel = Channel("")
     private  var current_dm_dest : DirectMessage = DirectMessage("","","")
+
+    private lateinit var orgaNameForOrgaFetch: String
 
 
     fun saveDm(author: String, timestamp: String, body: String) {
@@ -115,6 +116,8 @@ object Moi {
         workspace.channels.forEach {
             channels.add(Channel(it))
         }
+        updateCurrentOrganization(Workgroup(orgaNameForOrgaFetch, workspace.description, workspace.welcomMsg, workspace.urlImage))
+        current_organization.setListMembers(workspace.members)
     }
 
     fun getChannelList(): MutableList<Channel> {
@@ -135,5 +138,17 @@ object Moi {
 
     fun getCurrentOrganizationsDescription(): String {
         return current_organization.description
+    }
+
+    fun setOrgaNameForOrgaFetch(workgroupName: String) {
+        this.orgaNameForOrgaFetch = workgroupName
+    }
+
+    fun getOrgaNameForOrgaFetch(): String {
+        return this.orgaNameForOrgaFetch
+    }
+
+    fun getCurrentChannelName(): String {
+        return current_channel_name
     }
 }
