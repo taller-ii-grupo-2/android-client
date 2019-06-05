@@ -183,9 +183,16 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return when (item.itemId) {
             R.id.action_profile -> setProfileActivity()
             R.id.action_maps -> showMapActivity()
+            R.id.add_member_to_workgroup -> showAddMemberActivity()
 
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun showAddMemberActivity(): Boolean {
+        val intent = Intent(this, AddMemberToWorkgroupActivity::class.java)
+        startActivityForResult(intent, 20)
+        return true
     }
 
     private fun showMapActivity(): Boolean {
@@ -208,7 +215,9 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         if (item.order == 0) {
             Toast.makeText(this, "Add channel", Toast.LENGTH_SHORT).show()
-
+            val intent = Intent(this, ChannelCreationActivity::class.java)
+            startActivityForResult(intent, 20)
+            return true
             return true
         }
 
@@ -218,6 +227,7 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 contador -> {
                     Toast.makeText(this, it.channel_name, Toast.LENGTH_SHORT).show()
                     Moi.setCurrentChannel(it.channel_name)
+                    toolbar.subtitle =  Moi.getCurrentChannelName()
                 }
             }
             contador++
@@ -227,6 +237,8 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 contador -> {
                     Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
                     Moi.updateCurrentDmDestName(it)
+                    toolbar.subtitle = Moi.getCurrentDmDestName()
+
                 }
             }
             contador++

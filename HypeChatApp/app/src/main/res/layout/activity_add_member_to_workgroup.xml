@@ -5,7 +5,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".activities.ChannelCreationActivity">
+        tools:context=".activities.AddMemberToWorkgroupActivity">
     <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
                   android:orientation="vertical"
                   android:layout_centerVertical="true">
@@ -17,37 +17,29 @@
                 app:popupTheme="@style/AppTheme.PopupOverlay"
 
                 app:titleTextColor="@color/colorPrimary"
-                app:title="Channel creation"/>
+                app:title="Add new member to workgroup"/>
 
-
-        <Switch
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginTop="20dp"
-                android:text="Public"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:checked="true" android:id="@+id/sw_public"
-                android:padding="10dp"/>
 
         <EditText android:layout_width="match_parent" android:layout_height="wrap_content"
-                  android:hint="Channel name"
+                  android:hint="New member's mail"
                   android:layout_marginStart="20dp"
                   android:layout_marginEnd="20dp"
-                  android:layout_marginTop="20dp" android:id="@+id/et_channelName"/>
+                  android:layout_marginTop="20dp"
+                  android:layout_gravity="center"
+                  android:id="@+id/et_newMemberWorkgroup"/>
 
-        <EditText android:layout_width="match_parent" android:layout_height="wrap_content"
-                  android:hint="Purpose of the channel"
-                  android:layout_marginStart="20dp"
-                  android:layout_marginEnd="20dp"
-                  android:layout_marginTop="20dp" android:id="@+id/et_channelDesc"/>
+
 
         <Button android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:text="Create" android:background="@drawable/btnbordercolor"
+                android:text="Add" android:background="@drawable/btnbordercolor"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                android:layout_marginTop="200dp" android:id="@+id/btnChannelCreate"/>
+                android:layout_marginTop="200dp"
+                android:layout_gravity="center"
+                android:id="@+id/addMemberToWorkgroup"/>
 
     </LinearLayout>
 
 
 </RelativeLayout>
+

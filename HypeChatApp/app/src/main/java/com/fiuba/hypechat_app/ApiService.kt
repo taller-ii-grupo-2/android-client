@@ -33,6 +33,9 @@ interface ApiService {
     @PUT("/users")
     fun updateUserProfile(@Body userprof:updateUserProfile) : Call<DefaultResponse>
 
+    @POST ("organizations/members")
+    fun addMemberToWorkgroup(@Body member: newMember) : Call<DefaultResponse>
+
 }
 
 class DefaultResponse(val message: String)
@@ -62,6 +65,11 @@ class updateUserProfile(
     val name:String,
     val surname: String,
     val urlImageProfile: String
+)
+
+class newMember (
+    val org_name: String,
+    val mail_of_user_to_add: String
 )
 
 class WorkgroupAndChannelList (val workgroupName: String, val channelList:MutableList<String>)

@@ -19,7 +19,7 @@ class ChannelCreationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_channel_creation)
-
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
 
 

@@ -24,7 +24,15 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
+        <activity android:name=".activities.AddMemberToWorkgroupActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".activities.ChatActivity"/>
+        </activity>
         <activity android:name=".activities.ChannelCreationActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".activities.ChatActivity"/>
         </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -53,8 +61,7 @@
                     android:value=".activities.ChatActivity"/>
         </activity>
         <activity
-                android:name=".activities.WorkspaceCreationActivity"
-                android:windowSoftInputMode="adjustResize">
+                android:name=".activities.WorkspaceCreationActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value=".activities.WorkspacesListActivity"/>
