@@ -44,8 +44,8 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
         )
 
-        fetchWorgroupData()
-        setView(navView)
+        fetchWorgroupData(navView)
+
 
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
@@ -105,8 +105,8 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
 
-    private fun fetchWorgroupData() {
-        var workspace: Workspace? = null
+    private fun fetchWorgroupData(navView: NavigationView) {
+        //var workspace: Workspace? = null
         val adapter = GroupAdapter<ViewHolder>()
 
         Log.d("MOI PRINT ->>>", Moi.getOrgaNameForOrgaFetch())
@@ -116,14 +116,12 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     Toast.makeText(baseContext, "Error loading workgroup data", Toast.LENGTH_LONG).show()
                 }
 
-                override fun onResponse(
-                    call: Call<Workspace>,
-                    response: Response<Workspace>
-                ) {
+                override fun onResponse(call: Call<Workspace>, response: Response<Workspace>) {
                     if (response.isSuccessful) {
-
-                        workspace = response.body()!!
+                        val workspace = response.body()!!
                         Moi.saveWorkspace(workspace!!)
+                        Log.d("MOI PRINT ->>>", "ENTRE AL ON RESPONSEEEEEEEEE")
+                        setView(navView)
                     } else {
                         Toast.makeText(baseContext, "Failed to add item", Toast.LENGTH_SHORT).show()
                     }

@@ -10,8 +10,8 @@ object Moi {
      * Oneself here denotes the logged user.
      */
 
-    //    val SERVER_URL = "https://hypechatgrupo2-app-server-stag.herokuapp.com/"
-    val SERVER_URL = "http://192.168.2.110:5000/"
+        val SERVER_URL = "https://hypechatgrupo2-app-server-stag.herokuapp.com/"
+    //val SERVER_URL = "http://192.168.2.110:5000/"
 
     /* personal info */
 //    private lateinit var username: String
@@ -23,7 +23,7 @@ object Moi {
 
     private var channels = mutableListOf<Channel>()
 
-    private lateinit var current_organization: Workgroup
+    private var current_organization: Workgroup = Workgroup("","","","")
     private var current_channel_name: String = ""
     private var current_dm_dest_name: String = ""
     private var current_channel: Channel = Channel("")
