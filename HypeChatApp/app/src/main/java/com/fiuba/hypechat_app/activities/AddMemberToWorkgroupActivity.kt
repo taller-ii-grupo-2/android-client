@@ -1,5 +1,6 @@
 package com.fiuba.hypechat_app.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Patterns
@@ -41,7 +42,8 @@ class AddMemberToWorkgroupActivity : AppCompatActivity() {
                     override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                         if (response.isSuccessful) {
                             Toast.makeText(baseContext, "Successfully member added", Toast.LENGTH_SHORT).show()
-                            //A donde habria que ir ?
+                            val intent = Intent(baseContext, ChatActivity::class.java)
+                            startActivity(intent)
                         } else {
                             Toast.makeText(baseContext, "Failed to add member", Toast.LENGTH_SHORT).show()
                         }

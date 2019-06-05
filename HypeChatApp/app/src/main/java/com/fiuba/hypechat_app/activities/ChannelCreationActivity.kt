@@ -1,5 +1,6 @@
 package com.fiuba.hypechat_app.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -50,7 +51,8 @@ class ChannelCreationActivity : AppCompatActivity() {
                     if (response.isSuccessful) {
                         Toast.makeText(baseContext, "Successfully channel created", Toast.LENGTH_SHORT).show()
                         Moi.addChannel(channel)
-                        //A donde habria que ir ?
+                        val intent = Intent(baseContext, ChatActivity::class.java)
+                        startActivity(intent)
                     } else {
                         Toast.makeText(baseContext, "Failed to create channel", Toast.LENGTH_SHORT).show()
                     }
