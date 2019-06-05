@@ -19,8 +19,8 @@ class AddMemberToWorkgroupActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_member_to_workgroup)
+        setSupportActionBar(findViewById(R.id.toolbarProfile))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
 
         addMemberToWorkgroup.setOnClickListener {
            if (validateFields())

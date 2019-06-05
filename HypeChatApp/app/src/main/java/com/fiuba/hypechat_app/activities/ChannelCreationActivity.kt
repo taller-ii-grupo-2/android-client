@@ -20,7 +20,8 @@ class ChannelCreationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_channel_creation)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
+        setSupportActionBar(findViewById(R.id.toolbarProfile))
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
 
         btnChannelCreate.setOnClickListener {

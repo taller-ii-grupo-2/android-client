@@ -117,9 +117,9 @@ class ProfileActivity : AppCompatActivity() {
         etNameProfile.setText(body.name)
         etSurnameProfile.setText(body.surname)
         etUsernameProfile.setText(body.username)
-        Picasso.get().load(body.urlImageProfile).into(CircleImageViewProfile)
+        Picasso.get().load(body.url).into(CircleImageViewProfile)
 
-        body.workgroupAndChannelList.forEach {
+        body.organizations.forEach {
             adapter.add(ListItemWorkgroupAndChannel(it))
             rvOrganizationsProfile.adapter = adapter
         }
@@ -174,10 +174,10 @@ class ProfileActivity : AppCompatActivity() {
 
 class ListItemWorkgroupAndChannel(var item: WorkgroupAndChannelList) : Item<ViewHolder>() {
     override fun bind(viewHolder: ViewHolder, position: Int) {
-        viewHolder.itemView.txtWorkgroupList.text = item.workgroupName
+        viewHolder.itemView.txtWorkgroupList.text = item.name
         var text : String =""
-        item.channelList.forEach {
-           text = it + "\n"
+        item.channels.forEach {
+           text = text + it+"\n"
         }
         viewHolder.itemView.txtChannelList.text = text
     }

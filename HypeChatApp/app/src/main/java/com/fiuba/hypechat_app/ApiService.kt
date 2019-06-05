@@ -24,7 +24,7 @@ interface ApiService {
     @GET("user/organizations/{orgname}/channels")
     fun getWholeOrgaData(@Path ("orgname") organame: String): Call<Workspace>
 
-    @POST("/channel")
+    @POST("/channels")
     fun createChannel(@Body channel: Channel) : Call<DefaultResponse>
 
     @GET("/users")
@@ -56,8 +56,8 @@ class UserProfile(
     val username:String,
     val name:String,
     val surname: String,
-    val urlImageProfile: String,
-    val workgroupAndChannelList: List<WorkgroupAndChannelList>
+    val url: String,
+    val organizations: List<WorkgroupAndChannelList>
 )
 
 class updateUserProfile(
@@ -72,7 +72,7 @@ class newMember (
     val mail_of_user_to_add: String
 )
 
-class WorkgroupAndChannelList (val workgroupName: String, val channelList:MutableList<String>)
+class WorkgroupAndChannelList (val name: String, val channels:MutableList<String>)
 
 class WorkgroupPhotoAndName(val urlImage: String, val name: String)
 
