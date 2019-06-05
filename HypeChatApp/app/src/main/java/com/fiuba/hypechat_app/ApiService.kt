@@ -33,7 +33,7 @@ interface ApiService {
     @PUT("/users")
     fun updateUserProfile(@Body userprof:updateUserProfile) : Call<DefaultResponse>
 
-    @POST ("organizations/members")
+    @PUT ("organizations/members")
     fun addMemberToWorkgroup(@Body member: newMember) : Call<DefaultResponse>
 
 }

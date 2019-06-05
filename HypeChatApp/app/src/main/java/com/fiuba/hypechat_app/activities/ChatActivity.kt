@@ -218,7 +218,6 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val intent = Intent(this, ChannelCreationActivity::class.java)
             startActivityForResult(intent, 20)
             return true
-            return true
         }
 
 
