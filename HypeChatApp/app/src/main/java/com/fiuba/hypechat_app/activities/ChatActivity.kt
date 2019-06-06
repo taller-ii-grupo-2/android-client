@@ -27,6 +27,7 @@ import retrofit2.Response
 import com.xwray.groupie.Item
 import kotlinx.android.synthetic.main.app_bar_nav_drawer.*
 import kotlinx.android.synthetic.main.chat_row.view.*
+import kotlinx.android.synthetic.main.chat_row_receive.view.*
 import kotlinx.android.synthetic.main.nav_header_nav_drawer.view.*
 
 
@@ -152,7 +153,7 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val getData = args.joinToString()
             Log.d("SocketHandler", getData)
             runOnUiThread {
-                adapter.add(ChatItem(getData))
+                adapter.add(ChatItemReceive(getData))
             }
         }
     }
@@ -259,4 +260,13 @@ class ChatItem(val text: String) : Item<ViewHolder>() {
     }
 }
 
+class ChatItemReceive(val text: String) : Item<ViewHolder>() {
+    override fun bind(viewHolder: ViewHolder, position: Int) {
+        viewHolder.itemView.txtChatRowReceive.text = text
+    }
+
+    override fun getLayout(): Int {
+        return R.layout.chat_row_receive
+    }
+}
 
