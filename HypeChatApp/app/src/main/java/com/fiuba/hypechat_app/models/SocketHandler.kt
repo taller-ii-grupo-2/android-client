@@ -27,9 +27,9 @@ object SocketHandler {
 
     private fun putMsgTogether(msg: String): String {
         val asdf = JSONObject()
-        asdf.put("organization", Moi.getCurrentOrganization())
+        asdf.put("organization", Moi.getCurrentOrganizationName())
         asdf.put("channel", Moi.getCurrentChannelName())
-        asdf.put("dm_dest", Moi.getCurrentDmDest())
+        asdf.put("dm_dest", Moi.getCurrentDmDestName())
         asdf.put("body", msg)
 
         return asdf.toString()

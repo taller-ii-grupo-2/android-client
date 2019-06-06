@@ -14,6 +14,7 @@ import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import android.widget.Toast
 import com.fiuba.hypechat_app.*
+import com.fiuba.hypechat_app.models.Channel
 
 import com.fiuba.hypechat_app.models.Moi
 import com.fiuba.hypechat_app.models.SocketHandler
@@ -225,7 +226,12 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             when (item.itemId) {
                 contador -> {
                     Toast.makeText(this, it.channel_name, Toast.LENGTH_SHORT).show()
-                    Moi.setCurrentChannel(it.channel_name)
+
+                    Moi.updateCurrentChannelName(it.channel_name)
+
+                    Moi.updateCurrentDmDest("")
+                    Moi.updateCurrentDmDestName("")
+
                     toolbar.subtitle =  Moi.getCurrentChannelName()
                 }
             }
@@ -236,6 +242,10 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 contador -> {
                     Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
                     Moi.updateCurrentDmDestName(it)
+
+                    Moi.updateCurrentChannelName("")
+                    Moi.updateCurrentChannel(Channel(""))
+
                     toolbar.subtitle = Moi.getCurrentDmDestName()
 
                 }
