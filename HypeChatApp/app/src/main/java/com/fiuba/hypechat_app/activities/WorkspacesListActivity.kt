@@ -71,7 +71,7 @@ class WorkspacesListActivity : AppCompatActivity() {
 
             val workgroupItem = item as WorkgroupItem
             Moi.setOrgaNameForOrgaFetch(workgroupItem.getWorkgroupName())
-            Moi.setCurrentChannel("general")
+            Moi.updateCurrentChannelName("General")
 
             val intent = Intent(this, ChatActivity::class.java)
             startActivity(intent)

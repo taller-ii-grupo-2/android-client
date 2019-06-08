@@ -10,8 +10,8 @@ object Moi {
      * Oneself here denotes the logged user.
      */
 
-        val SERVER_URL = "https://hypechatgrupo2-app-server-stag.herokuapp.com/"
-    //val SERVER_URL = "http://192.168.2.110:5000/"
+//        val SERVER_URL = "https://hypechatgrupo2-app-server-stag.herokuapp.com/"
+    val SERVER_URL = "http://192.168.2.110:5000/"
 
     /* personal info */
 //    private lateinit var username: String
@@ -27,7 +27,7 @@ object Moi {
     private var current_channel_name: String = ""
     private var current_dm_dest_name: String = ""
     private var current_channel: Channel = Channel("")
-    private var current_dm_dest: DirectMessage = DirectMessage("", "", "")
+    private var current_dm_dest: String = ""
 
     private lateinit var orgaNameForOrgaFetch: String
 
@@ -82,13 +82,12 @@ object Moi {
 
     }
 
-    fun updateCurrentDmDest(dm_dest: DirectMessage) {
+    fun updateCurrentDmDest(dm_dest: String) {
         current_dm_dest = dm_dest
     }
 
     fun updateCurrentDmDestName(dm_dest: String) {
         current_dm_dest_name = dm_dest
-
     }
 
     fun getCurrentOrganizationName(): String {
@@ -103,7 +102,7 @@ object Moi {
         return this.current_channel
     }
 
-    fun getCurrentDmDest(): DirectMessage? {
+    fun getCurrentDmDest(): String {
         return this.current_dm_dest
     }
 
@@ -131,7 +130,7 @@ object Moi {
         return channels
     }
 
-    fun setCurrentChannel(channel: String) {
+    fun updateCurrentChannelName(channel: String) {
         current_channel_name = channel
     }
 
