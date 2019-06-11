@@ -32,20 +32,26 @@ object Moi {
     private lateinit var orgaNameForOrgaFetch: String
 
 
-    fun saveDm(author: String, timestamp: String, body: String) {
-        dm_messages.add(DirectMessage(author, timestamp, body))
+    fun saveDm(
+        orga: String,
+        dm_dest: String,
+        author: String,
+        timestamp: String,
+        body: String
+    ) {
+        dm_messages.add(DirectMessage(orga, dm_dest, author, timestamp, body))
     }
 
-    fun getDmsFromAuthor(author: String): MutableList<DirectMessage> {
+    fun getDmsFromAuthorOrganization(author: String, organization: String): MutableList<DirectMessage> {
         var solicited_msgs = mutableListOf<DirectMessage>()
         for (msg in dm_messages)
-            if (msg.is_authored_by(author)) {
+            if (msg.is_authored_by(author) and msg.if_from_orga(organization)) {
                 solicited_msgs.add(msg)
             }
         return solicited_msgs
     }
 
-    fun addChannelMessage(organization: String, channel: String, author: String, timestamp: String, body: String) {
+    fun saveChannelMessage(organization: String, channel: String, author: String, timestamp: String, body: String) {
         channel_messages.add(ChannelMessage(organization, channel, author, timestamp, body))
     }
 

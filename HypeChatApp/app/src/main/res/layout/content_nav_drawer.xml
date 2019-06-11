@@ -23,7 +23,9 @@
             android:hint="Enter Message"
             android:background="@color/colorPrimaryDark"
             android:textColor="@color/colorPrimary"
-            android:inputType="textPersonName"
+            android:inputType="textMultiLine|textCapSentences"
+            android:scrollHorizontally="false"
+            android:maxLength="@integer/MAX_MSG_BODY_LENGTH"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/send_button_chat_log"
             app:layout_constraintStart_toStartOf="parent"/>
