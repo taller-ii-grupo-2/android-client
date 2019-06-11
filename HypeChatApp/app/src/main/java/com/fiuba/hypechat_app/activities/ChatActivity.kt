@@ -30,6 +30,7 @@ import kotlinx.android.synthetic.main.app_bar_nav_drawer.*
 import kotlinx.android.synthetic.main.chat_row.view.*
 import kotlinx.android.synthetic.main.chat_row_receive.view.*
 import kotlinx.android.synthetic.main.nav_header_nav_drawer.view.*
+import org.json.JSONObject
 
 
 class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -60,7 +61,6 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         receiveMessages(adapter)
         send_button_chat_log.setOnClickListener {
             val textToSend = txtChat.text.toString()
-            adapter.add(ChatItem(textToSend))
             SocketHandler.send(textToSend)
             txtChat.text = null
         }
@@ -152,9 +152,22 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         //var socket = SocketHandler.getSocket()
         SocketHandler.getSocket().on("message") { args ->
             val getData = args.joinToString()
+            val jsonData = JSONObject(getData)
+
+            val orga = jsonData.getString("organization")
+            val channel = jsonData.getString("channel")
+            val dm_dest = jsonData.getString("dm_dest")
+            val author_mail = jsonData.getString("author_mail")
+            val timestamp = jsonData.getString("timestamp")
+            val msg_body = jsonData.getString("msg_body")
+
             Log.d("SocketHandler", getData)
             runOnUiThread {
-                adapter.add(ChatItemReceive(getData))
+                if (author_mail == Moi.getMail()){
+                    adapter.add(ChatItem(msg_body))
+                }else{
+                    adapter.add(ChatItemReceive(getData))
+                }
             }
         }
     }
