@@ -36,7 +36,16 @@ interface ApiService {
     @PUT ("organizations/members")
     fun addMemberToWorkgroup(@Body member: newMember) : Call<DefaultResponse>
 
+    @GET ("/messages/{orga_name}/{channel_name}")
+    fun getMessagesFromChannel(@Path ("orga_name")orga_name: String, @Path("channel_name") channel_name:String): Call <List<Chats>>
+
+    @GET ("/messages/{orga_name}/dms/{dm_dest_mail}")
+    fun getMessagesFromDM (@Path ("orga_name")orga_name: String, @Path("dm_dest_mail") dm_dest_mail:String): Call <List<Chats>>
+
 }
+
+
+class Chats (val timestamp: String, val author_mail: String, val body: String)
 
 class DefaultResponse(val message: String)
 

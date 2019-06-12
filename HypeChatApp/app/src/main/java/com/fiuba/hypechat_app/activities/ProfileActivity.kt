@@ -50,6 +50,7 @@ class ProfileActivity : AppCompatActivity() {
         }
         btnConfirmProfile.setOnClickListener {
             uploadImageWorkgroupToFirebase()
+
         }
 
 
@@ -112,12 +113,15 @@ class ProfileActivity : AppCompatActivity() {
             })
     }
 
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     private fun loadFields(body: UserProfile) {
         val adapter = GroupAdapter<ViewHolder>()
         etNameProfile.setText(body.name)
         etSurnameProfile.setText(body.surname)
         etUsernameProfile.setText(body.username)
         Picasso.get().load(body.url).into(CircleImageViewProfile)
+        btnSelectphotoProfile.background = null
+        btnSelectphotoProfile.text = null
 
         body.organizations.forEach {
             adapter.add(ListItemWorkgroupAndChannel(it))
@@ -144,6 +148,8 @@ class ProfileActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                     if (response.isSuccessful) {
                         Toast.makeText(baseContext, "Profile updated", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(baseContext, ChatActivity::class.java)
+                        startActivity(intent)
 
                     } else {
                         Toast.makeText(baseContext, "Failed to update profile ", Toast.LENGTH_SHORT).show()

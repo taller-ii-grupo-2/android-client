@@ -1,7 +1,12 @@
 package com.fiuba.hypechat_app.activities
 
+import android.app.Activity
+import android.app.ProgressDialog
 import android.content.Intent
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 
 import androidx.core.view.GravityCompat
@@ -13,11 +18,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import com.fiuba.hypechat_app.*
 import com.fiuba.hypechat_app.models.Channel
 
 import com.fiuba.hypechat_app.models.Moi
 import com.fiuba.hypechat_app.models.SocketHandler
+import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
@@ -26,15 +33,17 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import com.xwray.groupie.Item
+import kotlinx.android.synthetic.main.activity_workspace_creation.*
 import kotlinx.android.synthetic.main.app_bar_nav_drawer.*
 import kotlinx.android.synthetic.main.chat_row.view.*
 import kotlinx.android.synthetic.main.chat_row_receive.view.*
 import kotlinx.android.synthetic.main.nav_header_nav_drawer.view.*
 import org.json.JSONObject
+import java.util.*
 
 
 class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-
+    var photoUri: Uri? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_nav_drawer)
@@ -64,6 +73,54 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             SocketHandler.send(textToSend)
             txtChat.text = null
         }
+
+        btnSearchImage.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            startActivityForResult(intent, 0)
+
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == 0 && resultCode == Activity.RESULT_OK && data != null) {
+            photoUri = data.data
+            val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, photoUri)
+            /*CircleImageViewProfile.setImageBitmap(bitmap)
+            btnSelectphotoProfile.background = null
+            btnSelectphotoProfile.text = null*/
+            uploadImageToFirebase()
+
+        }
+
+
+    }
+
+    private fun uploadImageToFirebase() {
+        val filename = UUID.randomUUID().toString()
+        val ref = FirebaseStorage.getInstance().getReference("/images/chat/$filename")
+        val progressDialog = ProgressDialog(this)
+        progressDialog.setTitle("Uploading file, just wait")
+        progressDialog.show()
+        ref.putFile(photoUri!!)
+            .addOnSuccessListener { taskSnapshot ->
+
+                ref.downloadUrl.addOnCompleteListener { taskSnapshot ->
+                    var url = taskSnapshot.result
+                    //updateProfileDataToSv(url.toString())
+                    Log.d("ProfileAcitivity", "Image added to firebase: ${url.toString()}")
+
+                }
+
+
+            }
+            .addOnProgressListener { taskSnapShot ->
+                val progress = 100 * taskSnapShot.bytesTransferred / taskSnapShot.totalByteCount
+                progressDialog.setMessage("% ${progress}")
+            }
     }
 
     private fun setView(navView: NavigationView) {
@@ -132,20 +189,6 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
 
-    private fun setDataIntoNavBar(navView: NavigationView, workspace: Workspace) {
-        val headerView = navView.getHeaderView(0)
-        Picasso.get().load(workspace.urlImage).into(headerView.imgNavLogo)
-        headerView.txtNameOrg.text = Moi.getCurrentOrganizationName()
-        headerView.txtDescOrg.text = workspace.description
-
-        var navMenu = navView.menu
-        navMenu.add("Add channel")
-        var channels = navMenu.addSubMenu("Channels")
-        channels.add("Futbol")
-        channels.add("Tenis")
-        var directMessages = navMenu.addSubMenu("Direct Messages")
-        directMessages.add("yo")
-    }
 
     @Synchronized
     private fun receiveMessages(adapter: GroupAdapter<ViewHolder>) {
@@ -247,6 +290,8 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     Moi.updateCurrentDmDestName("")
 
                     toolbar.subtitle =  Moi.getCurrentChannelName()
+
+                    loadMessagesFromChannel()
                 }
             }
             contador++
@@ -262,6 +307,8 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                     toolbar.subtitle = Moi.getCurrentDmDestName()
 
+                    loadMessagesFromDM()
+
                 }
             }
             contador++
@@ -270,6 +317,65 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    private fun loadMessagesFromDM() {
+        RetrofitClient.instance.getMessagesFromDM(Moi.getOrgaNameForOrgaFetch(), Moi.getCurrentDmDestName()!!)
+            .enqueue(object : Callback<List<Chats>>
+            {
+                override fun onFailure(call: Call<List<Chats>>
+                                       , t: Throwable) {
+                    Toast.makeText(baseContext, "Error loading chat data", Toast.LENGTH_LONG).show()
+                }
+
+                override fun onResponse(call: Call<List<Chats>>
+                                        , response: Response<List<Chats>>) {
+                    if (response.isSuccessful) {
+                        val chats = response.body()!!
+                        updateChatView(chats)
+                    } else {
+                        Toast.makeText(baseContext, "Failed to load chat", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            })
+    }
+
+    private fun loadMessagesFromChannel() {
+
+        RetrofitClient.instance.getMessagesFromChannel(Moi.getOrgaNameForOrgaFetch(), Moi.getCurrentChannelName())
+            .enqueue(object : Callback<List<Chats>>
+            {
+                override fun onFailure(call: Call<List<Chats>>, t: Throwable) {
+                    Toast.makeText(baseContext, "Error loading chat data", Toast.LENGTH_LONG).show()
+                }
+
+                override fun onResponse(call: Call<List<Chats>>
+                                        , response: Response<List<Chats>>) {
+                    if (response.isSuccessful) {
+                        val chats = response.body()!!
+                        updateChatView(chats)
+                    } else {
+                        Toast.makeText(baseContext, "Failed to load chat", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            })
+    }
+
+    private fun updateChatView(chats: List<Chats>) {
+        val adapter = GroupAdapter<ViewHolder>()
+        adapter.clear()
+        chats.forEach {
+            runOnUiThread {
+                if (it.author_mail == Moi.getMail()){
+                    adapter.add(ChatItem(it.body))
+                }else{
+                    adapter.add(ChatItemReceive(it.body))
+                }
+            }
+        }
+
+
+
     }
 }
 
