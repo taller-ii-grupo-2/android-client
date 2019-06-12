@@ -1,5 +1,6 @@
 package com.fiuba.hypechat_app.activities
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -31,6 +32,8 @@ import kotlinx.android.synthetic.main.chat_row.view.*
 import kotlinx.android.synthetic.main.chat_row_receive.view.*
 import kotlinx.android.synthetic.main.nav_header_nav_drawer.view.*
 import org.json.JSONObject
+import ru.noties.markwon.Markwon
+import ru.noties.markwon.image.ImagesPlugin
 
 
 class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -164,9 +167,9 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             Log.d("SocketHandler", getData)
             runOnUiThread {
                 if (author_mail == Moi.getMail()){
-                    adapter.add(ChatItem(msg_body))
+                    adapter.add(ChatItem(baseContext, msg_body))
                 }else{
-                    adapter.add(ChatItemReceive(getData))
+                    adapter.add(ChatItemReceive(baseContext, getData))
                 }
             }
         }
@@ -273,9 +276,19 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 }
 
-class ChatItem(val text: String) : Item<ViewHolder>() {
+class ChatItem(baseContext: Context, val text: String) : Item<ViewHolder>() {
+    // obtain an instance of Markwon
+    var markwon = Markwon.builder(baseContext).usePlugin(ImagesPlugin.create(baseContext)).build()
+
     override fun bind(viewHolder: ViewHolder, position: Int) {
-        viewHolder.itemView.txtChatRow.text = text
+        // parse markdown to commonmark-java Node
+        val node = markwon.parse(text)
+
+        // create styled text from parsed Node
+        val markdown = markwon.render(node)
+
+        // use it on a TextView
+        this.markwon.setParsedMarkdown(viewHolder.itemView.txtChatRow, markdown)
     }
 
     override fun getLayout(): Int {
@@ -283,9 +296,19 @@ class ChatItem(val text: String) : Item<ViewHolder>() {
     }
 }
 
-class ChatItemReceive(val text: String) : Item<ViewHolder>() {
+class ChatItemReceive(baseContext: Context, val text: String) : Item<ViewHolder>() {
+    // obtain an instance of Markwon
+    var markwon = Markwon.builder(baseContext).usePlugin(ImagesPlugin.create(baseContext)).build()
+
     override fun bind(viewHolder: ViewHolder, position: Int) {
-        viewHolder.itemView.txtChatRowReceive.text = text
+        // parse markdown to commonmark-java Node
+        val node = markwon.parse(text)
+
+        // create styled text from parsed Node
+        val markdown = markwon.render(node)
+
+        // use it on a TextView
+        this.markwon.setParsedMarkdown(viewHolder.itemView.txtChatRowReceive, markdown)
     }
 
     override fun getLayout(): Int {
