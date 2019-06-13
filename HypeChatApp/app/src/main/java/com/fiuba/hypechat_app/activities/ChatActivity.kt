@@ -82,6 +82,10 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+    }
+
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -209,7 +213,7 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 if (author_mail == Moi.getMail()){
                     adapter.add(ChatItem(msg_body))
                 }else{
-                    adapter.add(ChatItemReceive(getData))
+                    adapter.add(ChatItemReceive(msg_body))
                 }
             }
         }
