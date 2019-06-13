@@ -1,5 +1,6 @@
 package com.fiuba.hypechat_app.activities
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,6 +8,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import com.facebook.FacebookSdk.getApplicationContext
 import com.fiuba.hypechat_app.R
 import com.fiuba.hypechat_app.RetrofitClient
 import com.fiuba.hypechat_app.WorkgroupPhotoAndName
@@ -99,6 +101,7 @@ class WorkspacesListActivity : AppCompatActivity() {
                 val galletita = RetrofitClient.CookiesInterceptor()
                 galletita.clearCookie()
                 SocketHandler.disconnect()
+                resetLoginInfoInSharedPref()
                 val intent = Intent(this, SignInActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
@@ -110,6 +113,17 @@ class WorkspacesListActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+}
+
+private fun resetLoginInfoInSharedPref() {
+    val sharedPreferences = getApplicationContext().getSharedPreferences("loginPreferences", Context.MODE_PRIVATE)
+
+    val editor = sharedPreferences.edit()
+    editor.putString("mail", "")
+    editor.putString("password", "")
+    editor.putString("token", "")
+    editor.putString("cookie", "")
+    editor.apply()
 }
 
 class WorkgroupItem(val currentWorkgroup: WorkgroupPhotoAndName) : Item<ViewHolder>() {
