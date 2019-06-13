@@ -1,5 +1,6 @@
 package com.fiuba.hypechat_app
 
+import android.content.Context
 import com.fiuba.hypechat_app.models.Moi
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -17,7 +18,7 @@ object RetrofitClient {
     class CookiesInterceptor : Interceptor {
 
 
-        private var cookie: String? = null
+        var cookie: String? = null
 
         override fun intercept(chain: Interceptor.Chain): Response {
             val request = chain.request()
@@ -42,7 +43,7 @@ object RetrofitClient {
     }
 
 
-    private val cookiesInterceptor: CookiesInterceptor by lazy {
+    val cookiesInterceptor: CookiesInterceptor by lazy {
         CookiesInterceptor()
     }
 

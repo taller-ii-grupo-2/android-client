@@ -1,5 +1,6 @@
 package com.fiuba.hypechat_app.activities.user_registration
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -15,7 +16,6 @@ import com.facebook.FacebookException
 import com.facebook.login.LoginResult
 import com.fiuba.hypechat_app.*
 import com.fiuba.hypechat_app.activities.WorkspacesListActivity
-import com.fiuba.hypechat_app.models.Moi
 import com.fiuba.hypechat_app.models.SocketHandler
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
@@ -106,12 +106,25 @@ class SignInActivity : AppCompatActivity() {
                         .addOnCompleteListener {
                             val idToken = it.result?.token
                             Log.d("TokenActivity", "Token:${idToken}")
+
+                            saveLoginInfoToSharedPref(etEmail.text.toString(), etPassword.text.toString(), idToken)
+
                             signUserToSV(idToken!!)
                         }
                 } else {
                     updateUI(null)
                 }
             }
+    }
+
+    private fun saveLoginInfoToSharedPref(mail: String, password: String, token: String?) {
+        val sharedPreferences = getSharedPreferences("loginPreferences", Context.MODE_PRIVATE)
+
+        val editor = sharedPreferences.edit()
+        editor.putString("mail", mail)
+        editor.putString("password", password)
+        editor.putString("token", token)
+        editor.apply()
     }
 
     private fun handleFacebookAccessToken(token: AccessToken) {
@@ -158,14 +171,7 @@ class SignInActivity : AppCompatActivity() {
         val email = user?.email
         val uid = user?.uid
         val ref = FirebaseDatabase.getInstance().getReference("/users/$uid")
-/*
-*  val longitude: Double,
-    val latitude: Double,
-    val mail: String,
-    val urlImageProfile: String,
-    val surname: String,
-    val name: String,
-    val username: String*/
+
         val userFb = User(-58.368508,-34.618625, email!!,"https://firebasestorage.googleapis.com/v0/b/hypechatapp-ebdd6.appspot.com/o/images%2Findex.png?alt=media&token=b43e8b85-6ad9-4659-8caf-df3e50a62c2e","" ,"" ,email!! )
          ref.setValue(userFb)
              .addOnSuccessListener {
@@ -193,6 +199,7 @@ class SignInActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                     if (response.isSuccessful) {
                         Toast.makeText(baseContext, "Successfully Logged in", Toast.LENGTH_SHORT).show()
+                        saveCookieToSharedPref(RetrofitClient.cookiesInterceptor.cookie!!)
                         val intent = Intent(baseContext, WorkspacesListActivity::class.java )
                         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
                         startActivity(intent)
@@ -204,6 +211,14 @@ class SignInActivity : AppCompatActivity() {
             })
 
 
+    }
+
+    private fun saveCookieToSharedPref(cookie: String) {
+        val sharedPreferences = getSharedPreferences("loginPreferences", Context.MODE_PRIVATE)
+
+        val editor = sharedPreferences.edit()
+        editor.putString("cookie", cookie)
+        editor.apply()
     }
 
     private fun sendDataToSv(user: User) {

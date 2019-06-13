@@ -23,6 +23,13 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
+        <activity android:name=".activities.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
         <activity android:name=".activities.AddMemberToWorkgroupActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
@@ -59,8 +66,7 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value=".activities.ChatActivity"/>
         </activity>
-        <activity
-                android:name=".activities.WorkspaceCreationActivity">
+        <activity android:name=".activities.WorkspaceCreationActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value=".activities.WorkspacesListActivity"/>
@@ -82,11 +88,6 @@
                 android:name=".activities.user_registration.SignInActivity"
                 android:theme="@style/SignInPage"
                 android:windowSoftInputMode="adjustResize">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
 
         <meta-data
