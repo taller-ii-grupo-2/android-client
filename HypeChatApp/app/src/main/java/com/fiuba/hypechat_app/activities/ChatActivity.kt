@@ -61,6 +61,7 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         fetchWorgroupData(navView)
 
+        loadMessagesFromChannel()
 
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
