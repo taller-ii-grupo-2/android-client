@@ -111,6 +111,8 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     var url = taskSnapshot.result
                     //updateProfileDataToSv(url.toString())
                     Log.d("ProfileAcitivity", "Image added to firebase: ${url.toString()}")
+                    val msg = "![](" + url.toString() + ")"
+                    SocketHandler.send(msg)
                 }
             }
             .addOnProgressListener { taskSnapShot ->
