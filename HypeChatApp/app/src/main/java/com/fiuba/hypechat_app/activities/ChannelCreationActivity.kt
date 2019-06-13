@@ -24,13 +24,10 @@ class ChannelCreationActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.toolbarProfile))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-
         btnChannelCreate.setOnClickListener {
             if (validateFields())
                 sendDataToSv()
         }
-
-
     }
 
     private fun sendDataToSv() {
@@ -38,7 +35,7 @@ class ChannelCreationActivity : AppCompatActivity() {
         val desc = et_channelDesc.text.toString()
         val public = sw_public.isChecked
         val orga = Moi.getCurrentOrganizationName()
-        val channel = Channel(orga,name,public,desc)
+        val channel = Channel(orga, name, public, desc)
 
 
         RetrofitClient.instance.createChannel(channel)
@@ -60,14 +57,13 @@ class ChannelCreationActivity : AppCompatActivity() {
             })
     }
 
-    private fun validateFields() : Boolean {
+    private fun validateFields(): Boolean {
         if (et_channelName.text.toString().isEmpty()) {
             et_channelName.error = "Plase enter channel name"
             et_channelName.requestFocus()
             return false
-        }  else {
+        } else {
             return true
         }
-
     }
 }

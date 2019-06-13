@@ -172,13 +172,21 @@ class SignInActivity : AppCompatActivity() {
         val uid = user?.uid
         val ref = FirebaseDatabase.getInstance().getReference("/users/$uid")
 
-        val userFb = User(-58.368508,-34.618625, email!!,"https://firebasestorage.googleapis.com/v0/b/hypechatapp-ebdd6.appspot.com/o/images%2Findex.png?alt=media&token=b43e8b85-6ad9-4659-8caf-df3e50a62c2e","" ,"" ,email!! )
-         ref.setValue(userFb)
-             .addOnSuccessListener {
-                 Log.d("SignInActivity", "User added to database")
-             }
+        val userFb = User(
+            -58.368508,
+            -34.618625,
+            email!!,
+            "https://firebasestorage.googleapis.com/v0/b/hypechatapp-ebdd6.appspot.com/o/images%2Findex.png?alt=media&token=b43e8b85-6ad9-4659-8caf-df3e50a62c2e",
+            "",
+            "",
+            email!!
+        )
+        ref.setValue(userFb)
+            .addOnSuccessListener {
+                Log.d("SignInActivity", "User added to database")
+            }
 
-         sendDataToSv(userFb)
+        sendDataToSv(userFb)
 
         val tokenUser = FirebaseAuth.getInstance().currentUser!!.getIdToken(true)
             .addOnCompleteListener {
@@ -200,7 +208,7 @@ class SignInActivity : AppCompatActivity() {
                     if (response.isSuccessful) {
                         Toast.makeText(baseContext, "Successfully Logged in", Toast.LENGTH_SHORT).show()
                         saveCookieToSharedPref(RetrofitClient.cookiesInterceptor.cookie!!)
-                        val intent = Intent(baseContext, WorkspacesListActivity::class.java )
+                        val intent = Intent(baseContext, WorkspacesListActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
                         startActivity(intent)
 
@@ -209,8 +217,6 @@ class SignInActivity : AppCompatActivity() {
                     }
                 }
             })
-
-
     }
 
     private fun saveCookieToSharedPref(cookie: String) {
@@ -232,7 +238,7 @@ class SignInActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                     if (response.isSuccessful) {
                         Toast.makeText(baseContext, "Successfully Added", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(baseContext, WorkspacesListActivity::class.java )
+                        val intent = Intent(baseContext, WorkspacesListActivity::class.java)
                         //intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
                         startActivity(intent)
                     } else {
