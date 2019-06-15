@@ -1,13 +1,13 @@
 package com.fiuba.hypechat_app.activities
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import com.fiuba.hypechat_app.R
-import com.fiuba.hypechat_app.activities.user_registration.SignInActivity
 import android.content.Context
+import android.content.Intent
+import android.os.Bundle
 import android.os.Handler
+import androidx.appcompat.app.AppCompatActivity
+import com.fiuba.hypechat_app.R
 import com.fiuba.hypechat_app.RetrofitClient
+import com.fiuba.hypechat_app.activities.user_registration.SignInActivity
 
 
 class SplashActivity : AppCompatActivity() {
@@ -45,4 +45,4 @@ class SplashActivity : AppCompatActivity() {
             }
         }, SPLASH_DISPLAY_LENGTH.toLong())
     }
-    }
+}

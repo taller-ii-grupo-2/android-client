@@ -21,6 +21,7 @@ import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.android.synthetic.main.activity_sign_in.*
 
 import retrofit2.Call
@@ -108,12 +109,24 @@ class SignInActivity : AppCompatActivity() {
                             Log.d("TokenActivity", "Token:${idToken}")
 
                             saveLoginInfoToSharedPref(etEmail.text.toString(), etPassword.text.toString(), idToken)
+                            subscribeToNotificationTopic(etEmail.text.toString().replace("@","~at~"))
 
                             signUserToSV(idToken!!)
                         }
                 } else {
                     updateUI(null)
                 }
+            }
+    }
+
+    private fun subscribeToNotificationTopic(topic: String) {
+        FirebaseMessaging.getInstance().subscribeToTopic(topic)
+            .addOnCompleteListener { task ->
+                var msg = "successfully subscribed to notif topic"
+                if (!task.isSuccessful) {
+                    msg = "couldn't get subscribed to notif topic"
+                }
+//                Log.d(null, msg)
             }
     }
 

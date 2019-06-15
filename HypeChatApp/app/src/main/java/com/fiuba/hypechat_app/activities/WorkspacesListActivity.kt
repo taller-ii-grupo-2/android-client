@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 
 import android.view.Menu
 import android.view.MenuItem
@@ -17,6 +18,7 @@ import com.fiuba.hypechat_app.models.Moi
 import com.fiuba.hypechat_app.models.SocketHandler
 
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.messaging.FirebaseMessaging
 import com.squareup.picasso.Picasso
 
 import com.xwray.groupie.GroupAdapter
@@ -102,6 +104,7 @@ class WorkspacesListActivity : AppCompatActivity() {
                 galletita.clearCookie()
                 SocketHandler.disconnect()
                 resetLoginInfoInSharedPref()
+                unsubscribeFromNotifTopic(Moi.getMail().replace("@","~at~"))
                 val intent = Intent(this, SignInActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
@@ -112,6 +115,17 @@ class WorkspacesListActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun unsubscribeFromNotifTopic(topic: String) {
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(topic)
+            .addOnCompleteListener { task ->
+                var msg = "successfully unsubscribed from notif topic"
+                if (!task.isSuccessful) {
+                    msg = "couldn't get unsubscribed from notif topic"
+                }
+                Log.d(null, msg)
+            }
     }
 }
 
