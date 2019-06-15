@@ -45,4 +45,4 @@ class SplashActivity : AppCompatActivity() {
             }
         }, SPLASH_DISPLAY_LENGTH.toLong())
     }
-}
+    }
