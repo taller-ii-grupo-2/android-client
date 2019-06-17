@@ -12,7 +12,6 @@ class Channel (internal var channel_name: String) {
         this.nameOrga = nameOrga
         this.desc = descriptionChannel
         this.public = public
-
     }
 
 

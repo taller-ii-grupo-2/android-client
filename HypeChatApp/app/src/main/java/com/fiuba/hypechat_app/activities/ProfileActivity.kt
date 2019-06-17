@@ -5,15 +5,14 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import com.fiuba.hypechat_app.*
 import com.fiuba.hypechat_app.activities.user_registration.ChangePasswordActivity
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
@@ -22,7 +21,6 @@ import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.activity_workspace_creation.*
 import kotlinx.android.synthetic.main.list_row.view.*
-import kotlinx.android.synthetic.main.workgroup_row.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -50,10 +48,7 @@ class ProfileActivity : AppCompatActivity() {
         }
         btnConfirmProfile.setOnClickListener {
             uploadImageWorkgroupToFirebase()
-
         }
-
-
     }
 
     private fun uploadImageWorkgroupToFirebase() {
@@ -92,20 +87,18 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun setProfileFields() {
         getProfileDataFromSv()
-
     }
 
     private fun getProfileDataFromSv() {
         RetrofitClient.instance.getUserProfile()
-            .enqueue(object: Callback<UserProfile> {
+            .enqueue(object : Callback<UserProfile> {
                 override fun onFailure(call: Call<UserProfile>, t: Throwable) {
                     Toast.makeText(baseContext, t.message, Toast.LENGTH_LONG).show()
                 }
 
                 override fun onResponse(call: Call<UserProfile>, response: Response<UserProfile>) {
                     if (response.isSuccessful) {
-                        loadFields( response.body()!!)
-
+                        loadFields(response.body()!!)
                     } else {
                         Toast.makeText(baseContext, "Failed to load profile ", Toast.LENGTH_SHORT).show()
                     }
@@ -127,20 +120,15 @@ class ProfileActivity : AppCompatActivity() {
             adapter.add(ListItemWorkgroupAndChannel(it))
             rvOrganizationsProfile.adapter = adapter
         }
-
-
-
-
-
     }
 
     private fun updateProfileDataToSv(url: String) {
         val username = etUsernameProfile.text.toString()
         val name = etNameProfile.text.toString()
         val surename = etSurnameProfile.text.toString()
-        val userProf = updateUserProfile(username,name,surename,url)
+        val userProf = updateUserProfile(username, name, surename, url)
         RetrofitClient.instance.updateUserProfile(userProf)
-            .enqueue(object: Callback<DefaultResponse> {
+            .enqueue(object : Callback<DefaultResponse> {
                 override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                     Toast.makeText(baseContext, t.message, Toast.LENGTH_LONG).show()
                 }
@@ -156,8 +144,6 @@ class ProfileActivity : AppCompatActivity() {
                     }
                 }
             })
-
-
     }
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -170,20 +156,16 @@ class ProfileActivity : AppCompatActivity() {
             CircleImageViewProfile.setImageBitmap(bitmap)
             btnSelectphotoProfile.background = null
             btnSelectphotoProfile.text = null
-
         }
-
-
     }
-
 }
 
 class ListItemWorkgroupAndChannel(var item: WorkgroupAndChannelList) : Item<ViewHolder>() {
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.itemView.txtWorkgroupList.text = item.name
-        var text : String =""
+        var text: String = ""
         item.channels.forEach {
-           text = text + it+"\n"
+            text = text + it + "\n"
         }
         viewHolder.itemView.txtChannelList.text = text
     }
@@ -191,5 +173,4 @@ class ListItemWorkgroupAndChannel(var item: WorkgroupAndChannelList) : Item<View
     override fun getLayout(): Int {
         return R.layout.list_row
     }
-
 }

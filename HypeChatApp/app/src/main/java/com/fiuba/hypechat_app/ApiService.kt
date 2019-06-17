@@ -22,30 +22,30 @@ interface ApiService {
     fun getWorkgroupNameAndPhotoProfile(): Call<List<WorkgroupPhotoAndName>>
 
     @GET("user/organizations/{orgname}/channels")
-    fun getWholeOrgaData(@Path ("orgname") organame: String): Call<Workspace>
+    fun getWholeOrgaData(@Path("orgname") organame: String): Call<Workspace>
 
     @POST("/channels")
-    fun createChannel(@Body channel: Channel) : Call<DefaultResponse>
+    fun createChannel(@Body channel: Channel): Call<DefaultResponse>
 
     @GET("/users")
-    fun getUserProfile() : Call<UserProfile>
+    fun getUserProfile(): Call<UserProfile>
 
     @PUT("/users")
-    fun updateUserProfile(@Body userprof:updateUserProfile) : Call<DefaultResponse>
+    fun updateUserProfile(@Body userprof: updateUserProfile): Call<DefaultResponse>
 
-    @PUT ("organizations/members")
-    fun addMemberToWorkgroup(@Body member: newMember) : Call<DefaultResponse>
+    @PUT("organizations/members")
+    fun addMemberToWorkgroup(@Body member: newMember): Call<DefaultResponse>
 
-    @GET ("/messages/{orga_name}/{channel_name}")
-    fun getMessagesFromChannel(@Path ("orga_name")orga_name: String, @Path("channel_name") channel_name:String): Call <List<Chats>>
+    @GET("/messages/{orga_name}/{channel_name}")
+    fun getMessagesFromChannel(@Path("orga_name") orga_name: String, @Path("channel_name") channel_name: String): Call<List<Chats>>
 
-    @GET ("/messages/{orga_name}/dms/{dm_dest_mail}")
-    fun getMessagesFromDM (@Path ("orga_name")orga_name: String, @Path("dm_dest_mail") dm_dest_mail:String): Call <List<Chats>>
+    @GET("/messages/{orga_name}/dms/{dm_dest_mail}")
+    fun getMessagesFromDM(@Path("orga_name") orga_name: String, @Path("dm_dest_mail") dm_dest_mail: String): Call<List<Chats>>
 
 }
 
 
-class Chats (val timestamp: String, val author_mail: String, val body: String)
+class Chats(val timestamp: String, val author_mail: String, val body: String)
 
 class DefaultResponse(val message: String)
 
@@ -62,28 +62,34 @@ class User(
 )
 
 class UserProfile(
-    val username:String,
-    val name:String,
+    val username: String,
+    val name: String,
     val surname: String,
     val url: String,
     val organizations: List<WorkgroupAndChannelList>
 )
 
 class updateUserProfile(
-    val username:String,
-    val name:String,
+    val username: String,
+    val name: String,
     val surname: String,
     val urlImageProfile: String
 )
 
-class newMember (
+class newMember(
     val org_name: String,
     val mail_of_user_to_add: String
 )
 
-class WorkgroupAndChannelList (val name: String, val channels:MutableList<String>)
+class WorkgroupAndChannelList(val name: String, val channels: MutableList<String>)
 
 class WorkgroupPhotoAndName(val urlImage: String, val name: String)
 
-class Workspace(val description: String, val welcomMsg: String, val urlImage:String, val channels: MutableList<String>, val members: MutableList<String>)
+class Workspace(
+    val description: String,
+    val welcomMsg: String,
+    val urlImage: String,
+    val channels: MutableList<String>,
+    val members: MutableList<String>
+)
 

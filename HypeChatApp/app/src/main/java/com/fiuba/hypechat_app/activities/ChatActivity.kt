@@ -9,40 +9,40 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-
-import androidx.core.view.GravityCompat
-import androidx.appcompat.app.ActionBarDrawerToggle
-import android.view.MenuItem
-import androidx.drawerlayout.widget.DrawerLayout
-import com.google.android.material.navigation.NavigationView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import com.fiuba.hypechat_app.*
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import com.fiuba.hypechat_app.Chats
+import com.fiuba.hypechat_app.R
+import com.fiuba.hypechat_app.RetrofitClient
+import com.fiuba.hypechat_app.Workspace
 import com.fiuba.hypechat_app.models.Channel
-
 import com.fiuba.hypechat_app.models.Moi
 import com.fiuba.hypechat_app.models.SocketHandler
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.ViewHolder
-import kotlinx.android.synthetic.main.content_nav_drawer.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import com.xwray.groupie.Item
-import kotlinx.android.synthetic.main.activity_workspace_creation.*
+import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.app_bar_nav_drawer.*
 import kotlinx.android.synthetic.main.chat_row.view.*
 import kotlinx.android.synthetic.main.chat_row_receive.view.*
+import kotlinx.android.synthetic.main.content_nav_drawer.*
 import kotlinx.android.synthetic.main.nav_header_nav_drawer.view.*
 import org.json.JSONObject
-import java.util.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import ru.noties.markwon.Markwon
 import ru.noties.markwon.image.ImagesPlugin
+import java.util.*
 
 
 class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -67,8 +67,6 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
         navView.setNavigationItemSelectedListener(this)
 
-        //setDataIntoNavBar(navView, workspace)
-
         val adapter = GroupAdapter<ViewHolder>()
         rvChat.adapter = adapter
         receiveMessages(adapter)
@@ -82,7 +80,6 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
             startActivityForResult(intent, 0)
-
         }
     }
 
@@ -97,14 +94,8 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (requestCode == 0 && resultCode == Activity.RESULT_OK && data != null) {
             photoUri = data.data
             val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, photoUri)
-            /*CircleImageViewProfile.setImageBitmap(bitmap)
-            btnSelectphotoProfile.background = null
-            btnSelectphotoProfile.text = null*/
             uploadImageToFirebase()
-
         }
-
-
     }
 
     private fun uploadImageToFirebase() {
@@ -120,10 +111,9 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     var url = taskSnapshot.result
                     //updateProfileDataToSv(url.toString())
                     Log.d("ProfileAcitivity", "Image added to firebase: ${url.toString()}")
-
+                    val msg = "![](" + url.toString() + ")"
+                    SocketHandler.send(msg)
                 }
-
-
             }
             .addOnProgressListener { taskSnapShot ->
                 val progress = 100 * taskSnapShot.bytesTransferred / taskSnapShot.totalByteCount
@@ -197,7 +187,6 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
 
-
     @Synchronized
     private fun receiveMessages(adapter: GroupAdapter<ViewHolder>) {
         //var socket = SocketHandler.getSocket()
@@ -214,9 +203,9 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             Log.d("SocketHandler", getData)
             runOnUiThread {
-                if (author_mail == Moi.getMail()){
+                if (author_mail == Moi.getMail()) {
                     adapter.add(ChatItem(baseContext, msg_body))
-                }else{
+                } else {
                     adapter.add(ChatItemReceive(baseContext, msg_body))
                 }
             }
@@ -297,7 +286,7 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     Moi.updateCurrentDmDest("")
                     Moi.updateCurrentDmDestName("")
 
-                    toolbar.subtitle =  Moi.getCurrentChannelName()
+                    toolbar.subtitle = Moi.getCurrentChannelName()
 
                     loadMessagesFromChannel()
                 }
@@ -329,15 +318,18 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun loadMessagesFromDM() {
         RetrofitClient.instance.getMessagesFromDM(Moi.getOrgaNameForOrgaFetch(), Moi.getCurrentDmDestName()!!)
-            .enqueue(object : Callback<List<Chats>>
-            {
-                override fun onFailure(call: Call<List<Chats>>
-                                       , t: Throwable) {
+            .enqueue(object : Callback<List<Chats>> {
+                override fun onFailure(
+                    call: Call<List<Chats>>
+                    , t: Throwable
+                ) {
                     Toast.makeText(baseContext, "Error loading chat data", Toast.LENGTH_LONG).show()
                 }
 
-                override fun onResponse(call: Call<List<Chats>>
-                                        , response: Response<List<Chats>>) {
+                override fun onResponse(
+                    call: Call<List<Chats>>
+                    , response: Response<List<Chats>>
+                ) {
                     if (response.isSuccessful) {
                         val chats = response.body()!!
                         updateChatView(chats)
@@ -351,14 +343,15 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun loadMessagesFromChannel() {
 
         RetrofitClient.instance.getMessagesFromChannel(Moi.getOrgaNameForOrgaFetch(), Moi.getCurrentChannelName())
-            .enqueue(object : Callback<List<Chats>>
-            {
+            .enqueue(object : Callback<List<Chats>> {
                 override fun onFailure(call: Call<List<Chats>>, t: Throwable) {
                     Toast.makeText(baseContext, "Error loading chat data", Toast.LENGTH_LONG).show()
                 }
 
-                override fun onResponse(call: Call<List<Chats>>
-                                        , response: Response<List<Chats>>) {
+                override fun onResponse(
+                    call: Call<List<Chats>>
+                    , response: Response<List<Chats>>
+                ) {
                     if (response.isSuccessful) {
                         val chats = response.body()!!
                         updateChatView(chats)
@@ -374,16 +367,13 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         adapter.clear()
         chats.forEach {
             runOnUiThread {
-                if (it.author_mail == Moi.getMail()){
+                if (it.author_mail == Moi.getMail()) {
                     adapter.add(ChatItem(baseContext, it.body))
-                }else{
+                } else {
                     adapter.add(ChatItemReceive(baseContext, it.body))
                 }
             }
         }
-
-
-
     }
 }
 
