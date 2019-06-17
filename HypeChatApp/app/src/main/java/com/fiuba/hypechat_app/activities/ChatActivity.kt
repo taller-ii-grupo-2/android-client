@@ -364,7 +364,7 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun updateChatView(chats: List<Chats>) {
         val adapter = GroupAdapter<ViewHolder>()
-        adapter.clear()
+        //adapter.clear()
         chats.forEach {
             runOnUiThread {
                 if (it.author_mail == Moi.getMail()) {
@@ -374,6 +374,7 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
             }
         }
+        rvChat.adapter = adapter
     }
 }
 
