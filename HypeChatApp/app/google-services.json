@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "308908872627-7cof0il5kp3tkijlfj6741nma9u4d3sl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fiuba.hypechat_app",
+            "certificate_hash": "280303adcfdb00259995f0e2d5422e7725a03580"
+          }
+        },
+        {
           "client_id": "308908872627-3uuaqu8mk0379b0493o4hufoeq3vlstd.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
