@@ -42,11 +42,13 @@ import retrofit2.Callback
 import retrofit2.Response
 import ru.noties.markwon.Markwon
 import ru.noties.markwon.image.ImagesPlugin
+import java.lang.Thread.sleep
 import java.util.*
 
 
 class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     var photoUri: Uri? = null
+    var  group_adapter =  GroupAdapter<ViewHolder>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_nav_drawer)
@@ -67,20 +69,31 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
         navView.setNavigationItemSelectedListener(this)
 
-        val adapter = GroupAdapter<ViewHolder>()
-        rvChat.adapter = adapter
-        receiveMessages(adapter)
+
+        rvChat.adapter = group_adapter
+        receiveMessages()
         send_button_chat_log.setOnClickListener {
-            val textToSend = txtChat.text.toString()
-            SocketHandler.send(textToSend)
-            txtChat.text = null
+            if (notEmptyMsg()) {
+                val textToSend = txtChat.text.toString()
+                SocketHandler.send(textToSend)
+                txtChat.text = null
+                rvChat.scrollToPosition(group_adapter.itemCount - 1)
+            }
         }
 
         btnSearchImage.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
             startActivityForResult(intent, 0)
+
         }
+    }
+
+    private fun notEmptyMsg(): Boolean {
+        if (txtChat.text.isEmpty())
+            return false
+
+        return true
     }
 
     override fun onPause() {
@@ -113,6 +126,11 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     Log.d("ProfileAcitivity", "Image added to firebase: ${url.toString()}")
                     val msg = "![](" + url.toString() + ")"
                     SocketHandler.send(msg)
+                    sleep (1000)
+                    progressDialog.dismiss()
+
+                    rvChat.scrollToPosition(group_adapter.itemCount - 1)
+                    //receiveMessages()
                 }
             }
             .addOnProgressListener { taskSnapShot ->
@@ -164,7 +182,6 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun fetchWorgroupData(navView: NavigationView) {
         //var workspace: Workspace? = null
-        val adapter = GroupAdapter<ViewHolder>()
 
         Log.d("MOI PRINT ->>>", Moi.getOrgaNameForOrgaFetch())
         RetrofitClient.instance.getWholeOrgaData(Moi.getOrgaNameForOrgaFetch())
@@ -188,7 +205,7 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
     @Synchronized
-    private fun receiveMessages(adapter: GroupAdapter<ViewHolder>) {
+    private fun receiveMessages() {
         //var socket = SocketHandler.getSocket()
         SocketHandler.getSocket().on("message") { args ->
             val getData = args.joinToString()
@@ -204,9 +221,9 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             Log.d("SocketHandler", getData)
             runOnUiThread {
                 if (author_mail == Moi.getMail()) {
-                    adapter.add(ChatItem(baseContext, msg_body))
+                    group_adapter.add(ChatItem(baseContext, msg_body))
                 } else {
-                    adapter.add(ChatItemReceive(baseContext, msg_body))
+                    group_adapter.add(ChatItemReceive(baseContext, msg_body))
                 }
             }
         }
@@ -354,6 +371,7 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 ) {
                     if (response.isSuccessful) {
                         val chats = response.body()!!
+                        group_adapter.clear()
                         updateChatView(chats)
                     } else {
                         Toast.makeText(baseContext, "Failed to load chat", Toast.LENGTH_SHORT).show()
@@ -363,18 +381,21 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun updateChatView(chats: List<Chats>) {
-        val adapter = GroupAdapter<ViewHolder>()
-        //adapter.clear()
+      //  val adapter = GroupAdapter<ViewHolder>()
+
         chats.forEach {
             runOnUiThread {
                 if (it.author_mail == Moi.getMail()) {
-                    adapter.add(ChatItem(baseContext, it.body))
+                    group_adapter.add(ChatItem(baseContext, it.body))
                 } else {
-                    adapter.add(ChatItemReceive(baseContext, it.body))
+                    group_adapter.add(ChatItemReceive(baseContext, it.body))
                 }
+
             }
+
         }
-        rvChat.adapter = adapter
+        rvChat.scrollToPosition(group_adapter.itemCount -1)
+
     }
 }
 
