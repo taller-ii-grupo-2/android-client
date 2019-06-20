@@ -6,48 +6,84 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".activities.ChannelCreationActivity">
-    <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
-                  android:orientation="vertical"
-                  android:layout_centerVertical="true">
-        <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbarProfile"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?attr/colorPrimaryDark"
-                app:popupTheme="@style/AppTheme.PopupOverlay"
 
-                app:titleTextColor="@color/colorPrimary"
-                app:title="Channel creation"/>
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
+                      android:orientation="vertical"
+        >
+
+            <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbarProfile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/colorPrimaryDark"
+                    app:popupTheme="@style/AppTheme.PopupOverlay"
+
+                    app:titleTextColor="@color/colorPrimary"
+                    app:title="Channel creation"/>
 
 
-        <Switch
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginTop="20dp"
-                android:text="Public"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:checked="true" android:id="@+id/sw_public"
-                android:padding="10dp"/>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                          android:orientation="vertical"/>
 
-        <EditText android:layout_width="match_parent" android:layout_height="wrap_content"
-                  android:hint="Channel name"
-                  android:layout_marginStart="20dp"
-                  android:layout_marginEnd="20dp"
-                  android:layout_marginTop="20dp" android:id="@+id/et_channelName"/>
+            <Switch
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginTop="20dp"
+                    android:text="Public"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:checked="true" android:id="@+id/sw_public"
+                    android:padding="10dp"/>
 
-        <EditText android:layout_width="match_parent" android:layout_height="wrap_content"
-                  android:hint="Purpose of the channel"
-                  android:layout_marginStart="20dp"
-                  android:layout_marginEnd="20dp"
-                  android:layout_marginTop="20dp" android:id="@+id/et_channelDesc"/>
+            <EditText android:layout_width="match_parent" android:layout_height="wrap_content"
+                      android:hint="Channel name"
+                      android:layout_marginStart="20dp"
+                      android:layout_marginEnd="20dp"
+                      android:layout_marginTop="20dp" android:id="@+id/et_channelName"/>
 
-        <Button android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:text="Create" android:background="@drawable/btnbordercolor"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginTop="200dp" android:id="@+id/btnChannelCreate"/>
+            <EditText android:layout_width="match_parent" android:layout_height="wrap_content"
+                      android:hint="Purpose of the channel"
+                      android:layout_marginStart="20dp"
+                      android:layout_marginEnd="20dp"
+                      android:layout_marginTop="20dp" android:id="@+id/et_channelDesc"/>
 
-    </LinearLayout>
+            <EditText android:layout_width="match_parent" android:layout_height="wrap_content"
+                      android:hint="Email to invite"
+                      android:layout_marginStart="20dp"
+                      android:layout_marginEnd="100dp"
+                      android:layout_marginTop="20dp" android:id="@+id/et_username"
+                    android:enabled="false"/>
 
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="Add" android:background="@drawable/btn_signin"
+                    android:layout_marginStart="320dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginTop="-50dp"
+                    android:id="@+id/btnAdd"
+                    android:enabled="false"/>
+
+          <com.google.android.material.chip.ChipGroup android:layout_width="match_parent"
+                                                      android:layout_height="wrap_content"
+                                                      android:layout_marginStart="20dp"
+                                                      android:layout_marginEnd="100dp"
+                                                      android:layout_marginTop="20dp" android:id="@+id/chip_group"/>
+
+
+
+            <Button android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:text="Create" android:background="@drawable/btnbordercolor"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginTop="200dp" android:id="@+id/btnChannelCreate"/>
+
+
+
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </RelativeLayout>

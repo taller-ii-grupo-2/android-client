@@ -223,7 +223,7 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 if (author_mail == Moi.getMail()) {
                     group_adapter.add(ChatItem(baseContext, msg_body))
                 } else {
-                    group_adapter.add(ChatItemReceive(baseContext, msg_body))
+                    group_adapter.add(ChatItemReceive(baseContext, msg_body, author_mail))
                 }
             }
         }
@@ -388,7 +388,7 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 if (it.author_mail == Moi.getMail()) {
                     group_adapter.add(ChatItem(baseContext, it.body))
                 } else {
-                    group_adapter.add(ChatItemReceive(baseContext, it.body))
+                    group_adapter.add(ChatItemReceive(baseContext, it.body, it.author_mail))
                 }
 
             }
@@ -419,7 +419,7 @@ class ChatItem(baseContext: Context, val text: String) : Item<ViewHolder>() {
     }
 }
 
-class ChatItemReceive(baseContext: Context, val text: String) : Item<ViewHolder>() {
+class ChatItemReceive(baseContext: Context, val text: String, val author: String) : Item<ViewHolder>() {
     // obtain an instance of Markwon
     var markwon = Markwon.builder(baseContext).usePlugin(ImagesPlugin.create(baseContext)).build()
 
@@ -432,6 +432,10 @@ class ChatItemReceive(baseContext: Context, val text: String) : Item<ViewHolder>
 
         // use it on a TextView
         this.markwon.setParsedMarkdown(viewHolder.itemView.txtChatRowReceive, markdown)
+
+
+        viewHolder.itemView.txtChatName.text = author
+
     }
 
     override fun getLayout(): Int {

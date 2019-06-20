@@ -35,7 +35,7 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value=".activities.ChatActivity"/>
         </activity>
-        <activity android:name=".activities.ChannelCreationActivity">
+        <activity android:name=".activities.ChannelCreationActivity" android:theme="@style/chipete">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value=".activities.ChatActivity"/>

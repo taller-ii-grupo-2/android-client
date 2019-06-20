@@ -9,10 +9,25 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginEnd="80dp"
                 app:layout_anchorGravity="center" android:layout_marginLeft="30dp" android:layout_marginRight="80dp">
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginLeft="80dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginRight="30dp"
+            android:text="asjdasjdjsadjasjdasjdjasdjasdjadj"
+            android:textColor="@color/colorAccent"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:id="@+id/txtChatName"
+    />
     <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="60dp"
             android:layout_marginStart="50dp"
             android:layout_marginLeft="80dp"
             android:layout_marginEnd="30dp"
@@ -26,16 +41,5 @@
             android:id="@+id/txtChatRowReceive"
     />
 
-    <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/imgViewLogo"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="20dp"
-            android:layout_centerVertical="true"
-            android:src="@drawable/ic_user"
-            app:layout_constraintStart_toStartOf="parent"
 
-            app:layout_constraintTop_toTopOf="parent"/>
 </RelativeLayout>
