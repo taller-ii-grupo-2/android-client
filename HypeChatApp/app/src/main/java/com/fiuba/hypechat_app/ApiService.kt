@@ -42,8 +42,27 @@ interface ApiService {
     @GET("/messages/{orga_name}/dms/{dm_dest_mail}")
     fun getMessagesFromDM(@Path("orga_name") orga_name: String, @Path("dm_dest_mail") dm_dest_mail: String): Call<List<Chats>>
 
-}
+    @DELETE ("/organizations")
+    fun deleteOrganization(@Body orga:deleteOrga): Call<DefaultResponse>
 
+    @DELETE ("/organizations/channels")
+    fun deleteChannel(@Body channel:deleteChannel):Call<DefaultResponse>
+
+    @DELETE ("/organizations/members")
+    fun deleteUser(@Body member:deleteUser):Call<DefaultResponse>
+
+    @GET ("/type")
+    fun getUsersTypes(): Call<List<Types>>
+
+
+}
+class Types (val mail:String, val type:String)
+
+class deleteUser (val nameOrga:String, val mail:String)
+
+class deleteChannel (val nameOrga:String, val name_channel: String)
+
+class deleteOrga (val nameOrga:String)
 
 class Chats(val timestamp: String, val author_mail: String, val body: String)
 

@@ -13,4 +13,8 @@
           android:title="@string/add_member_to_workgroup"
           android:orderInCategory="100"
           app:showAsAction="never"/>
+    <item android:id="@+id/manage_workgroup"
+          android:title="@string/manage_workgroup"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
 </menu>

@@ -256,9 +256,17 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.action_profile -> setProfileActivity()
             R.id.action_maps -> showMapActivity()
             R.id.add_member_to_workgroup -> showAddMemberActivity()
+            R.id.manage_workgroup -> showManageActivity()
 
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun showManageActivity(): Boolean {
+        val intent = Intent(this, ManagementActivity::class.java)
+        startActivityForResult(intent, 20)
+        return true
+
     }
 
     private fun showAddMemberActivity(): Boolean {

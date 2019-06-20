@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".activities.ManagementActivity"
+        android:background="@drawable/general_background">
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_centerVertical="true">
+
+            <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbarProfile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/colorPrimaryDark"
+                    app:popupTheme="@style/AppTheme.PopupOverlay"
+
+                    app:titleTextColor="@color/colorPrimary"
+                    app:title="Workgroup management"/>
+
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/rvUsers"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="8dp"
+                    android:background="@null"
+                    app:layout_constraintBottom_toTopOf="@+id/btnConfirmProfile"
+                    />
+            <androidx.recyclerview.widget.RecyclerView
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/rvChannels"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="8dp"
+                    android:background="@null"
+
+                    />
+
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btnbordercolor"
+                    android:layout_gravity="center_horizontal"
+                    android:padding="10dp"
+                    android:text="Delete organization"
+                    android:textAllCaps="false"
+                    android:textSize="21sp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="30dp" android:id="@+id/btnDeleteWorkgroup"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
+
+
+</RelativeLayout>
