@@ -18,9 +18,9 @@
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="android:itemTextAppearance">@color/colorPrimaryDark</item>
-        <item name="android:itemBackground">@color/colorAccent</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="android:itemTextAppearance">@color/colorPrimary</item>
+        <item name="android:itemBackground">@color/colorPrimary</item>
     </style>
 
     <style name="Worskpace" parent="Theme.AppCompat.Light.DarkActionBar">

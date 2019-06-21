@@ -42,8 +42,8 @@ class ManagementActivity : AppCompatActivity() {
         var listTypes = ArrayList<Types>()
         val type1 = Types ("turi.77@gmail.com", "Member")
         val type2 = Types ("damato@gmail.com", "Member")
-        val type3 = Types ("jax@gmail.com", "Admin")
-        val type4 = Types ("ture@gmail.com", "Creator")
+        val type3 = Types ("jax@gmail.com", "Creator")
+        val type4 = Types ("ture@gmail.com", "Admin")
 
         listTypes.add(type1)
         listTypes.add(type2)
