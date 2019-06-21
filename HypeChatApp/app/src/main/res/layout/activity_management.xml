@@ -6,7 +6,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".activities.ManagementActivity"
-        android:background="@drawable/general_background">
+        android:background="@drawable/general_background"
+        android:theme="@style/AppTheme.NoActionBar"
+        >
 
     <ScrollView
             android:layout_width="match_parent"
@@ -34,12 +36,10 @@
                     android:layout_marginEnd="20dp"
                     android:layout_marginTop="20dp"
                     android:id="@+id/rvUsers"
-                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                    tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    android:background="@color/colorAccent"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="8dp"
-                    android:background="@null"
                     app:layout_constraintBottom_toTopOf="@+id/btnConfirmProfile"
                     />
             <androidx.recyclerview.widget.RecyclerView

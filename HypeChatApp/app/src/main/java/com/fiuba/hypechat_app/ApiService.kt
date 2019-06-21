@@ -45,14 +45,17 @@ interface ApiService {
     @DELETE ("/organizations")
     fun deleteOrganization(@Body orga:deleteOrga): Call<DefaultResponse>
 
-    @DELETE ("/organizations/channels")
-    fun deleteChannel(@Body channel:deleteChannel):Call<DefaultResponse>
+  /*  @DELETE ("/organizations/channels")
+    fun deleteChannel(@Body channel:deleteChannel):Call<DefaultResponse>*/
 
     @DELETE ("/organizations/members")
     fun deleteUser(@Body member:deleteUser):Call<DefaultResponse>
 
     @GET ("/type")
     fun getUsersTypes(): Call<List<Types>>
+
+    @HTTP(method = "DELETE", path = "/organizations/channels", hasBody = true)
+    fun deleteChannel(@Body channel:deleteChannel):Call<DefaultResponse>
 
 
 }
