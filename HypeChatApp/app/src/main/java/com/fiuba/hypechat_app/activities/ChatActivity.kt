@@ -304,7 +304,7 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         listChannels.forEach {
             when (item.itemId) {
                 contador -> {
-                    Toast.makeText(this, it.channel_name, Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(this, it.channel_name, Toast.LENGTH_SHORT).show()
 
                     Moi.updateCurrentChannelName(it.channel_name)
 
@@ -321,7 +321,7 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         listMembers.forEach {
             when (item.itemId) {
                 contador -> {
-                    Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
                     Moi.updateCurrentDmDestName(it)
 
                     Moi.updateCurrentChannelName("")
@@ -357,6 +357,7 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 ) {
                     if (response.isSuccessful) {
                         val chats = response.body()!!
+                        group_adapter.clear()
                         updateChatView(chats)
                     } else {
                         Toast.makeText(baseContext, "Failed to load chat", Toast.LENGTH_SHORT).show()

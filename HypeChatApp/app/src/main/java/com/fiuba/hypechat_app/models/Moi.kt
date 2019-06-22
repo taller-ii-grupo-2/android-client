@@ -28,6 +28,7 @@ object Moi {
     private var current_dm_dest_name: String = ""
     private var current_channel: Channel = Channel("")
     private var current_dm_dest: String = ""
+    private var user_profile : String = ""
 
     private lateinit var orgaNameForOrgaFetch: String
 
@@ -96,6 +97,10 @@ object Moi {
         current_dm_dest_name = dm_dest
     }
 
+    fun updateUserProfile(mail:String){
+        user_profile = mail
+    }
+
     fun getCurrentOrganizationName(): String {
         return this.current_organization.name
     }
@@ -162,5 +167,9 @@ object Moi {
 
     fun getCurrentChannelName(): String {
         return current_channel_name
+    }
+
+    fun getUserProfile(): String{
+        return user_profile
     }
 }

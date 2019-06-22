@@ -13,6 +13,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.fiuba.hypechat_app.*
 import com.fiuba.hypechat_app.activities.user_registration.ChangePasswordActivity
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
@@ -90,7 +91,8 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun getProfileDataFromSv() {
-        RetrofitClient.instance.getUserProfile()
+        val prof = FirebaseAuth.getInstance().currentUser!!.email
+        RetrofitClient.instance.getUserProfile(prof!!)
             .enqueue(object : Callback<UserProfile> {
                 override fun onFailure(call: Call<UserProfile>, t: Throwable) {
                     Toast.makeText(baseContext, t.message, Toast.LENGTH_LONG).show()

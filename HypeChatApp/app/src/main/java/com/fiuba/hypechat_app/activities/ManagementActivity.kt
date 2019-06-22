@@ -2,19 +2,19 @@ package com.fiuba.hypechat_app.activities
 
 import android.content.Context
 import android.content.Intent
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.View
-import android.widget.Button
+
 import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.core.content.ContextCompat.startActivity
-import androidx.recyclerview.widget.RecyclerView
+
 import com.fiuba.hypechat_app.*
 import com.fiuba.hypechat_app.models.Channel
 import com.fiuba.hypechat_app.models.Moi
-import com.google.firebase.FirebaseAppLifecycleListener
+
 import com.google.firebase.auth.FirebaseAuth
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
@@ -34,12 +34,68 @@ class ManagementActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.toolbarProfile))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        setFields()
+        getRolsFromSv()
+
+
+
+        btnDeleteWorkgroup.setOnClickListener {
+            if (rol=="Member" || rol=="Admin") {
+                btnDeleteWorkgroup.isEnabled = false
+                Toast.makeText(baseContext, "You don't have permission to delete workgroup", Toast.LENGTH_SHORT).show()
+            }
+            else  deleteAndSendToSV()
+
+        }
+
 
     }
 
-    private fun setFields() {
-        var listTypes = ArrayList<Types>()
+    fun deleteAndSendToSV(){
+        val delWorkgroup = deleteOrga(Moi.getCurrentOrganizationName())
+        RetrofitClient.instance.deleteOrganization(delWorkgroup)
+            .enqueue(object : Callback<DefaultResponse> {
+                override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
+
+                }
+
+                override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
+                    if (response.isSuccessful) {
+
+
+                    } else {
+
+                    }
+                }
+            })
+    }
+
+    private fun getRolsFromSv(){
+        RetrofitClient.instance.getUsersTypes(Moi.getOrgaNameForOrgaFetch())
+            .enqueue(object : Callback<List<Types>> {
+                override fun onFailure(
+                    call: Call<List<Types>>
+                    , t: Throwable
+                ) {
+                    Toast.makeText(baseContext, "Error loading types data", Toast.LENGTH_LONG).show()
+                }
+
+                override fun onResponse(
+                    call: Call<List<Types>>
+                    , response: Response<List<Types>>
+                ) {
+                    if (response.isSuccessful) {
+                        val listTypes = response.body()!!
+                        setFields(listTypes)
+
+                    } else {
+                        Toast.makeText(baseContext, "Failed loading types data", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            })
+    }
+
+    private fun setFields(listTypes: List<Types>) {
+    /*    var listTypes = ArrayList<Types>()
         val type1 = Types ("turi.77@gmail.com", "Member")
         val type2 = Types ("damato@gmail.com", "Member")
         val type3 = Types ("jax@gmail.com", "Creator")
@@ -48,7 +104,7 @@ class ManagementActivity : AppCompatActivity() {
         listTypes.add(type1)
         listTypes.add(type2)
         listTypes.add(type3)
-        listTypes.add(type4)
+        listTypes.add(type4)*/
 
 
         val me = FirebaseAuth.getInstance().currentUser!!.email
@@ -59,33 +115,26 @@ class ManagementActivity : AppCompatActivity() {
 
         }
         val adapter = GroupAdapter<ViewHolder>()
-        val adapter2 = GroupAdapter<ViewHolder>()
+
 
         listTypes.forEach {
-            adapter.add(ItemUser(it,adapter2, baseContext, rol))
+            adapter.add(ItemUser(it,adapter, baseContext, rol))
 
         }
-        rvUsers.adapter = adapter2
+        rvUsers.adapter = adapter
 
         Moi.getChannelList().forEach {
-            adapter.add(ItemChannel(it, adapter))
+            adapter.add(ItemChannel(it, adapter, rol))
 
         }
         rvChannels.adapter = adapter
 
-        /*adapter.setOnItemClickListener { item, view ->
-
-            val workgroupItem = item as WorkgroupItem
-            Moi.setOrgaNameForOrgaFetch(workgroupItem.getWorkgroupName())
-            Moi.updateCurrentChannelName("General")
-
-
-        }*/
+        
     }
 }
 
 
-class ItemUser(var item: Types, var adapter: GroupAdapter<ViewHolder>,val  contexto: Context, val rol: String) : Item<ViewHolder>() {
+class ItemUser(var item: Types,var adapter: GroupAdapter<ViewHolder>,var  contexto: Context, val rol: String) : Item<ViewHolder>() {
     //val yo = "Creator"
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
@@ -107,10 +156,16 @@ class ItemUser(var item: Types, var adapter: GroupAdapter<ViewHolder>,val  conte
             popMenu.setOnMenuItemClickListener {
 
                 when (it.title) {
-                    "Delete User" -> Toast.makeText(contexto, "Delete user", Toast.LENGTH_SHORT).show()
-                    "Make admin" -> Toast.makeText(contexto, "Make admin", Toast.LENGTH_SHORT).show()
-                    "Make member" -> Toast.makeText(contexto, "Make member", Toast.LENGTH_SHORT).show()
-                    "View profile user" ->  Toast.makeText(contexto,  "View profile user" , Toast.LENGTH_SHORT).show()
+                    "Delete User" -> {deleteAndSendToSV(item.mail)
+                                        adapter.removeGroup(position)
+                                        adapter.notifyDataSetChanged() }
+                    "Make admin" -> {changeRol(item.mail, "Admin")
+                                     viewHolder.itemView.txtType.text = "Admin"
+                                    changeMenu(popMenu,"Admin")}
+                    "Make member" -> {changeRol(item.mail,"Member")
+                                    viewHolder.itemView.txtType.text = "Member"
+                                    changeMenu(popMenu,"Member")}
+                    "View profile user" ->  viewUserProfile(item.mail,contexto)
                 }
                 true
 
@@ -120,9 +175,71 @@ class ItemUser(var item: Types, var adapter: GroupAdapter<ViewHolder>,val  conte
 
         }
     }
+
+    private fun changeMenu(popMenu: PopupMenu, type: String) {
+        if (type == "Admin"){
+            popMenu.menu.getItem(1).isEnabled = true
+            popMenu.menu.getItem(2).isEnabled = true
+        }
+        if (type == "Member"){
+            popMenu.menu.getItem(1).isEnabled = true
+            popMenu.menu.getItem(2).isEnabled = false
+        }
+    }
+
+
     override fun getLayout(): Int {
         return R.layout.delete_row_users
     }
+
+    fun viewUserProfile(mail:String, context:Context){
+        Moi.updateUserProfile(mail)
+        val intent = Intent(context, ViewProfileActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(context,intent,null)
+
+
+    }
+
+    fun deleteAndSendToSV(mail:String){
+        val delUser = deleteUser(Moi.getCurrentOrganizationName(), mail)
+        RetrofitClient.instance.deleteUser(delUser)
+            .enqueue(object : Callback<DefaultResponse> {
+                override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
+
+                }
+
+                override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
+                    if (response.isSuccessful) {
+
+                    } else {
+
+                    }
+                }
+            })
+    }
+    fun changeRol(mail:String, rol: String){
+        val rola = Types(mail,rol)
+        RetrofitClient.instance.updateRol(Moi.getCurrentOrganizationName(),rola)
+            .enqueue(object : Callback<DefaultResponse> {
+                override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
+
+                }
+
+                override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
+                    if (response.isSuccessful) {
+
+
+                    } else {
+
+                    }
+                }
+            })
+
+    }
+
+
+
 
     fun validateOptions(yo:String,item: Types,popMenu: PopupMenu){
         if ((yo == "Admin" && item.type == "Creator") || (yo == "Admin" && item.type == "Admin")  ){
@@ -149,9 +266,14 @@ class ItemUser(var item: Types, var adapter: GroupAdapter<ViewHolder>,val  conte
 
 
 
-class ItemChannel(var item: Channel, var adapter: GroupAdapter<ViewHolder>) : Item<ViewHolder>() {
+class ItemChannel(var item: Channel, var adapter: GroupAdapter<ViewHolder>, val rol: String) : Item<ViewHolder>() {
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.itemView.txtChannelDelete.text = item.channel_name
+
+        if (rol == "Member") {
+            viewHolder.itemView.btnDeleteChannel.isEnabled = false
+            viewHolder.itemView.btnDeleteChannel.background = null
+        }
 
         viewHolder.itemView.btnDeleteChannel.setOnClickListener {
             adapter.removeGroup(position)

@@ -99,13 +99,14 @@ class WorkspacesListActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.workspace_signout -> {
-                FirebaseAuth.getInstance().signOut()
+
                 val galletita = RetrofitClient.CookiesInterceptor()
                 galletita.clearCookie()
                 SocketHandler.disconnect()
                 resetLoginInfoInSharedPref()
                 unsubscribeFromNotifTopic(Moi.getMail().replace("@","~at~"))
                 val intent = Intent(this, SignInActivity::class.java)
+                FirebaseAuth.getInstance().signOut()
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
             }

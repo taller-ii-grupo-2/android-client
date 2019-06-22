@@ -27,8 +27,8 @@ interface ApiService {
     @POST("/channels")
     fun createChannel(@Body channel: Channel): Call<DefaultResponse>
 
-    @GET("/users")
-    fun getUserProfile(): Call<UserProfile>
+    @GET("/profile/{email}")
+    fun getUserProfile(@Path("email") email: String): Call<UserProfile>
 
     @PUT("/users")
     fun updateUserProfile(@Body userprof: updateUserProfile): Call<DefaultResponse>
@@ -42,20 +42,23 @@ interface ApiService {
     @GET("/messages/{orga_name}/dms/{dm_dest_mail}")
     fun getMessagesFromDM(@Path("orga_name") orga_name: String, @Path("dm_dest_mail") dm_dest_mail: String): Call<List<Chats>>
 
-    @DELETE ("/organizations")
+    @HTTP(method = "DELETE", path = "/organizations", hasBody = true)
     fun deleteOrganization(@Body orga:deleteOrga): Call<DefaultResponse>
 
-  /*  @DELETE ("/organizations/channels")
-    fun deleteChannel(@Body channel:deleteChannel):Call<DefaultResponse>*/
-
-    @DELETE ("/organizations/members")
+    @HTTP(method = "DELETE", path = "/organizations/members", hasBody = true)
     fun deleteUser(@Body member:deleteUser):Call<DefaultResponse>
-
-    @GET ("/type")
-    fun getUsersTypes(): Call<List<Types>>
 
     @HTTP(method = "DELETE", path = "/organizations/channels", hasBody = true)
     fun deleteChannel(@Body channel:deleteChannel):Call<DefaultResponse>
+
+    @PUT ("/type/{orga_name}")
+    fun updateRol(@Path("orga_name") orga_name: String, @Body type:Types): Call<DefaultResponse>
+
+    @GET ("/type/{orga_name}")
+    fun getUsersTypes(@Path("orga_name") orga_name: String): Call<List<Types>>
+
+    /*  @DELETE ("/organizations/channels")
+    fun deleteChannel(@Body channel:deleteChannel):Call<DefaultResponse>*/
 
 
 }
