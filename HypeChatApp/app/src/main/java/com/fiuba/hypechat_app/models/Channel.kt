@@ -6,23 +6,23 @@ class Channel (internal var channel_name: String) {
 
     //private var userList = mutableListOf<User>()
     private var desc : String = ""
-    private var public:Boolean = true
+    private var private:Boolean = true
     private var nameOrga: String = ""
     private lateinit var invitationList : List<String>
-    constructor(nameOrga:String,channel_name: String,public: Boolean,descriptionChannel: String,invitationList:List<String>) : this(channel_name){
+    constructor(nameOrga:String,channel_name: String,public: Boolean,descriptionChannel: String) : this(channel_name){
         this.nameOrga = nameOrga
         this.desc = descriptionChannel
-        this.public = public
-        this.invitationList = invitationList
+        this.private = public
+        //this.invitationList = invitationList
     }
 
 
     fun isPublic (): Boolean{
-        return public
+        return private
     }
 
     fun setPublic(public: Boolean){
-        this.public = public
+        this.private = public
     }
 }
 

@@ -51,7 +51,7 @@
                     android:hint="Name"
                     android:drawablePadding="10dp"
                     android:layout_width="match_parent" android:layout_height="wrap_content"
-                    android:padding="10dp" android:id="@+id/etNameProfile"/>
+                    android:padding="10dp" android:id="@+id/etNameProfile2"/>
             <TextView
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
@@ -59,7 +59,7 @@
                     android:hint="Surname"
                     android:drawablePadding="10dp"
                     android:layout_width="match_parent" android:layout_height="wrap_content"
-                    android:padding="10dp" android:id="@+id/etSurnameProfile"/>
+                    android:padding="10dp" android:id="@+id/etSurnameProfile2"/>
             <TextView
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
@@ -67,7 +67,7 @@
                     android:hint="Username"
                     android:drawablePadding="10dp"
                     android:layout_width="match_parent" android:layout_height="wrap_content"
-                    android:padding="10dp" android:id="@+id/etUsernameProfile"/>
+                    android:padding="10dp" android:id="@+id/etUsernameProfile2"/>
 
 
             <androidx.recyclerview.widget.RecyclerView

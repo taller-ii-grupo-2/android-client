@@ -56,9 +56,9 @@ class ViewProfileActivity : AppCompatActivity() {
 
     private fun loadFields(body: UserProfile) {
         val adapter = GroupAdapter<ViewHolder>()
-        etNameProfile.setText(body.name)
-        etSurnameProfile.setText(body.surname)
-        etUsernameProfile.setText(body.username)
+        etNameProfile2.setText(body.name)
+        etSurnameProfile2.setText(body.surname)
+        etUsernameProfile2.setText(body.username)
         Picasso.get().load(body.url).into(CircleImageViewProfile)
 
         body.organizations.forEach {

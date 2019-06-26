@@ -33,7 +33,7 @@ interface ApiService {
     @PUT("/users")
     fun updateUserProfile(@Body userprof: updateUserProfile): Call<DefaultResponse>
 
-    @PUT("organizations/members")
+    @POST("organizations/members")
     fun addMemberToWorkgroup(@Body member: newMember): Call<DefaultResponse>
 
     @GET("/messages/{orga_name}/{channel_name}")
@@ -57,11 +57,15 @@ interface ApiService {
     @GET ("/type/{orga_name}")
     fun getUsersTypes(@Path("orga_name") orga_name: String): Call<List<Types>>
 
+    @POST ("/channels/users")
+    fun addMemberToChannel(@Body member:newChannelMember): Call<DefaultResponse>
+
     /*  @DELETE ("/organizations/channels")
     fun deleteChannel(@Body channel:deleteChannel):Call<DefaultResponse>*/
 
 
 }
+
 class Types (val mail:String, val type:String)
 
 class deleteUser (val nameOrga:String, val mail:String)
@@ -105,6 +109,13 @@ class newMember(
     val org_name: String,
     val mail_of_user_to_add: String
 )
+
+class newChannelMember(
+    val nameOrga:String,
+    val channel_name: String,
+    val user_mail:String
+)
+
 
 class WorkgroupAndChannelList(val name: String, val channels: MutableList<String>)
 

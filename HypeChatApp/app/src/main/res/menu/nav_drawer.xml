@@ -13,6 +13,10 @@
           android:title="@string/add_member_to_workgroup"
           android:orderInCategory="100"
           app:showAsAction="never"/>
+    <item android:id="@+id/add_member_to_channel"
+          android:title="Add member to channel"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
     <item android:id="@+id/manage_workgroup"
           android:title="@string/manage_workgroup"
           android:orderInCategory="100"

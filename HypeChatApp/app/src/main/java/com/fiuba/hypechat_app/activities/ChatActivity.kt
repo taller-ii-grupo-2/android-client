@@ -22,6 +22,7 @@ import com.fiuba.hypechat_app.Chats
 import com.fiuba.hypechat_app.R
 import com.fiuba.hypechat_app.RetrofitClient
 import com.fiuba.hypechat_app.Workspace
+import com.fiuba.hypechat_app.activities.user_registration.AddMemberToChannel
 import com.fiuba.hypechat_app.models.Channel
 import com.fiuba.hypechat_app.models.Moi
 import com.fiuba.hypechat_app.models.SocketHandler
@@ -256,10 +257,17 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.action_profile -> setProfileActivity()
             R.id.action_maps -> showMapActivity()
             R.id.add_member_to_workgroup -> showAddMemberActivity()
+            R.id.add_member_to_channel -> showAddMemberToChannelActivity()
             R.id.manage_workgroup -> showManageActivity()
 
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun showAddMemberToChannelActivity(): Boolean {
+        val intent = Intent(this, AddMemberToChannel::class.java)
+        startActivityForResult(intent, 20)
+        return true
     }
 
     private fun showManageActivity(): Boolean {

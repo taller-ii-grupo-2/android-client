@@ -11,7 +11,8 @@ object Moi {
      */
 
         val SERVER_URL = "https://hypechatgrupo2-app-server-stag.herokuapp.com/"
-//    val SERVER_URL = "http://192.168.2.110:5000/"
+//   val SERVER_URL = "http://192.168.2.110:5000/"
+       //val SERVER_URL = "http://192.168.0.210:5000/"
 
     /* personal info */
 //    private lateinit var username: String

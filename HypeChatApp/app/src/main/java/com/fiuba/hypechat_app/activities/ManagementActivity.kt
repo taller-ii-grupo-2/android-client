@@ -60,7 +60,8 @@ class ManagementActivity : AppCompatActivity() {
 
                 override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                     if (response.isSuccessful) {
-
+                        val intent = Intent(baseContext, WorkspacesListActivity::class.java)
+                        startActivity(intent)
 
                     } else {
 
@@ -69,7 +70,7 @@ class ManagementActivity : AppCompatActivity() {
             })
     }
 
-    private fun getRolsFromSv(){
+     fun getRolsFromSv(){
         RetrofitClient.instance.getUsersTypes(Moi.getOrgaNameForOrgaFetch())
             .enqueue(object : Callback<List<Types>> {
                 override fun onFailure(
@@ -131,10 +132,12 @@ class ManagementActivity : AppCompatActivity() {
 
         
     }
+
+
 }
 
 
-class ItemUser(var item: Types,var adapter: GroupAdapter<ViewHolder>,var  contexto: Context, val rol: String) : Item<ViewHolder>() {
+class ItemUser (var item: Types,var adapter: GroupAdapter<ViewHolder>,var  contexto: Context, val rol: String) : Item<ViewHolder>() {
     //val yo = "Creator"
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
@@ -143,7 +146,7 @@ class ItemUser(var item: Types,var adapter: GroupAdapter<ViewHolder>,var  contex
 
         viewHolder.itemView.btnMenuUser.setOnClickListener {
 
-            val popMenu = PopupMenu(contexto, it)
+            var popMenu = PopupMenu(contexto, it)
 
             when (rol){
                 "Member" -> popMenu.inflate(R.menu.user_miembro)
@@ -160,11 +163,13 @@ class ItemUser(var item: Types,var adapter: GroupAdapter<ViewHolder>,var  contex
                                         adapter.removeGroup(position)
                                         adapter.notifyDataSetChanged() }
                     "Make admin" -> {changeRol(item.mail, "Admin")
-                                     viewHolder.itemView.txtType.text = "Admin"
-                                    changeMenu(popMenu,"Admin")}
+                                    viewHolder.itemView.txtType.text = "Admin"
+                                     popMenu.inflate(R.menu.user_admin)
+                                    it.isEnabled = false}
                     "Make member" -> {changeRol(item.mail,"Member")
                                     viewHolder.itemView.txtType.text = "Member"
-                                    changeMenu(popMenu,"Member")}
+                                     popMenu.inflate(R.menu.user_miembro)
+                                    it.isEnabled = false}
                     "View profile user" ->  viewUserProfile(item.mail,contexto)
                 }
                 true
@@ -183,7 +188,7 @@ class ItemUser(var item: Types,var adapter: GroupAdapter<ViewHolder>,var  contex
         }
         if (type == "Member"){
             popMenu.menu.getItem(1).isEnabled = true
-            popMenu.menu.getItem(2).isEnabled = false
+            popMenu.menu.getItem(2).isEnabled = true
         }
     }
 

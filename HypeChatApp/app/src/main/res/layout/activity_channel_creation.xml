@@ -33,7 +33,7 @@
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
                     android:layout_marginTop="20dp"
-                    android:text="Public"
+                    android:text="Private"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:checked="true" android:id="@+id/sw_public"
                     android:padding="10dp"/>

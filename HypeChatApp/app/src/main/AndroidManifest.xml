@@ -23,6 +23,11 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
+        <activity android:name=".activities.user_registration.AddMemberToChannel">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".activities.ChatActivity"/>
+        </activity>
         <activity android:name=".activities.ViewProfileActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"

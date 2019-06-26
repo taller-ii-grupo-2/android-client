@@ -33,15 +33,15 @@ class ChannelCreationActivity : AppCompatActivity() {
         }
 
         sw_public.setOnClickListener {
-            if (sw_public.isChecked == false){
+            if (sw_public.isChecked == true){
                 et_username.isEnabled = true
                 btnAdd.isEnabled = true
             }
 
-            if (sw_public.isChecked == true){
+            if (sw_public.isChecked == false){
                 et_username.isEnabled = false
                 btnAdd.isEnabled = false
-                chip_groupp!!.removeAllViews()
+              //  chip_groupp!!.removeAllViews()
             }
         }
 
@@ -78,10 +78,10 @@ class ChannelCreationActivity : AppCompatActivity() {
         val desc = et_channelDesc.text.toString()
         val public = sw_public.isChecked
         val orga = Moi.getCurrentOrganizationName()
-        val invitations = getEmailsFromChipGroup()
+        //val invitations = getEmailsFromChipGroup()
 
-        val channel = Channel(orga, name, public, desc, invitations)
-
+        //val channel = Channel(orga, name, public, desc, invitations)
+        val channel = Channel(orga, name, public, desc)
 
         RetrofitClient.instance.createChannel(channel)
             .enqueue(object : Callback<DefaultResponse> {
@@ -104,12 +104,14 @@ class ChannelCreationActivity : AppCompatActivity() {
 
     private fun getEmailsFromChipGroup(): List<String> {
         var result : StringBuilder = java.lang.StringBuilder("")
+
         for (i in 0 until chip_groupp!!.childCount){
             val chip = chip_groupp!!.getChildAt(i) as Chip
             result.append(chip.text).append(",")
 
 
         }
+
 
         var list = result.dropLast(1).trim().split(",")
             .filter { it.isNotEmpty() } // or: .filter { it.isNotBlank() }
