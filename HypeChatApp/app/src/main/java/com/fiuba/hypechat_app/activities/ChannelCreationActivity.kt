@@ -10,6 +10,7 @@ import com.fiuba.hypechat_app.R
 import com.fiuba.hypechat_app.RetrofitClient
 import com.fiuba.hypechat_app.models.Channel
 import com.fiuba.hypechat_app.models.Moi
+import com.fiuba.hypechat_app.newChannelMember
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import kotlinx.android.synthetic.main.activity_channel_creation.*
@@ -78,7 +79,7 @@ class ChannelCreationActivity : AppCompatActivity() {
         val desc = et_channelDesc.text.toString()
         val public = sw_public.isChecked
         val orga = Moi.getCurrentOrganizationName()
-        //val invitations = getEmailsFromChipGroup()
+        getEmailsFromChipGroup()
 
         //val channel = Channel(orga, name, public, desc, invitations)
         val channel = Channel(orga, name, public, desc)
@@ -102,21 +103,39 @@ class ChannelCreationActivity : AppCompatActivity() {
             })
     }
 
-    private fun getEmailsFromChipGroup(): List<String> {
+    private fun getEmailsFromChipGroup() {
         var result : StringBuilder = java.lang.StringBuilder("")
+        val orga = Moi.getOrgaNameForOrgaFetch()
+        val channel = Moi.getCurrentChannelName()
+        if (chip_groupp != null){
+            for (i in 0 until chip_groupp!!.childCount) {
+                val chip = chip_groupp!!.getChildAt(i) as Chip
+                result.append(chip.text).append(",")
+                val member = newChannelMember(orga, channel, chip.text.toString())
+                RetrofitClient.instance.addMemberToChannel(member)
+                    .enqueue(object : Callback<DefaultResponse> {
+                        override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
+                            Toast.makeText(baseContext, t.message, Toast.LENGTH_LONG).show()
+                        }
 
-        for (i in 0 until chip_groupp!!.childCount){
-            val chip = chip_groupp!!.getChildAt(i) as Chip
-            result.append(chip.text).append(",")
+                        override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
+                            if (response.isSuccessful) {
+                                //  Toast.makeText(baseContext, "Successfully member added", Toast.LENGTH_SHORT).show()
 
+                            } else {
+                                // Toast.makeText(baseContext, "Failed to add member", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    })
+            }
 
         }
 
 
-        var list = result.dropLast(1).trim().split(",")
+        /*var list = result.dropLast(1).trim().split(",")
             .filter { it.isNotEmpty() } // or: .filter { it.isNotBlank() }
             .toList()
-        return list
+        return list*/
 
     }
 

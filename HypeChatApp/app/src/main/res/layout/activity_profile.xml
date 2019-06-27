@@ -26,7 +26,7 @@
                     app:popupTheme="@style/AppTheme.PopupOverlay"
 
                     app:titleTextColor="@color/colorPrimary"
-                    app:title="We"/>
+                    app:title="My profile"/>
 
 
             <Button android:layout_width="150dp" android:layout_height="150dp"

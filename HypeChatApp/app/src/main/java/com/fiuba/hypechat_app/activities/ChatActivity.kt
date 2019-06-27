@@ -54,6 +54,8 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_nav_drawer)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(findViewById(R.id.toolbarProfile))
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         setSupportActionBar(toolbar)
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
@@ -232,12 +234,8 @@ class ChatActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
     override fun onBackPressed() {
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
-        }
+        val intent = Intent(this, WorkspacesListActivity::class.java)
+        startActivity(intent)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

@@ -98,6 +98,9 @@
                 android:name=".activities.ChatActivity"
                 android:label="@string/title_activity_nav_drawer"
                 android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".activities.WorkspacesListActivity"/>
         </activity>
         <activity android:name=".activities.user_registration.ForgotActivity">
         </activity>
