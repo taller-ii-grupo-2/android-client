@@ -1,6 +1,7 @@
 package com.fiuba.hypechat_app
 
 import com.fiuba.hypechat_app.models.Channel
+import com.fiuba.hypechat_app.models.Location
 import com.fiuba.hypechat_app.models.Workgroup
 import retrofit2.Call
 import retrofit2.http.*
@@ -60,11 +61,16 @@ interface ApiService {
     @POST ("/channels/users")
     fun addMemberToChannel(@Body member:newChannelMember): Call<DefaultResponse>
 
+    @GET ("/organizations/{org_name}/members/locations")
+    fun getLocations(@Path ("org_name") orga_name: String): Call<List<LocationUser>>
+
     /*  @DELETE ("/organizations/channels")
     fun deleteChannel(@Body channel:deleteChannel):Call<DefaultResponse>*/
 
 
 }
+
+class LocationUser(val username:String, val latitude:Double, val longitude: Double)
 
 class Types (val mail:String, val type:String)
 
