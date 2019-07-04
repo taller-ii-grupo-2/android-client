@@ -42,7 +42,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 override fun onResponse(call: Call<List<LocationUser>>, response: Response<List<LocationUser>>) {
                     if (response.isSuccessful) {
                         val locations = response.body()
-                        setOnMaps(mMap,locations!!)
+                        setOnMaps(locations!!)
                     } else {
 
                     }
@@ -50,7 +50,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             })
     }
 
-    private fun setOnMaps(mMap: GoogleMap, locations: List<LocationUser>) {
+    private fun setOnMaps(locations: List<LocationUser>) {
         locations.forEach {
             var pos = LatLng(it.longitude,it.latitude)
             mMap.addMarker(MarkerOptions().position(pos).title(it.username))
