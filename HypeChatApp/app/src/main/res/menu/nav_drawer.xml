@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/action_profile"
+          android:title="@string/action_profile"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
+    <item android:id="@+id/action_maps"
+          android:title="@string/action_maps"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
+    <item android:id="@+id/add_member_to_workgroup"
+          android:title="@string/add_member_to_workgroup"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
+    <item android:id="@+id/add_member_to_channel"
+          android:title="Add member to channel"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
+    <item android:id="@+id/manage_workgroup"
+          android:title="@string/manage_workgroup"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
+</menu>

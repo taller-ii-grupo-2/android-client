@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/deleteUser"
+          android:title="Delete User"
+          android:orderInCategory="100"
+          />
+    <item android:id="@+id/make_admin"
+          android:title="Make admin"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
+    <item android:id="@+id/make_member"
+          android:title="Make member"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
+    <item android:id="@+id/view_profile"
+          android:title="View profile user"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
+</menu>
+
+
